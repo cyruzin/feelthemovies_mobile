@@ -40,11 +40,10 @@ export const removeHTML = str => {
     return str
 }
 
-export const toMoney = (number) => {
-    var number = number.toFixed(2).split('.');
-    number[0] = "U$ " + number[0].split(/(?=(?:...)*$)/).join('.');
-    return number.join(',');
-}
+Number.prototype.format = function (n, x) {
+    var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
+    return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,');
+};
 
 /**
  * Go to a new scene without duplication.

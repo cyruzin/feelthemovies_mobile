@@ -17,28 +17,58 @@ import { imgPath } from '../config/constants'
 
 class TitleDetails extends Component {
     state = {
-        movieFetch: false,
-        movieSuccessful: false,
-        movieFailure: '',
-        moviePayload: ''
+        titleFetch: false,
+        titleSuccessful: false,
+        titleFailure: '',
+        titlePayload: ''
     }
 
     async componentDidMount() {
         try {
             const { type, id } = this.props
-            this.setState({ movieFetch: true })
+            this.setState({ titleFetch: true })
             const res = await axiosTMDB.get(`/${type}/${id}?append_to_response=credits,videos,release_dates`)
             this.setState({
-                moviePayload: res.data,
-                movieSuccessful: true,
-                movieFetch: false
+                titlePayload: res.data,
+                titleSuccessful: true,
+                titleFetch: false
             })
         } catch (e) {
             this.setState({
-                movieFailure: e,
-                movieFetch: false
+                titleFailure: e,
+                titleFetch: false
             })
         }
+    }
+
+    getReleaseDates = data => {
+        let date = null
+        data.map(v => {
+            if (v.iso_3166_1 === 'US') {
+                v.release_dates
+                    .map(v => {
+                        if (
+                            v.release_date !== undefined
+                            && v.type === 5
+                        ) {
+                            date = moment(v.release_date).format('YYYY-MM-DD')
+                        }
+                    })
+            }
+        })
+        return date !== null ? date : ' Not Available'
+    }
+
+    getCrew = (data, crewType) => {
+        let crew = []
+        data.filter(c =>
+            c.job !== ''
+            && c.job === crewType
+        )
+            .map(c => {
+                crew.push(c.name)
+            })
+        return crew.length > 0 ? crew.join(', ') : ' Not Available'
     }
 
     trailerHandler = str => {
@@ -46,26 +76,29 @@ class TitleDetails extends Component {
     }
 
     render() {
-        const { movieSuccessful, movieFailure, movieFetch } = this.state
+        const { titleSuccessful, titleFailure, titleFetch } = this.state
 
         const {
             title, name, release_date, first_air_date,
             backdrop_path, overview, runtime, episode_run_time,
-            credits, videos
-        } = this.state.moviePayload
+            credits, videos, genres, status, budget, revenue,
+            created_by, next_episode_to_air, last_air_date,
+            number_of_episodes, number_of_seasons,
+            release_dates
+        } = this.state.titlePayload
 
         return (
             <View style={styles.container}>
-                {movieFetch ?
+                {titleFetch ?
                     <ActivityIndicator
                         size='large'
                         color='#737373' />
                     : null
                 }
 
-                {movieFailure !== '' ? <Text>{movieFailure}</Text> : null}
+                {titleFailure !== '' ? <Text>{titleFailure}</Text> : null}
 
-                {movieSuccessful ?
+                {titleSuccessful ?
                     <ScrollView showsVerticalScrollIndicator={false}>
 
                         <View style={styles.content}>
@@ -93,23 +126,11 @@ class TitleDetails extends Component {
 
                             <View style={styles.info}>
 
-                                <Icon name='clock' size={18} color='#fff' style={styles.infoIcon} />
+                                <Icon name='tag' size={18} color='#fff' style={styles.infoIcon} />
                                 <Text style={styles.infoText}>
-                                    {runtime !== undefined
-                                        || episode_run_time !== undefined ?
-
-                                        runtime !== undefined
-                                            && runtime !== '' ?
-                                            runtime + ' minutes'
-                                            :
-                                            episode_run_time.map(
-                                                v => v
-                                            )
-                                                .join('/') + ' minutes'
-                                        :
-                                        null
-                                    }
+                                    {genres.slice(0, 4).map(v => v.name).join(', ')}
                                 </Text>
+
                                 {videos.results.length > 0 ?
                                     <Fragment>
                                         <Icon
@@ -136,7 +157,7 @@ class TitleDetails extends Component {
                                 <Text style={styles.overview}>{overview}</Text>
                             </View>
 
-                            <Text style={styles.creditsTitle}>
+                            <Text style={styles.sectionTitle}>
                                 Top Billed Cast
                             </Text>
 
@@ -182,8 +203,158 @@ class TitleDetails extends Component {
                                 </ScrollView>
                             </View>
 
-                        </View>
+                            <Text style={styles.sectionTitle}>
+                                Other Info
+                            </Text>
 
+                            {/* Movie */}
+                            <View style={styles.otherInfo}>
+                                {title !== undefined ?
+                                    <View style={styles.otherInfoBox}>
+
+                                        <Text style={styles.otherInfoText}>
+                                            Status: {status}
+                                        </Text>
+
+                                        {runtime !== undefined
+                                            || episode_run_time !== undefined ?
+                                            <Text style={styles.otherInfoText}>
+                                                Runtime: {
+                                                    runtime !== undefined
+                                                        && runtime !== '' ?
+                                                        runtime + ' minutes'
+                                                        :
+                                                        episode_run_time.map(
+                                                            v => v
+                                                        )
+                                                            .join('/') + ' minutes'
+                                                }
+                                            </Text>
+                                            :
+                                            null
+                                        }
+
+                                        <Text style={styles.otherInfoText}>
+                                            Director: {
+                                                this.getCrew(credits.crew, 'Director')
+                                            }
+                                        </Text>
+
+                                        <Text style={styles.otherInfoText}>
+                                            Writer: {
+                                                this.getCrew(credits.crew, 'Writer')
+                                            }
+                                        </Text>
+
+                                        <Text style={styles.otherInfoText}>
+                                            Blu-ray release date: {
+                                                this.getReleaseDates(
+                                                    release_dates.results
+                                                )
+                                            }
+                                        </Text>
+
+                                        {budget !== '' ?
+                                            <Text style={styles.otherInfoText}>
+                                                Budget: ${budget.format(2)}
+                                            </Text>
+                                            :
+                                            null
+                                        }
+
+                                        {revenue !== '' ?
+                                            <Text style={styles.otherInfoText}>
+                                                Revenue: ${revenue.format(2)}
+                                            </Text>
+                                            :
+                                            null
+                                        }
+                                    </View>
+                                    :
+                                    null
+                                }
+
+                                {/* TV Shows */}
+                                {name !== undefined ?
+                                    <View style={styles.otherInfoBox}>
+
+                                        <Text style={styles.otherInfoText}>
+                                            Status: {status}
+                                        </Text>
+
+                                        {runtime !== undefined
+                                            || episode_run_time !== undefined ?
+                                            <Text style={styles.otherInfoText}>
+                                                Runtime: {
+                                                    runtime !== undefined
+                                                        && runtime !== '' ?
+                                                        runtime + ' minutes'
+                                                        :
+                                                        episode_run_time.map(
+                                                            v => v
+                                                        )
+                                                            .join('/') + ' minutes'
+                                                }
+                                            </Text>
+                                            :
+                                            null
+                                        }
+
+                                        <Text style={styles.otherInfoText}>
+                                            Creator: {
+                                                created_by.map(c => c.name)
+                                                    .join(', ')
+                                            }
+                                        </Text>
+
+                                        {number_of_seasons !== '' ?
+                                            <Text style={styles.otherInfoText}>
+                                                Seasons: {number_of_seasons}
+                                            </Text>
+                                            :
+                                            null
+                                        }
+
+                                        {number_of_episodes !== '' ?
+                                            <Text style={styles.otherInfoText}>
+                                                Episodes: {number_of_episodes}
+                                            </Text>
+                                            :
+                                            null
+                                        }
+
+                                        {first_air_date !== '' ?
+                                            <Text style={styles.otherInfoText}>
+                                                First Air Date: {first_air_date}
+                                            </Text>
+                                            :
+                                            null
+                                        }
+
+                                        {last_air_date !== '' ?
+                                            <Text style={styles.otherInfoText}>
+                                                Last Air Date: {last_air_date}
+                                            </Text>
+                                            :
+                                            null
+                                        }
+
+                                        {next_episode_to_air !== null ?
+                                            <Text style={styles.otherInfoText}>
+                                                Next Episode to Air: {
+                                                    next_episode_to_air.air_date
+                                                }
+                                            </Text>
+                                            :
+                                            null
+                                        }
+
+                                    </View>
+                                    :
+                                    null
+                                }
+                            </View>
+                        </View>
                     </ScrollView>
                     :
                     null
@@ -239,7 +410,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 10
+        margin: 5,
+        marginTop: 10
     },
     infoIcon: {
         marginLeft: 3
@@ -253,16 +425,15 @@ const styles = StyleSheet.create({
         color: '#737373',
         fontSize: 16,
     },
-    creditsTitle: {
+    sectionTitle: {
         margin: 10,
-        fontSize: 14,
+        fontSize: 15,
         fontWeight: 'bold',
         color: '#fff'
     },
     creditsBox: {
         marginLeft: 10,
         marginRight: 10,
-        marginBottom: 10,
     },
     creditContainer: {
         margin: 5
@@ -286,6 +457,19 @@ const styles = StyleSheet.create({
         fontSize: 10,
         textAlign: 'center',
         flexWrap: 'wrap'
+    },
+    otherInfo: {
+        flex: 1
+    },
+    otherInfoBox: {
+        marginLeft: 10,
+        marginRight: 10,
+        marginBottom: 10
+    },
+    otherInfoText: {
+        fontSize: 14,
+        color: '#737373',
+        marginTop: 5
     }
 })
 
