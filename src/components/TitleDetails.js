@@ -254,7 +254,7 @@ class TitleDetails extends Component {
                                             }
                                         </Text>
 
-                                        {budget !== '' ?
+                                        {budget !== '' && budget > 0 ?
                                             <Text style={styles.otherInfoText}>
                                                 Budget: ${budget.format(2)}
                                             </Text>
@@ -262,7 +262,7 @@ class TitleDetails extends Component {
                                             null
                                         }
 
-                                        {revenue !== '' ?
+                                        {revenue !== '' && revenue > 0 ?
                                             <Text style={styles.otherInfoText}>
                                                 Revenue: ${revenue.format(2)}
                                             </Text>
@@ -411,7 +411,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         margin: 5,
-        marginTop: 10
+        marginTop: 25
     },
     infoIcon: {
         marginLeft: 3
@@ -427,7 +427,7 @@ const styles = StyleSheet.create({
     },
     sectionTitle: {
         margin: 10,
-        fontSize: 15,
+        fontSize: 18,
         fontWeight: 'bold',
         color: '#fff'
     },
@@ -447,14 +447,14 @@ const styles = StyleSheet.create({
     },
     creditsText: {
         color: '#fff',
-        fontSize: 10,
+        fontSize: 12,
         fontWeight: 'bold',
         textAlign: 'center',
         marginTop: 3
     },
     creditsSubText: {
         color: '#737373',
-        fontSize: 10,
+        fontSize: 12,
         textAlign: 'center',
         flexWrap: 'wrap'
     },
@@ -467,7 +467,7 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     otherInfoText: {
-        fontSize: 14,
+        fontSize: 16,
         color: '#737373',
         marginTop: 5
     }

@@ -16,7 +16,7 @@ export const type = type => {
         case 0:
             return 'Movie'
         case 1:
-            return 'Serie'
+            return 'TV'
         case 2:
             return 'Mixed'
         default:

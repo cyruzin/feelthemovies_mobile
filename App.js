@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { StatusBar, View } from 'react-native'
-import Routes, { TabBar } from './src/config/routes'
+import Routes from './src/config/routes'
+import TabBar from './src/components/TabBar'
 
 export default class App extends Component {
 
@@ -8,7 +9,7 @@ export default class App extends Component {
     return (
       <View style={{ flex: 1 }}>
         <StatusBar
-          backgroundColor="#0f0e0e"
+          backgroundColor="#1b1919"
           barStyle="light-content"
         />
         <Routes />

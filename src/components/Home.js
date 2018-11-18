@@ -5,10 +5,11 @@ import {
     TouchableHighlight
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import IconMI from 'react-native-vector-icons/MaterialIcons'
 import moment from 'moment'
 import axios from '../config/axios'
 import { imgPath } from '../config/constants'
-import { removeHTML, routeFix } from '../util/helpers'
+import { removeHTML, routeFix, type } from '../util/helpers'
 
 export default class Home extends Component {
 
@@ -40,6 +41,39 @@ export default class Home extends Component {
         }
     }
 
+    typeHandler = titleType => {
+        var titleType = parseInt(titleType)
+        if (titleType === 0) {
+            return (
+                <Text style={styles.contentFootBody}>
+                    <Icon name='movie-roll'
+                        size={12} color='#737373' /> {type(
+                            titleType
+                        )}
+                </Text>
+            )
+        } else if (titleType === 1) {
+            return (
+                <Text style={styles.contentFootBody}>
+                    <IconMI name='tv'
+                        size={12} color='#737373' /> {type(
+                            titleType
+                        )}
+                </Text>
+            )
+        } else if (titleType === 2) {
+            return (
+                <Text style={styles.contentFootBody}>
+                    <Icon name='mixer'
+                        size={12} color='#737373' /> {type(
+                            titleType
+                        )}
+                </Text>
+            )
+        }
+
+    }
+
     render() {
         const {
             container, content, contentBody, contentTitle,
@@ -65,8 +99,7 @@ export default class Home extends Component {
                 {recommendationError !== '' ? <Text>{recommendationError}</Text> : null}
 
                 {recommendationSuccess ?
-                    <ScrollView
-                        showsVerticalScrollIndicator={false}>
+                    <ScrollView showsVerticalScrollIndicator={false}>
                         <View>
                             {recommendationPayload.map(recommendation => (
                                 <View key={recommendation.id} >
@@ -76,7 +109,8 @@ export default class Home extends Component {
                                             recommendation: recommendation
                                         })}>
                                         <View>
-                                            <Image style={contentImage}
+                                            <Image
+                                                style={contentImage}
                                                 source={{
                                                     uri: `${imgPath.W500}${recommendation.backdrop}`
                                                 }} />
@@ -118,10 +152,9 @@ export default class Home extends Component {
                                                 moment(recommendation.created_at).fromNow()
                                             }
                                         </Text>
-                                        {/* <Text style={contentFootBody}>
-                                            <Icon name='comment-multiple-outline'
-                                                size={12} color='#737373' /> 8 comments
-                                        </Text> */}
+                                        {this.typeHandler(
+                                            recommendation.type
+                                        )}
                                     </View>
                                 </View>
                             ))}
