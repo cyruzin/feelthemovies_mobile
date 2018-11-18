@@ -57,6 +57,7 @@
 		5B56442656AF4BDDB3B97C3D /* movie-roll.png in Resources */ = {isa = PBXBuildFile; fileRef = 875260834F054F2581F2A4F3 /* movie-roll.png */; };
 		04B45F4CB0CD4A8FB4E8963E /* OpenSansCondensed-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2782F0820AB6439E90F4D756 /* OpenSansCondensed-Bold.ttf */; };
 		F0CC5FB6EF9544C7BEB1CBAB /* OpenSansCondensed-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F67D06D87304B2AAF0E7111 /* OpenSansCondensed-Light.ttf */; };
+		C4FD3501C6424DB498A59076 /* Splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 261D3C511AAB46DD89880B27 /* Splash.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -383,6 +384,7 @@
 		875260834F054F2581F2A4F3 /* movie-roll.png */ = {isa = PBXFileReference; name = "movie-roll.png"; path = "../assets/images/movie-roll.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		2782F0820AB6439E90F4D756 /* OpenSansCondensed-Bold.ttf */ = {isa = PBXFileReference; name = "OpenSansCondensed-Bold.ttf"; path = "../assets/fonts/OpenSansCondensed-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		4F67D06D87304B2AAF0E7111 /* OpenSansCondensed-Light.ttf */ = {isa = PBXFileReference; name = "OpenSansCondensed-Light.ttf"; path = "../assets/fonts/OpenSansCondensed-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		261D3C511AAB46DD89880B27 /* Splash.png */ = {isa = PBXFileReference; name = "Splash.png"; path = "../assets/images/Splash.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -668,6 +670,7 @@
 				875260834F054F2581F2A4F3 /* movie-roll.png */,
 				2782F0820AB6439E90F4D756 /* OpenSansCondensed-Bold.ttf */,
 				4F67D06D87304B2AAF0E7111 /* OpenSansCondensed-Light.ttf */,
+				261D3C511AAB46DD89880B27 /* Splash.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1137,6 +1140,7 @@
 				5B56442656AF4BDDB3B97C3D /* movie-roll.png in Resources */,
 				04B45F4CB0CD4A8FB4E8963E /* OpenSansCondensed-Bold.ttf in Resources */,
 				F0CC5FB6EF9544C7BEB1CBAB /* OpenSansCondensed-Light.ttf in Resources */,
+				C4FD3501C6424DB498A59076 /* Splash.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
