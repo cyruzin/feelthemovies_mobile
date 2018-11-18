@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import {
     StyleSheet,
     View,
@@ -6,7 +6,9 @@ import {
     Image,
     ActivityIndicator,
     ScrollView,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    TouchableHighlight,
+    Linking
 } from 'react-native'
 import Icon from 'react-native-vector-icons/EvilIcons'
 import moment from 'moment'
@@ -39,13 +41,17 @@ class TitleDetails extends Component {
         }
     }
 
+    trailerHandler = str => {
+        Linking.openURL(`https://www.youtube.com/watch?v=${str}`);
+    }
+
     render() {
         const { movieSuccessful, movieFailure, movieFetch } = this.state
 
         const {
             title, name, release_date, first_air_date,
             backdrop_path, overview, runtime, episode_run_time,
-            credits
+            credits, videos
         } = this.state.moviePayload
 
         return (
@@ -104,21 +110,35 @@ class TitleDetails extends Component {
                                         null
                                     }
                                 </Text>
+                                {videos.results.length > 0 ?
+                                    <Fragment>
+                                        <Icon
+                                            name='play'
+                                            size={18}
+                                            color='#fff'
+                                            style={styles.infoIcon} />
+                                        <TouchableHighlight
+                                            onPress={
+                                                () => this.trailerHandler(videos.results[0].key)
+                                            }
+                                        >
+                                            <Text style={styles.infoText}>
+                                                Watch Trailer
+                                        </Text>
+                                        </TouchableHighlight>
+                                    </Fragment>
+                                    :
+                                    null
+                                }
+                            </View>
 
-
-                                <Icon name='play' size={18} color='#fff' style={styles.infoIcon} />
-                                <Text style={styles.infoText}>
-                                    Watch Trailer
-                                </Text>
+                            <View style={styles.bodyBox}>
+                                <Text style={styles.overview}>{overview}</Text>
                             </View>
 
                             <Text style={styles.creditsTitle}>
                                 Top Billed Cast
                             </Text>
-
-                            <View style={styles.bodyBox}>
-                                <Text style={styles.overview}>{overview}</Text>
-                            </View>
 
                             <ScrollView
                                 horizontal
@@ -232,19 +252,18 @@ const styles = StyleSheet.create({
         color: '#fff'
     },
     creditsBox: {
-        margin: 10,
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginLeft: 10
     },
     creditContainer: {
-        flexDirection: 'column'
+        margin: 5
     },
     creditsImage: {
         width: 100,
         height: 130,
-        margin: 10,
-        borderWidth: 2,
+        borderWidth: 1,
         borderColor: '#fff',
         resizeMode: 'contain'
     },
@@ -252,7 +271,8 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 10,
         fontWeight: 'bold',
-        textAlign: 'center'
+        textAlign: 'center',
+        marginTop: 3
     },
     creditsSubText: {
         color: '#737373',
