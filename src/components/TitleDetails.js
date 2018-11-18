@@ -140,39 +140,47 @@ class TitleDetails extends Component {
                                 Top Billed Cast
                             </Text>
 
-                            <ScrollView
-                                horizontal
-                                showsHorizontalScrollIndicator={false}
-                                contentContainerStyle={styles.creditsBox}>
-                                {credits.cast
-                                    .slice(0, 10)
-                                    .map(cast => {
-                                        if (cast.profile_path !== null) {
-                                            return (
-                                                <TouchableWithoutFeedback key={cast.id}>
-                                                    <View style={styles.creditContainer}>
-                                                        <View>
-                                                            <Image
-                                                                style={styles.creditsImage}
-                                                                source={{
-                                                                    uri: `${imgPath.W500}${cast.profile_path}`
-                                                                }} />
+                            <View style={styles.creditsBox}>
+                                <ScrollView
+                                    horizontal
+                                    showsHorizontalScrollIndicator={false}>
+                                    {credits.cast
+                                        .slice(0, 10)
+                                        .map(cast => {
+                                            if (cast.profile_path !== null) {
+                                                return (
+                                                    <TouchableWithoutFeedback key={cast.id}>
+                                                        <View style={styles.creditContainer}>
+                                                            <View>
+                                                                <Image
+                                                                    style={styles.creditsImage}
+                                                                    source={{
+                                                                        uri: `${imgPath.W500}${cast.profile_path}`
+                                                                    }} />
 
-                                                            <Text
-                                                                style={styles.creditsText}>
-                                                                {cast.name}
-                                                            </Text>
-                                                            <Text
-                                                                style={styles.creditsSubText}>
-                                                                {cast.character}
-                                                            </Text>
+
+                                                            </View>
+                                                            <View style={{
+                                                                flexDirection: 'column',
+                                                                justifyContent: 'center',
+                                                                maxWidth: 100
+                                                            }}>
+                                                                <Text
+                                                                    style={styles.creditsText}>
+                                                                    {cast.name}
+                                                                </Text>
+                                                                <Text
+                                                                    style={styles.creditsSubText}>
+                                                                    {cast.character}
+                                                                </Text>
+                                                            </View>
                                                         </View>
-                                                    </View>
-                                                </TouchableWithoutFeedback>
-                                            )
-                                        }
-                                    })}
-                            </ScrollView>
+                                                    </TouchableWithoutFeedback>
+                                                )
+                                            }
+                                        })}
+                                </ScrollView>
+                            </View>
 
                         </View>
 
@@ -202,7 +210,7 @@ const styles = StyleSheet.create({
     },
     titleBox: {
         position: 'absolute',
-        maxWidth: 300,
+        maxWidth: 320,
         backgroundColor: '#0093cb',
         bottom: 0,
         left: 0,
@@ -252,10 +260,9 @@ const styles = StyleSheet.create({
         color: '#fff'
     },
     creditsBox: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginLeft: 10
+        marginLeft: 10,
+        marginRight: 10,
+        marginBottom: 10,
     },
     creditContainer: {
         margin: 5
@@ -277,7 +284,8 @@ const styles = StyleSheet.create({
     creditsSubText: {
         color: '#737373',
         fontSize: 10,
-        textAlign: 'center'
+        textAlign: 'center',
+        flexWrap: 'wrap'
     }
 })
 
