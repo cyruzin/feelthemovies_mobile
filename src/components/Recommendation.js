@@ -8,6 +8,7 @@ import {
     ActivityIndicator,
     TouchableWithoutFeedback
 } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 import axios from '../config/axios'
 import moment from 'moment'
 import { imgPath } from '../config/constants'
@@ -89,62 +90,94 @@ class Recommendation extends Component {
 
                         <View style={styles.contentBody}>
                             {itemsPayload.map(item => (
-                                <TouchableWithoutFeedback
-                                    key={item.id}
-                                    onPress={() => routeFix('TitleDetails', {
-                                        id: item.tmdb_id,
-                                        type: item.media_type
-                                    })}
-                                >
-                                    <View
-                                        style={styles.contentBodyBox}>
-                                        <View style={{ width: '30%' }}>
-                                            <Image
-                                                style={styles.image}
-                                                source={{
-                                                    uri: `${imgPath.W185}${item.poster}`
-                                                }} />
+                                <View key={item.id}>
+                                    <TouchableWithoutFeedback
+                                        onPress={() => routeFix('TitleDetails', {
+                                            id: item.tmdb_id,
+                                            type: item.media_type
+                                        })}
+                                    >
+                                        <View
+                                            style={styles.contentBodyBox}>
+                                            <View style={{ width: '30%' }}>
+                                                <Image
+                                                    style={styles.image}
+                                                    source={{
+                                                        uri: `${imgPath.W185}${item.poster}`
+                                                    }} />
+                                            </View>
+                                            <View style={{ width: '70%', marginLeft: 10 }}>
+                                                <Text style={styles.contentName}>
+                                                    {item.name}
+                                                </Text>
+                                                <Text style={styles.contentDate}>
+                                                    {moment(item.year).format('YYYY')
+                                                    }</Text>
+                                                <Text style={styles.contentOverview}>
+                                                    {limitChar(item.overview, 200, 180)}
+                                                </Text>
+                                            </View>
+
                                         </View>
-                                        <View style={{ width: '70%', marginLeft: 10 }}>
-                                            <Text style={styles.contentName}>
-                                                {item.name}
-                                            </Text>
-                                            <Text style={styles.contentDate}>
-                                                {moment(item.year).format('YYYY')
-                                                }</Text>
-                                            <Text style={styles.contentOverview}>
-                                                {limitChar(item.overview, 200, 180)}
+
+                                    </TouchableWithoutFeedback>
+                                    {item.commentary !== '' ?
+                                        <View style={{
+                                            margin: 10
+                                        }}>
+                                            <Text style={{
+                                                fontSize: 12,
+                                                color: '#737373',
+                                                textAlign: 'center'
+                                            }}>
+                                                <Icon name='format-quote' size={12} color='#fff' />
+                                                {removeHTML(item.commentary)}
                                             </Text>
                                         </View>
+                                        :
+                                        null
+                                    }
+                                    <View style={{
+                                        margin: 10,
+                                        flexDirection: 'row',
+                                        flexWrap: 'wrap',
+                                        justifyContent: 'flex-start',
+                                    }}>
+                                        <Text style={{
+                                            color: '#737373',
+                                            marginRight: 5,
+                                            fontSize: 12
+                                        }}>
+                                            Watch On:
+                                        </Text>
+                                        <Text style={{
+                                            color: '#fff',
+                                            fontSize: 12
+                                        }}>
+                                            {item.sources.map(s => s.name).join(', ')}
+                                        </Text>
                                     </View>
-                                </TouchableWithoutFeedback>
+                                </View>
                             ))}
                         </View>
 
-                        <View style={{
-                            marginTop: 10
-                        }}>
-                            <View
-                                style={{
-                                    marginTop: 30,
-                                    flexDirection: 'row',
-                                    flexWrap: 'wrap',
-                                    justifyContent: 'center'
-                                }}>
-                                {recommendation.keywords
-                                    .map(keywords => (
+
+
+                        <View
+                            style={styles.contentKeywordsBox}>
+                            {recommendation.keywords
+                                .map(keywords => (
+                                    <Text
+                                        key={keywords.id}
+                                        style={styles.contentKeywordsText}>
                                         <Text
-                                            key={keywords.id}
-                                            style={styles.contentKeywordsText}>
-                                            <Text
-                                                style={styles.contentKeywordsHashTag}>
-                                                #
+                                            style={styles.contentKeywordsHashTag}>
+                                            #
                                         </Text>
-                                            {keywords.name}
-                                        </Text>
-                                    ))
-                                }
-                            </View>
+                                        {keywords.name}
+                                    </Text>
+                                ))
+                            }
                         </View>
 
                     </ScrollView>
@@ -210,26 +243,32 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold'
     },
-    contentKeywords: {
-        flexDirection: 'row'
-    },
-    contentKeywordsBox: {
-        flexDirection: 'row',
-        margin: 5,
-        padding: 3
-    },
     contentOverview: {
         color: '#737373',
         fontSize: 14,
         marginTop: 5
     },
+    contentCommentary: {
+        margin: 20,
+        marginTop: 10
+    },
+    contentWatchOn: {
+
+    },
+    contentKeywordsBox: {
+        margin: 5,
+        marginTop: 30,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center'
+    },
     contentKeywordsText: {
         color: '#fff',
-        fontSize: 16,
+        fontSize: 14,
         margin: 5
     },
     contentKeywordsHashTag: {
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: 'bold',
         color: '#0093cb'
     },

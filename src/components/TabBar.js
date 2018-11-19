@@ -57,8 +57,9 @@ const styles = StyleSheet.create({
         padding: 5
     },
     tabBarItem: {
-        color: '#fff',
-        fontSize: 10
+        color: '#737373',
+        fontSize: 10,
+        marginTop: 3
     },
 })
 
