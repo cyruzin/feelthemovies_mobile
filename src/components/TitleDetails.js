@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/EvilIcons'
 import moment from 'moment'
 import { axiosTMDB } from '../config/axios'
 import { imgPath } from '../config/constants'
+import { routeFix } from '../util/helpers'
 
 class TitleDetails extends Component {
     state = {
@@ -170,7 +171,11 @@ class TitleDetails extends Component {
                                         .map(cast => {
                                             if (cast.profile_path !== null) {
                                                 return (
-                                                    <TouchableWithoutFeedback key={cast.id}>
+                                                    <TouchableWithoutFeedback
+                                                        key={cast.id}
+                                                        onPress={() => routeFix('Person', {
+                                                            id: cast.id
+                                                        })}>
                                                         <View style={styles.creditContainer}>
                                                             <View>
                                                                 <Image
@@ -203,7 +208,7 @@ class TitleDetails extends Component {
                                 </ScrollView>
                             </View>
 
-                            <Text style={styles.sectionTitle}>
+                            <Text style={[styles.sectionTitle, { marginBottom: 5 }]}>
                                 Other Info
                             </Text>
 
@@ -450,13 +455,14 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginTop: 3
+        marginTop: 5
     },
     creditsSubText: {
         color: '#737373',
         fontSize: 12,
         textAlign: 'center',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        marginTop: 3
     },
     otherInfo: {
         flex: 1

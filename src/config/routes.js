@@ -7,6 +7,7 @@ import Search from '../components/Search'
 import Recommendation from '../components/Recommendation'
 import Movie from '../components/Movie/Movie'
 import TitleDetails from '../components/TitleDetails'
+import Person from '../components/Person'
 
 export default () => {
     return (
@@ -21,6 +22,7 @@ export default () => {
                 <Scene key='Search' component={Search} hideNavBar />
                 <Scene key='Movie' component={Movie} hideNavBar />
                 <Scene key='TitleDetails' component={TitleDetails} title='Details' />
+                <Scene key='Person' component={Person} title='Person' />
                 <Scene key='Recommendation' title='Recommendation' component={Recommendation} />
 
             </Scene>

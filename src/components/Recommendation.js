@@ -126,11 +126,11 @@ class Recommendation extends Component {
                                             margin: 10
                                         }}>
                                             <Text style={{
-                                                fontSize: 12,
+                                                fontSize: 14,
                                                 color: '#737373',
                                                 textAlign: 'center'
                                             }}>
-                                                <Icon name='format-quote' size={12} color='#fff' />
+                                                <Icon name='format-quote' size={14} color='#fff' />
                                                 {removeHTML(item.commentary)}
                                             </Text>
                                         </View>
@@ -146,13 +146,13 @@ class Recommendation extends Component {
                                         <Text style={{
                                             color: '#737373',
                                             marginRight: 5,
-                                            fontSize: 12
+                                            fontSize: 14
                                         }}>
                                             Watch On:
                                         </Text>
                                         <Text style={{
                                             color: '#fff',
-                                            fontSize: 12
+                                            fontSize: 14
                                         }}>
                                             {item.sources.map(s => s.name).join(', ')}
                                         </Text>
@@ -247,13 +247,6 @@ const styles = StyleSheet.create({
         color: '#737373',
         fontSize: 14,
         marginTop: 5
-    },
-    contentCommentary: {
-        margin: 20,
-        marginTop: 10
-    },
-    contentWatchOn: {
-
     },
     contentKeywordsBox: {
         margin: 5,
