@@ -1,4 +1,4 @@
-package br.com.feelthemovies;
+package br.com.feelthemoviev4;
 
 import android.app.Application;
 

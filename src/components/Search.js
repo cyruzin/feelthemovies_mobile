@@ -151,7 +151,7 @@ export default class Search extends Component {
                                 {searchPayload.map(search => {
                                     if (
                                         search.media_type === 'movie'
-                                        && search.poster_path !== null
+                                        && search.backdrop_path !== null
                                     ) {
                                         return (
                                             <TouchableWithoutFeedback
@@ -169,10 +169,10 @@ export default class Search extends Component {
                                                             style={{
                                                                 flex: 1,
                                                                 width: null,
-                                                                height: 400
+                                                                height: 200
                                                             }}
                                                             source={{
-                                                                uri: `${imgPath.W500}${search.poster_path}`
+                                                                uri: `${imgPath.W500}${search.backdrop_path}`
                                                             }}
                                                         />
                                                         <Badge style={{
@@ -223,7 +223,7 @@ export default class Search extends Component {
                                         )
                                     } else if (
                                         search.media_type === 'tv'
-                                        && search.poster_path !== null
+                                        && search.backdrop_path !== null
                                     ) {
                                         return (
                                             <TouchableWithoutFeedback
@@ -242,10 +242,10 @@ export default class Search extends Component {
                                                             style={{
                                                                 flex: 1,
                                                                 width: null,
-                                                                height: 400
+                                                                height: 200
                                                             }}
                                                             source={{
-                                                                uri: `${imgPath.W500}${search.poster_path}`
+                                                                uri: `${imgPath.W500}${search.backdrop_path}`
                                                             }}
                                                         />
                                                         <Badge style={{
