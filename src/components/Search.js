@@ -12,6 +12,7 @@ import {
 import { Actions } from 'react-native-router-flux'
 import { axiosTMDB } from '../config/axios'
 import debounce from 'lodash/debounce'
+import orderBy from 'lodash/orderBy'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { routeFix } from '../util/helpers'
@@ -93,7 +94,7 @@ export default class Search extends Component {
                     </TouchableWithoutFeedback>
 
                     <View style={{
-                        flexGrow: 3,
+                        flexGrow: 4,
                         position: 'relative'
                     }}>
                         <TextInput
@@ -142,16 +143,16 @@ export default class Search extends Component {
 
                 <ScrollView showsVerticalScrollIndicator={false}>
                     {searchSuccessful ?
-
-
                         <View>
                             <View style={{
-                                flex: 1
+                                flex: 1,
+                                justifyContent: 'center',
+                                margin: 10
                             }}>
                                 {searchPayload.map(search => {
                                     if (
                                         search.media_type === 'movie'
-                                        && search.backdrop_path !== null
+                                        && search.poster_path !== null
                                     ) {
                                         return (
                                             <TouchableWithoutFeedback
@@ -160,64 +161,62 @@ export default class Search extends Component {
                                                     type: search.media_type
                                                 })}
                                                 key={search.id}>
-                                                <View>
+                                                <View style={{
+                                                    flexDirection: 'row',
+                                                    margin: 10
+                                                }}>
                                                     <View style={{
-                                                        marginBottom: 10,
-                                                        position: 'relative'
+                                                        position: 'relative',
+                                                        width: '20%'
                                                     }}>
                                                         <Image
                                                             style={{
-                                                                flex: 1,
-                                                                width: null,
-                                                                height: 200
+                                                                width: 60,
+                                                                height: 80,
+                                                                borderWidth: 1,
+                                                                borderColor: '#fff',
+                                                                resizeMode: 'contain'
                                                             }}
                                                             source={{
-                                                                uri: `${imgPath.W500}${search.backdrop_path}`
+                                                                uri: `${imgPath.W185}${search.poster_path}`
                                                             }}
                                                         />
                                                         <Badge style={{
                                                             position: 'absolute',
-                                                            maxWidth: 280,
                                                             bottom: 0,
                                                             left: 0
                                                         }}>
-                                                            <Text
-                                                                style={{
-                                                                    fontSize: 16,
-                                                                    color: '#fff'
-                                                                }}>
-                                                                {search.title}
-                                                            </Text>
-                                                        </Badge>
-
-                                                        <Badge style={{
-                                                            position: 'absolute',
-                                                            top: 5,
-                                                            right: 0
-                                                        }}>
-                                                            <Text
-                                                                style={{
-                                                                    fontSize: 14,
-                                                                    color: '#fff'
-                                                                }}>
-                                                                {moment(search.release_date).format('YYYY')}
-                                                            </Text>
-                                                        </Badge>
-
-                                                        <Badge style={{
-                                                            position: 'absolute',
-                                                            top: 40,
-                                                            right: 0
-                                                        }}>
-                                                            <Text
-                                                                style={{
-                                                                    fontSize: 14,
-                                                                    color: '#fff'
-                                                                }}>
+                                                            <Text style={{
+                                                                color: '#fff',
+                                                                fontSize: 10,
+                                                                fontWeight: 'bold'
+                                                            }}>
                                                                 {search.media_type.capitalize()}
                                                             </Text>
                                                         </Badge>
                                                     </View>
+
+                                                    <View style={{
+                                                        width: '80%',
+                                                        margin: 5
+                                                    }}>
+                                                        <Text style={{
+                                                            fontSize: 14,
+                                                            color: '#fff',
+                                                            fontWeight: 'bold'
+                                                        }}>
+                                                            {search.title}
+                                                        </Text>
+
+                                                        <Text style={{
+                                                            color: '#737373',
+                                                            fontSize: 14,
+                                                        }}>
+                                                            {moment(search.release_date).format('YYYY')}
+
+                                                        </Text>
+                                                    </View>
+
                                                 </View>
                                             </TouchableWithoutFeedback>
                                         )
@@ -231,66 +230,62 @@ export default class Search extends Component {
                                                     id: search.id,
                                                     type: search.media_type
                                                 })}
-                                                key={search.id}
-                                            >
-                                                <View>
+                                                key={search.id}>
+                                                <View style={{
+                                                    flexDirection: 'row',
+                                                    margin: 10
+                                                }}>
                                                     <View style={{
-                                                        marginBottom: 10,
-                                                        position: 'relative'
+                                                        position: 'relative',
+                                                        width: '20%'
                                                     }}>
                                                         <Image
                                                             style={{
-                                                                flex: 1,
-                                                                width: null,
-                                                                height: 200
+                                                                width: 60,
+                                                                height: 80,
+                                                                borderWidth: 1,
+                                                                borderColor: '#fff',
+                                                                resizeMode: 'contain'
                                                             }}
                                                             source={{
-                                                                uri: `${imgPath.W500}${search.backdrop_path}`
+                                                                uri: `${imgPath.W185}${search.poster_path}`
                                                             }}
                                                         />
                                                         <Badge style={{
                                                             position: 'absolute',
-                                                            maxWidth: 280,
                                                             bottom: 0,
                                                             left: 0
                                                         }}>
-                                                            <Text
-                                                                style={{
-                                                                    fontSize: 16,
-                                                                    color: '#fff'
-                                                                }}>
-                                                                {search.name}
-                                                            </Text>
-                                                        </Badge>
-
-                                                        <Badge style={{
-                                                            position: 'absolute',
-                                                            top: 5,
-                                                            right: 0
-                                                        }}>
-                                                            <Text
-                                                                style={{
-                                                                    fontSize: 14,
-                                                                    color: '#fff'
-                                                                }}>
-                                                                {moment(search.first_air_date).format('YYYY')}
-                                                            </Text>
-                                                        </Badge>
-
-                                                        <Badge style={{
-                                                            position: 'absolute',
-                                                            top: 40,
-                                                            right: 0
-                                                        }}>
-                                                            <Text
-                                                                style={{
-                                                                    fontSize: 14,
-                                                                    color: '#fff'
-                                                                }}>
+                                                            <Text style={{
+                                                                color: '#fff',
+                                                                fontSize: 10,
+                                                                fontWeight: 'bold'
+                                                            }}>
                                                                 {search.media_type.toUpperCase()}
                                                             </Text>
                                                         </Badge>
                                                     </View>
+
+                                                    <View style={{
+                                                        width: '80%',
+                                                        margin: 5
+                                                    }}>
+                                                        <Text style={{
+                                                            fontSize: 14,
+                                                            color: '#fff',
+                                                            fontWeight: 'bold'
+                                                        }}>
+                                                            {search.name}
+                                                        </Text>
+
+                                                        <Text style={{
+                                                            color: '#737373',
+                                                            fontSize: 14,
+                                                        }}>
+                                                            {moment(search.first_air_date).format('YYYY')}
+                                                        </Text>
+                                                    </View>
+
                                                 </View>
                                             </TouchableWithoutFeedback>
                                         )
@@ -300,55 +295,86 @@ export default class Search extends Component {
                                     ) {
                                         return (
                                             <TouchableWithoutFeedback
-                                                onPress={() => routeFix('Person', {
-                                                    id: search.id
+                                                onPress={() => routeFix('TitleDetails', {
+                                                    id: search.id,
+                                                    type: search.media_type
                                                 })}
-                                                key={search.id}
-                                            >
-                                                <View>
+                                                key={search.id}>
+                                                <View style={{
+                                                    flexDirection: 'row',
+                                                    margin: 10
+                                                }}>
                                                     <View style={{
-                                                        marginBottom: 10,
-                                                        position: 'relative'
+                                                        position: 'relative',
+                                                        width: '20%'
                                                     }}>
                                                         <Image
                                                             style={{
-                                                                flex: 1,
-                                                                width: null,
-                                                                height: 400
+                                                                width: 60,
+                                                                height: 80,
+                                                                borderWidth: 1,
+                                                                borderColor: '#fff',
+                                                                resizeMode: 'contain'
                                                             }}
                                                             source={{
-                                                                uri: `${imgPath.W500}${search.profile_path}`
+                                                                uri: `${imgPath.W185}${search.profile_path}`
                                                             }}
                                                         />
                                                         <Badge style={{
                                                             position: 'absolute',
-                                                            maxWidth: 280,
                                                             bottom: 0,
                                                             left: 0
                                                         }}>
-                                                            <Text
-                                                                style={{
-                                                                    fontSize: 16,
-                                                                    color: '#fff'
-                                                                }}>
-                                                                {search.name}
-                                                            </Text>
-                                                        </Badge>
-
-                                                        <Badge style={{
-                                                            position: 'absolute',
-                                                            top: 5,
-                                                            right: 0
-                                                        }}>
-                                                            <Text
-                                                                style={{
-                                                                    fontSize: 14,
-                                                                    color: '#fff'
-                                                                }}>
+                                                            <Text style={{
+                                                                color: '#fff',
+                                                                fontSize: 10,
+                                                                fontWeight: 'bold'
+                                                            }}>
                                                                 {search.media_type.capitalize()}
                                                             </Text>
                                                         </Badge>
                                                     </View>
+
+                                                    <View style={{
+                                                        width: '80%',
+                                                        flexDirection: 'column',
+                                                        margin: 5
+                                                    }}>
+                                                        <Text style={{
+                                                            fontSize: 14,
+                                                            color: '#fff',
+                                                            fontWeight: 'bold'
+                                                        }}>
+                                                            {search.name}
+                                                        </Text>
+
+                                                        <Text style={{
+                                                            color: '#737373',
+                                                            fontSize: 14,
+                                                        }}>
+                                                            {
+                                                                orderBy(
+                                                                    search.known_for,
+                                                                    'vote_count',
+                                                                    'desc'
+                                                                )
+                                                                    .slice(0, 3)
+                                                                    .map(m => {
+                                                                        if (
+                                                                            m.media_type === 'movie'
+                                                                        ) {
+                                                                            return m.title
+                                                                        } else if (
+                                                                            m.media_type === 'tv'
+                                                                        ) {
+                                                                            return m.name
+                                                                        }
+                                                                    })
+                                                                    .join(', ')
+                                                            }
+                                                        </Text>
+                                                    </View>
+
                                                 </View>
                                             </TouchableWithoutFeedback>
                                         )

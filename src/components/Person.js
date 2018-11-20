@@ -99,7 +99,7 @@ export default class Person extends Component {
                                     fontWeight: 'bold',
                                     color: '#fff'
                                 }}>
-                                    Know For
+                                    Known For
                                 </Text>
                             </View>
 
