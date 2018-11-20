@@ -9,10 +9,10 @@ import {
     TouchableWithoutFeedback
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import axios from '../config/axios'
+import axios from '../../config/axios'
 import moment from 'moment'
-import { imgPath } from '../config/constants'
-import { limitChar, removeHTML, routeFix } from '../util/helpers'
+import { imgPath } from '../../config/constants'
+import { limitChar, removeHTML, routeFix } from '../../util/helpers'
 
 class Recommendation extends Component {
     state = {

@@ -5,7 +5,7 @@ import { Router, Scene } from 'react-native-router-flux'
 import { onBackPress, routeFix } from '../util/helpers';
 import Home from '../components/Home'
 import Search from '../components/Search'
-import Recommendation from '../components/Recommendation'
+import Recommendation from '../components/Recommendation/Recommendation'
 import Movie from '../components/Movie/Movie'
 import TitleDetails from '../components/TitleDetails'
 import Person from '../components/Person'
