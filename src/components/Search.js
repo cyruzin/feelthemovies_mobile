@@ -295,9 +295,8 @@ export default class Search extends Component {
                                     ) {
                                         return (
                                             <TouchableWithoutFeedback
-                                                onPress={() => routeFix('TitleDetails', {
-                                                    id: search.id,
-                                                    type: search.media_type
+                                                onPress={() => routeFix('Person', {
+                                                    id: search.id
                                                 })}
                                                 key={search.id}>
                                                 <View style={{
