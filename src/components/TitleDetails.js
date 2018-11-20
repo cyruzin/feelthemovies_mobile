@@ -85,7 +85,7 @@ class TitleDetails extends Component {
             credits, videos, genres, status, budget, revenue,
             created_by, next_episode_to_air, last_air_date,
             number_of_episodes, number_of_seasons,
-            release_dates
+            release_dates, poster_path
         } = this.state.titlePayload
 
         return (
@@ -107,7 +107,7 @@ class TitleDetails extends Component {
                                 <Image
                                     style={styles.image}
                                     source={{
-                                        uri: `${imgPath.W500}${backdrop_path}`
+                                        uri: `${imgPath.W500}${poster_path}`
                                     }} />
                                 <View style={styles.titleBox}>
                                     <Text style={styles.title}>
@@ -382,7 +382,7 @@ const styles = StyleSheet.create({
     image: {
         flex: 1,
         width: null,
-        height: 200
+        height: 400
     },
     titleBox: {
         position: 'absolute',

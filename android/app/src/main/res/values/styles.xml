@@ -6,6 +6,9 @@
         <item name="android:windowBackground">
             @drawable/background_splash
         </item>
+        <item name="android:color">
+            @color/primary
+        </item>
         <item name="android:statusBarColor">
             @color/primary
         </item>

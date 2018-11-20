@@ -48,7 +48,8 @@ export default class Person extends Component {
         } = this.state
 
         const {
-            name, profile_path, biography, combined_credits
+            name, profile_path, biography, combined_credits,
+            birthday, deathday, gender, place_of_birth
         } = this.state.personPayload
 
         return (
@@ -97,87 +98,142 @@ export default class Person extends Component {
                                     fontSize: 16,
                                     fontWeight: 'bold',
                                     color: '#fff'
-                                }}>Know For</Text>
+                                }}>
+                                    Know For
+                                </Text>
                             </View>
 
-                            <ScrollView
-                                horizontal
-                                showsHorizontalScrollIndicator={false}>
-                                {
-                                    orderBy(combined_credits.cast, 'vote_count', 'desc')
-                                        .slice(0, 20)
-                                        .filter(c => c.character !== 'Himself')
-                                        .map(c => {
-                                            if (c.poster_path !== null) {
-                                                return (
-                                                    <TouchableWithoutFeedback
-                                                        key={c.id}
-                                                        onPress={() => routeFix('TitleDetails', {
-                                                            id: c.id,
-                                                            type: c.media_type
-                                                        })}>
+                            <View style={{
+                                marginLeft: 10,
+                                marginRight: 10
+                            }}>
+                                <ScrollView
+                                    horizontal
+                                    showsHorizontalScrollIndicator={false}>
+                                    {
+                                        orderBy(combined_credits.cast, 'vote_count', 'desc')
+                                            .slice(0, 20)
+                                            .filter(c =>
+                                                c.character !== 'Himself'
+                                                && c.poster_path !== null
+                                            )
+                                            .map(c =>
+                                                <TouchableWithoutFeedback
+                                                    key={c.id}
+                                                    onPress={() => routeFix('TitleDetails', {
+                                                        id: c.id,
+                                                        type: c.media_type
+                                                    })}>
+                                                    <View
+                                                        style={{
+                                                            padding: 5,
+                                                            flexDirection: 'column'
+                                                        }}>
+                                                        <View>
+                                                            <Image
+                                                                style={{
+                                                                    flex: 1,
+                                                                    width: 100,
+                                                                    height: 130,
+                                                                    borderWidth: 1,
+                                                                    borderColor: '#fff',
+                                                                    resizeMode: 'contain'
+                                                                }}
+                                                                source={{
+                                                                    uri: `${imgPath.W185}${c.poster_path}`
+                                                                }}
+                                                            />
+                                                        </View>
                                                         <View
                                                             style={{
-                                                                padding: 5,
-                                                                flexDirection: 'column'
+                                                                flexDirection: 'column',
+                                                                maxWidth: 100
                                                             }}>
-                                                            <View>
-                                                                <Image
-                                                                    style={{
-                                                                        flex: 1,
-                                                                        width: 100,
-                                                                        height: 130,
-                                                                        borderWidth: 1,
-                                                                        borderColor: '#fff',
-                                                                        resizeMode: 'contain'
-                                                                    }}
-                                                                    source={{
-                                                                        uri: `${imgPath.W185}${c.poster_path}`
-                                                                    }}
-                                                                />
-                                                            </View>
-                                                            <View
+                                                            <Text
                                                                 style={{
-                                                                    flexDirection: 'column',
-                                                                    maxWidth: 100
-                                                                }}>
-                                                                <Text
-                                                                    style={{
-                                                                        color: '#fff',
-                                                                        fontSize: 12,
-                                                                        maxWidth: 100,
-                                                                        flexWrap: 'wrap',
-                                                                        textAlign: 'center',
-                                                                        fontWeight: 'bold',
-                                                                        marginTop: 5
-                                                                    }}>
-                                                                    {c.title !== undefined ?
-                                                                        c.title : c.name
-                                                                    }
-                                                                </Text>
-                                                                <Text style={{
-                                                                    color: '#737373',
+                                                                    color: '#fff',
                                                                     fontSize: 12,
+                                                                    maxWidth: 100,
                                                                     flexWrap: 'wrap',
                                                                     textAlign: 'center',
-                                                                    marginTop: 3
+                                                                    fontWeight: 'bold',
+                                                                    marginTop: 5
                                                                 }}>
-                                                                    {c.release_year !== undefined ?
-                                                                        moment(c.release_year).format('YYYY')
-                                                                        :
-                                                                        moment(c.first_air_date).format('YYYY')
-                                                                    }
-                                                                </Text>
-                                                            </View>
+                                                                {c.title !== undefined ?
+                                                                    c.title : c.name
+                                                                }
+                                                            </Text>
+                                                            <Text style={{
+                                                                color: '#737373',
+                                                                fontSize: 12,
+                                                                flexWrap: 'wrap',
+                                                                textAlign: 'center',
+                                                                marginTop: 3
+                                                            }}>
+                                                                {c.release_date !== undefined ?
+                                                                    moment(c.release_date).format('YYYY')
+                                                                    :
+                                                                    moment(c.first_air_date).format('YYYY')
+                                                                }
+                                                            </Text>
                                                         </View>
-                                                    </TouchableWithoutFeedback>
-                                                )
-                                            }
-                                        }
-                                        )
-                                }
-                            </ScrollView>
+                                                    </View>
+                                                </TouchableWithoutFeedback>
+                                            )
+                                    }
+                                </ScrollView>
+                            </View>
 
+                            <View style={{
+                                margin: 10
+                            }}>
+                                <Text style={{
+                                    fontSize: 16,
+                                    fontWeight: 'bold',
+                                    color: '#fff'
+                                }}>
+                                    Other Info
+                                </Text>
+                            </View>
+
+                            <View style={{
+                                marginLeft: 10,
+                                marginRight: 10,
+                                marginBottom: 10
+                            }}>
+                                {gender !== null ?
+                                    <Text style={styles.otherInfoText}>
+                                        Gender: {gender === 1 ? 'Female' : 'Male'}
+                                    </Text>
+                                    :
+                                    null
+                                }
+
+                                {birthday !== null ?
+                                    <Text style={styles.otherInfoText}>
+                                        Birthday: {birthday}
+                                    </Text>
+                                    :
+                                    null
+                                }
+
+                                {deathday !== null ?
+                                    <Text style={styles.otherInfoText}>
+                                        Day of Death: {deathday}
+                                    </Text>
+                                    :
+                                    null
+                                }
+
+                                {place_of_birth !== null ?
+                                    <Text style={styles.otherInfoText}>
+                                        Place of Birth: {place_of_birth}
+                                    </Text>
+                                    :
+                                    null
+                                }
+
+                            </View>
 
                         </View>
 
@@ -219,5 +275,10 @@ const styles = StyleSheet.create({
     biography: {
         color: '#737373',
         fontSize: 16
+    },
+    otherInfoText: {
+        fontSize: 16,
+        color: '#737373',
+        marginTop: 5
     }
 })
