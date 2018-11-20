@@ -76,61 +76,38 @@ export default class Search extends Component {
 
         return (
             <Container>
-                <View style={{
-                    backgroundColor: '#0f0e0e',
-                    flexDirection: 'row',
-                    justifyContent: 'space-around',
-                    padding: 10
-                }}>
-                    <TouchableWithoutFeedback
-                        onPress={() => Actions.pop()}>
-                        <View style={{
-                            justifyContent: 'center',
-                            alignContent: 'center',
-                            flexGrow: 1
-                        }}>
+                <View style={styles.content}>
+
+                    <TouchableWithoutFeedback onPress={() => Actions.pop()}>
+                        <View style={styles.backButton}>
                             <Icon name='arrow-back' size={24} color='#fff' />
                         </View>
                     </TouchableWithoutFeedback>
 
-                    <View style={{
-                        flexGrow: 4,
-                        position: 'relative'
-                    }}>
+                    <View style={styles.searchBox}>
                         <TextInput
-                            style={{
-                                borderRadius: 5,
-                                backgroundColor: '#1b1919',
-                                color: '#fff'
-                            }}
+                            style={styles.textInput}
                             placeholderTextColor='#737373'
                             placeholder='Search for a movie, tv show, person...'
                             onChangeText={this.textInputHandler}
-                            ref={this.searchRef}
-                            autoFocus />
+                            ref={this.searchRef} />
 
                         {searchTextInput !== '' ?
                             <TouchableWithoutFeedback
                                 onPress={this.clearInputHandler}>
-                                <Icon name='cancel' size={18} color='#737373' style={{
-                                    position: 'absolute',
-                                    top: 16,
-                                    right: 10
-                                }} />
+                                <Icon
+                                    name='cancel'
+                                    size={18}
+                                    color='#737373'
+                                    style={styles.clearButton} />
                             </TouchableWithoutFeedback>
                             :
                             null
                         }
-
                     </View>
                 </View>
 
-                <View style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    margin: 0
-                }}>
+                <View style={styles.activityIndicatorBox}>
                     {searchFetch ?
                         <ActivityIndicator
                             size='large'
@@ -144,11 +121,7 @@ export default class Search extends Component {
                 <ScrollView showsVerticalScrollIndicator={false}>
                     {searchSuccessful ?
                         <View>
-                            <View style={{
-                                flex: 1,
-                                justifyContent: 'center',
-                                margin: 10
-                            }}>
+                            <View style={styles.searchResultsBox}>
                                 {searchPayload.map(search => {
                                     if (
                                         search.media_type === 'movie'
@@ -156,64 +129,35 @@ export default class Search extends Component {
                                     ) {
                                         return (
                                             <TouchableWithoutFeedback
-                                                onPress={() => routeFix('TitleDetails', {
-                                                    id: search.id,
-                                                    type: search.media_type
-                                                })}
+                                                onPress={() =>
+                                                    routeFix('TitleDetails', {
+                                                        id: search.id,
+                                                        type: search.media_type
+                                                    })}
                                                 key={search.id}>
-                                                <View style={{
-                                                    flexDirection: 'row',
-                                                    margin: 10
-                                                }}>
-                                                    <View style={{
-                                                        position: 'relative',
-                                                        width: '20%'
-                                                    }}>
+                                                <View style={styles.titleBox}>
+                                                    <View style={styles.titleImage}>
                                                         <Image
-                                                            style={{
-                                                                width: 60,
-                                                                height: 80,
-                                                                borderWidth: 1,
-                                                                borderColor: '#fff',
-                                                                resizeMode: 'contain'
-                                                            }}
+                                                            style={styles.image}
                                                             source={{
                                                                 uri: `${imgPath.W185}${search.poster_path}`
                                                             }}
                                                         />
-                                                        <Badge style={{
-                                                            position: 'absolute',
-                                                            bottom: 0,
-                                                            left: 0
-                                                        }}>
-                                                            <Text style={{
-                                                                color: '#fff',
-                                                                fontSize: 10,
-                                                                fontWeight: 'bold'
-                                                            }}>
+                                                        <Badge style={styles.titleBadge}>
+                                                            <Text style={styles.titleBadgeText}>
                                                                 {search.media_type.capitalize()}
                                                             </Text>
                                                         </Badge>
                                                     </View>
 
-                                                    <View style={{
-                                                        width: '80%',
-                                                        margin: 5
-                                                    }}>
-                                                        <Text style={{
-                                                            fontSize: 14,
-                                                            color: '#fff',
-                                                            fontWeight: 'bold'
-                                                        }}>
+                                                    <View style={styles.titleInfo}>
+                                                        <Text style={styles.titleInfoText}>
                                                             {search.title}
                                                         </Text>
 
-                                                        <Text style={{
-                                                            color: '#737373',
-                                                            fontSize: 14,
-                                                        }}>
-                                                            {moment(search.release_date).format('YYYY')}
-
+                                                        <Text style={styles.titleInfoSubText}>
+                                                            {moment(search.release_date)
+                                                                .format('YYYY')}
                                                         </Text>
                                                     </View>
 
@@ -231,58 +175,29 @@ export default class Search extends Component {
                                                     type: search.media_type
                                                 })}
                                                 key={search.id}>
-                                                <View style={{
-                                                    flexDirection: 'row',
-                                                    margin: 10
-                                                }}>
-                                                    <View style={{
-                                                        position: 'relative',
-                                                        width: '20%'
-                                                    }}>
+                                                <View style={styles.titleBox}>
+                                                    <View style={styles.titleImage}>
                                                         <Image
-                                                            style={{
-                                                                width: 60,
-                                                                height: 80,
-                                                                borderWidth: 1,
-                                                                borderColor: '#fff',
-                                                                resizeMode: 'contain'
-                                                            }}
+                                                            style={styles.image}
                                                             source={{
                                                                 uri: `${imgPath.W185}${search.poster_path}`
                                                             }}
                                                         />
-                                                        <Badge style={{
-                                                            position: 'absolute',
-                                                            bottom: 0,
-                                                            left: 0
-                                                        }}>
-                                                            <Text style={{
-                                                                color: '#fff',
-                                                                fontSize: 10,
-                                                                fontWeight: 'bold'
-                                                            }}>
+                                                        <Badge style={styles.titleBadge}>
+                                                            <Text style={styles.titleBadgeText}>
                                                                 {search.media_type.toUpperCase()}
                                                             </Text>
                                                         </Badge>
                                                     </View>
 
-                                                    <View style={{
-                                                        width: '80%',
-                                                        margin: 5
-                                                    }}>
-                                                        <Text style={{
-                                                            fontSize: 14,
-                                                            color: '#fff',
-                                                            fontWeight: 'bold'
-                                                        }}>
+                                                    <View style={styles.titleInfo}>
+                                                        <Text style={styles.titleInfoText}>
                                                             {search.name}
                                                         </Text>
 
-                                                        <Text style={{
-                                                            color: '#737373',
-                                                            fontSize: 14,
-                                                        }}>
-                                                            {moment(search.first_air_date).format('YYYY')}
+                                                        <Text style={styles.titleInfoSubText}>
+                                                            {moment(search.first_air_date)
+                                                                .format('YYYY')}
                                                         </Text>
                                                     </View>
 
@@ -299,58 +214,27 @@ export default class Search extends Component {
                                                     id: search.id
                                                 })}
                                                 key={search.id}>
-                                                <View style={{
-                                                    flexDirection: 'row',
-                                                    margin: 10
-                                                }}>
-                                                    <View style={{
-                                                        position: 'relative',
-                                                        width: '20%'
-                                                    }}>
+                                                <View style={styles.titleBox}>
+                                                    <View style={styles.titleImage}>
                                                         <Image
-                                                            style={{
-                                                                width: 60,
-                                                                height: 80,
-                                                                borderWidth: 1,
-                                                                borderColor: '#fff',
-                                                                resizeMode: 'contain'
-                                                            }}
+                                                            style={styles.image}
                                                             source={{
                                                                 uri: `${imgPath.W185}${search.profile_path}`
                                                             }}
                                                         />
-                                                        <Badge style={{
-                                                            position: 'absolute',
-                                                            bottom: 0,
-                                                            left: 0
-                                                        }}>
-                                                            <Text style={{
-                                                                color: '#fff',
-                                                                fontSize: 10,
-                                                                fontWeight: 'bold'
-                                                            }}>
+                                                        <Badge style={styles.titleBadge}>
+                                                            <Text style={styles.titleBadgeText}>
                                                                 {search.media_type.capitalize()}
                                                             </Text>
                                                         </Badge>
                                                     </View>
 
-                                                    <View style={{
-                                                        width: '80%',
-                                                        flexDirection: 'column',
-                                                        margin: 5
-                                                    }}>
-                                                        <Text style={{
-                                                            fontSize: 14,
-                                                            color: '#fff',
-                                                            fontWeight: 'bold'
-                                                        }}>
+                                                    <View style={styles.titleInfo}>
+                                                        <Text style={styles.titleInfoText}>
                                                             {search.name}
                                                         </Text>
 
-                                                        <Text style={{
-                                                            color: '#737373',
-                                                            fontSize: 14,
-                                                        }}>
+                                                        <Text style={styles.titleInfoSubText}>
                                                             {
                                                                 orderBy(
                                                                     search.known_for,
@@ -373,7 +257,6 @@ export default class Search extends Component {
                                                             }
                                                         </Text>
                                                     </View>
-
                                                 </View>
                                             </TouchableWithoutFeedback>
                                         )
@@ -381,20 +264,91 @@ export default class Search extends Component {
                                 }
                                 )
                                 }
-
                             </View>
                         </View>
                         :
                         null
                     }
                 </ScrollView>
-
-
             </Container>
         )
     }
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
+    content: {
+        backgroundColor: '#0f0e0e',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        padding: 10
+    },
+    backButton: {
+        justifyContent: 'center',
+        alignContent: 'center',
+        flexGrow: 1
+    },
+    clearButton: {
+        position: 'absolute',
+        top: 16,
+        right: 10
+    },
+    searchBox: {
+        flexGrow: 4,
+        position: 'relative'
+    },
+    textInput: {
+        borderRadius: 5,
+        backgroundColor: '#1b1919',
+        color: '#fff'
+    },
+    activityIndicatorBox: {
+        position: 'absolute',
+        top: '50%',
+        left: '45%',
+        margin: 0
+    },
+    searchResultsBox: {
+        flex: 1,
+        justifyContent: 'center',
+        margin: 10
+    },
+    titleBox: {
+        flexDirection: 'row',
+        margin: 10
+    },
+    titleImage: {
+        position: 'relative',
+        width: '20%'
+    },
+    image: {
+        width: 60,
+        height: 80,
+        borderWidth: 1,
+        borderColor: '#fff',
+        resizeMode: 'contain'
+    },
+    titleBadge: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0
+    },
+    titleBadgeText: {
+        color: '#fff',
+        fontSize: 10,
+        fontWeight: 'bold'
+    },
+    titleInfo: {
+        width: '80%',
+        margin: 5
+    },
+    titleInfoText: {
+        fontSize: 14,
+        color: '#fff',
+        fontWeight: 'bold'
+    },
+    titleInfoSubText: {
+        color: '#737373',
+        fontSize: 14,
+    }
 
 })
