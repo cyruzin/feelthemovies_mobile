@@ -10,6 +10,7 @@ import moment from 'moment'
 import axios from '../config/axios'
 import { imgPath } from '../config/constants'
 import { removeHTML, routeFix, type } from '../util/helpers'
+import { Container, Message } from './UI'
 
 export default class Home extends Component {
 
@@ -24,7 +25,7 @@ export default class Home extends Component {
         this.fetchRecommendations()
     }
 
-    async fetchRecommendations() {
+    fetchRecommendations = async () => {
         try {
             this.setState({ recommendationFetch: true })
             const res = await axios.get('/recommendations')
@@ -35,7 +36,7 @@ export default class Home extends Component {
             })
         } catch (e) {
             this.setState({
-                recommendationError: e,
+                recommendationError: 'Something went wrong',
                 recommendationFetch: false
             })
         }
@@ -75,12 +76,6 @@ export default class Home extends Component {
     }
 
     render() {
-        const {
-            container, content, contentBody, contentTitle,
-            contentImage, contentGenresText, contentGenres,
-            contentDate, contentDateText,
-            contentFoot, contentFootBody
-        } = styles
 
         const {
             recommendationFetch, recommendationSuccess,
@@ -88,7 +83,7 @@ export default class Home extends Component {
         } = this.state
 
         return (
-            <View style={container}>
+            <Container>
                 {recommendationFetch ?
                     <ActivityIndicator
                         size='large'
@@ -96,7 +91,11 @@ export default class Home extends Component {
                     : null
                 }
 
-                {recommendationError !== '' ? <Text>{recommendationError}</Text> : null}
+                {recommendationError !== '' ?
+                    <Message text={recommendationError} />
+                    :
+                    null
+                }
 
                 {recommendationSuccess ?
                     <ScrollView showsVerticalScrollIndicator={false}>
@@ -110,20 +109,20 @@ export default class Home extends Component {
                                         })}>
                                         <View>
                                             <Image
-                                                style={contentImage}
+                                                style={styles.contentImage}
                                                 source={{
                                                     uri: `${imgPath.W500}${recommendation.backdrop}`
                                                 }} />
                                         </View>
                                     </TouchableHighlight>
-                                    <View style={contentDate}>
-                                        <Text style={contentDateText}>
+                                    <View style={styles.contentDate}>
+                                        <Text style={styles.contentDateText}>
                                             {moment(recommendation.created_at).format('D MMM')}
                                         </Text>
                                     </View>
                                     <View style={{ position: 'relative' }}>
-                                        <View style={contentGenres}>
-                                            <Text style={contentGenresText}>
+                                        <View style={styles.contentGenres}>
+                                            <Text style={styles.contentGenresText}>
                                                 {recommendation.genres
                                                     .slice(0, 4)
                                                     .map(g => g.name)
@@ -135,18 +134,18 @@ export default class Home extends Component {
                                         onPress={() => routeFix('Recommendation', {
                                             id: recommendation.id
                                         })}>
-                                        <View style={content}>
+                                        <View style={styles.content}>
 
-                                            <Text style={contentTitle}>
+                                            <Text style={styles.contentTitle}>
                                                 {recommendation.title}
                                             </Text>
-                                            <Text style={contentBody}>
+                                            <Text style={styles.contentBody}>
                                                 {removeHTML(recommendation.body)}
                                             </Text>
                                         </View>
                                     </TouchableHighlight>
-                                    <View style={contentFoot}>
-                                        <Text style={contentFootBody}>
+                                    <View style={styles.contentFoot}>
+                                        <Text style={styles.contentFootBody}>
                                             <Icon name='clock-outline'
                                                 size={12} color='#737373' /> {
                                                 moment(recommendation.created_at).fromNow()
@@ -163,7 +162,7 @@ export default class Home extends Component {
                     :
                     null
                 }
-            </View>
+            </Container>
         )
     }
 }

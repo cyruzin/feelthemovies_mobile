@@ -35,7 +35,8 @@ export default () => {
                 <Scene
                     key='RecommendationSearch'
                     title='Recommendation Search'
-                    component={RecommendationSearch} />
+                    component={RecommendationSearch}
+                    hideNavBar />
             </Scene>
         </Router>
     )
@@ -52,7 +53,7 @@ const rigthButton = () => (
 
 const styles = StyleSheet.create({
     navigationBar: {
-        backgroundColor: '#1b1919'
+        backgroundColor: '#0f0e0e'
     },
     navigationBarTitle: {
         color: '#fff',

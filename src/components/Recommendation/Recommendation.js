@@ -13,8 +13,9 @@ import axios from '../../config/axios'
 import moment from 'moment'
 import { imgPath } from '../../config/constants'
 import { limitChar, removeHTML, routeFix } from '../../util/helpers'
+import { Container, Message } from '../UI'
 
-class Recommendation extends Component {
+export default class Recommendation extends Component {
     state = {
         itemsFetch: false,
         itemsSuccessful: false,
@@ -34,7 +35,7 @@ class Recommendation extends Component {
             })
         } catch (e) {
             this.setState({
-                itemsFailure: e,
+                itemsFailure: 'Something went wrong',
                 itemsFetch: false
             })
         }
@@ -49,7 +50,7 @@ class Recommendation extends Component {
         } = this.state
 
         return (
-            <View style={styles.container}>
+            <Container>
 
                 {itemsFetch ?
                     <ActivityIndicator
@@ -58,7 +59,11 @@ class Recommendation extends Component {
                     : null
                 }
 
-                {itemsFailure !== '' ? <Text>{itemsFailure}</Text> : null}
+                {itemsFailure !== '' ?
+                    <Message text={itemsFailure} />
+                    :
+                    null
+                }
 
                 {itemsSuccessful ?
                     <ScrollView
@@ -184,7 +189,7 @@ class Recommendation extends Component {
                     :
                     null
                 }
-            </View>
+            </Container>
         )
     }
 }
@@ -192,7 +197,7 @@ class Recommendation extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#1b1919',
+        backgroundColor: '#0f0e0e',
         justifyContent: 'center'
     },
     contentHeader: {
@@ -239,7 +244,7 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     contentName: {
-        color: '#737373',
+        color: '#fff',
         fontSize: 16,
         fontWeight: 'bold'
     },
@@ -250,7 +255,7 @@ const styles = StyleSheet.create({
     },
     contentKeywordsBox: {
         margin: 5,
-        marginTop: 30,
+        marginTop: 20,
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'center'
@@ -267,7 +272,8 @@ const styles = StyleSheet.create({
     },
     contentDate: {
         fontSize: 14,
-        color: '#737373'
+        color: '#737373',
+        marginTop: 5
     },
     image: {
         width: 100,
@@ -277,5 +283,3 @@ const styles = StyleSheet.create({
         borderColor: '#fff'
     }
 })
-
-export default Recommendation

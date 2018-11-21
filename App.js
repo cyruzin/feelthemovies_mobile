@@ -9,7 +9,7 @@ export default class App extends Component {
     return (
       <View style={{ flex: 1 }}>
         <StatusBar
-          backgroundColor="#1b1919"
+          backgroundColor="#0f0e0e"
           barStyle="light-content"
         />
         <Routes />

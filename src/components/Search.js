@@ -17,7 +17,7 @@ import moment from 'moment'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { routeFix } from '../util/helpers'
 import { imgPath } from '../config/constants'
-import { Container, Badge } from './UI'
+import { Container, Badge, Message } from './UI'
 
 export default class Search extends Component {
 
@@ -38,17 +38,21 @@ export default class Search extends Component {
     searchFetchHandler = async () => {
         try {
             this.setState({ searchFetch: true })
+
             const query = encodeURIComponent(this.state.searchTextInput)
-            const res = await axiosTMDB.get(`/search/multi?include_adult=false&query=${query}&page=1`)
+            const res = await axiosTMDB.get(
+                `/search/multi?include_adult=false&query=${query}&page=1`
+            )
+
             this.setState({
                 searchPayload: res.data.results,
                 searchSuccessful: true,
                 searchFetch: false
             })
-            console.log(res.data.results)
+
         } catch (e) {
             this.setState({
-                searchFailure: e,
+                searchFailure: 'Something went wrong',
                 searchFetch: false
             })
         }
@@ -88,7 +92,7 @@ export default class Search extends Component {
                         <TextInput
                             style={styles.textInput}
                             placeholderTextColor='#737373'
-                            placeholder='Search for a movie, tv show, person...'
+                            placeholder='Search for a movie, tv show or person'
                             onChangeText={this.textInputHandler}
                             ref={this.searchRef} />
 
@@ -116,7 +120,17 @@ export default class Search extends Component {
                     }
                 </View>
 
-                {searchFailure !== '' ? <Text>{searchFailure}</Text> : null}
+                {searchSuccessful && searchPayload.length === 0 ?
+                    <Message text='No Result' />
+                    :
+                    null
+                }
+
+                {searchFailure !== '' ?
+                    <Message text={searchFailure} />
+                    :
+                    null
+                }
 
                 <ScrollView showsVerticalScrollIndicator={false}>
                     {searchSuccessful ?
@@ -280,7 +294,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#0f0e0e',
         flexDirection: 'row',
         justifyContent: 'space-around',
-        padding: 10
+        padding: 10,
+        elevation: 1,
+        shadowColor: '#737373',
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.75,
+        shadowRadius: 5
+
     },
     backButton: {
         justifyContent: 'center',
@@ -350,5 +370,4 @@ const styles = StyleSheet.create({
         color: '#737373',
         fontSize: 14,
     }
-
 })

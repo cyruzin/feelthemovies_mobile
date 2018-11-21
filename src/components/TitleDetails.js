@@ -15,6 +15,7 @@ import moment from 'moment'
 import { axiosTMDB } from '../config/axios'
 import { imgPath } from '../config/constants'
 import { routeFix } from '../util/helpers'
+import { Container, Message } from './UI'
 
 class TitleDetails extends Component {
     state = {
@@ -26,17 +27,23 @@ class TitleDetails extends Component {
 
     async componentDidMount() {
         try {
-            const { type, id } = this.props
             this.setState({ titleFetch: true })
-            const res = await axiosTMDB.get(`/${type}/${id}?append_to_response=credits,videos,release_dates`)
+
+            const { type, id } = this.props
+
+            const res = await axiosTMDB.get(
+                `/${type}/${id}?append_to_response=credits,videos,release_dates`
+            )
+
             this.setState({
                 titlePayload: res.data,
                 titleSuccessful: true,
                 titleFetch: false
             })
+
         } catch (e) {
             this.setState({
-                titleFailure: e,
+                titleFailure: 'Something went wrong',
                 titleFetch: false
             })
         }
@@ -89,7 +96,7 @@ class TitleDetails extends Component {
         } = this.state.titlePayload
 
         return (
-            <View style={styles.container}>
+            <Container style={styles.container}>
                 {titleFetch ?
                     <ActivityIndicator
                         size='large'
@@ -97,7 +104,11 @@ class TitleDetails extends Component {
                     : null
                 }
 
-                {titleFailure !== '' ? <Text>{titleFailure}</Text> : null}
+                {titleFailure !== '' ?
+                    <Message text={titleFailure} />
+                    :
+                    null
+                }
 
                 {titleSuccessful ?
                     <ScrollView showsVerticalScrollIndicator={false}>
@@ -364,7 +375,7 @@ class TitleDetails extends Component {
                     :
                     null
                 }
-            </View>
+            </Container>
         )
     }
 }
@@ -372,7 +383,7 @@ class TitleDetails extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#1b1919',
+        backgroundColor: '#0f0e0e',
         justifyContent: 'center'
     },
     content: {

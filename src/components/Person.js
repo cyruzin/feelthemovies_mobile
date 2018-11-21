@@ -13,7 +13,7 @@ import orderBy from 'lodash/orderBy'
 import { axiosTMDB } from '../config/axios'
 import { imgPath } from '../config/constants'
 import { routeFix } from '../util/helpers'
-import { Container, Badge } from './UI'
+import { Container, Badge, Message } from './UI'
 
 export default class Person extends Component {
     state = {
@@ -25,17 +25,23 @@ export default class Person extends Component {
 
     async componentDidMount() {
         try {
-            const { id } = this.props
             this.setState({ personFetch: true })
-            const res = await axiosTMDB.get(`/person/${id}?append_to_response=combined_credits`)
+
+            const { id } = this.props
+
+            const res = await axiosTMDB.get(
+                `/person/${id}?append_to_response=combined_credits`
+            )
+
             this.setState({
                 personPayload: res.data,
                 personSuccessful: true,
                 personFetch: false
             })
+
         } catch (e) {
             this.setState({
-                personFailure: e,
+                personFailure: 'Something went wrong',
                 personFetch: false
             })
         }
@@ -62,7 +68,11 @@ export default class Person extends Component {
                     : null
                 }
 
-                {personFailure !== '' ? <Text>{personFailure}</Text> : null}
+                {personFailure !== '' ?
+                    <Message text={personFailure} />
+                    :
+                    null
+                }
 
                 {personSuccessful ?
                     <ScrollView showsVerticalScrollIndicator={false}>
