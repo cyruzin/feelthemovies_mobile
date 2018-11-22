@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { PureComponent, Fragment } from 'react'
 import {
     StyleSheet,
     View,
@@ -17,7 +17,7 @@ import { imgPath } from '../config/constants'
 import { routeFix } from '../util/helpers'
 import { Container, Message } from './UI'
 
-class TitleDetails extends Component {
+class TitleDetails extends PureComponent {
     state = {
         titleFetch: false,
         titleSuccessful: false,
@@ -65,6 +65,12 @@ class TitleDetails extends Component {
             }
         })
         return date !== null ? date : ' Not Available'
+    }
+
+    runtimeHandler = time => {
+        if (time !== undefined) {
+
+        }
     }
 
     getCrew = (data, crewType) => {
@@ -232,18 +238,13 @@ class TitleDetails extends Component {
                                             Status: {status}
                                         </Text>
 
-                                        {runtime !== undefined
-                                            || episode_run_time !== undefined ?
+                                        {runtime !== undefined ?
                                             <Text style={styles.otherInfoText}>
                                                 Runtime: {
-                                                    runtime !== undefined
-                                                        && runtime !== '' ?
+                                                    runtime !== null ?
                                                         runtime + ' minutes'
                                                         :
-                                                        episode_run_time.map(
-                                                            v => v
-                                                        )
-                                                            .join('/') + ' minutes'
+                                                        'Not Available'
                                                 }
                                             </Text>
                                             :
@@ -298,18 +299,16 @@ class TitleDetails extends Component {
                                             Status: {status}
                                         </Text>
 
-                                        {runtime !== undefined
-                                            || episode_run_time !== undefined ?
+                                        {episode_run_time !== undefined ?
                                             <Text style={styles.otherInfoText}>
                                                 Runtime: {
-                                                    runtime !== undefined
-                                                        && runtime !== '' ?
-                                                        runtime + ' minutes'
-                                                        :
+                                                    episode_run_time !== null ?
                                                         episode_run_time.map(
                                                             v => v
                                                         )
                                                             .join('/') + ' minutes'
+                                                        :
+                                                        'Not Available'
                                                 }
                                             </Text>
                                             :

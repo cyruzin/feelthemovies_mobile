@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import {
     View,
     Text,
@@ -14,7 +14,7 @@ import { imgPath } from '../../config/constants'
 import { routeFix } from '../../util/helpers'
 import { Container, Message } from '../UI'
 
-export default class UpComing extends Component {
+export default class UpComing extends PureComponent {
 
     state = {
         movieFetch: false,

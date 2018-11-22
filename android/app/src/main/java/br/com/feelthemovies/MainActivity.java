@@ -1,4 +1,4 @@
-package br.com.feelthemoviev4;
+package br.com.feelthemovies;
 
 import com.facebook.react.ReactActivity;
 
@@ -10,6 +10,6 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "FeeltheMoviesV4";
+        return "FeeltheMovies";
     }
 }

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import {
     View,
     Text,
@@ -20,7 +20,7 @@ import { type, routeFix } from '../../util/helpers'
 import { imgPath } from '../../config/constants'
 import { Container, Badge, Message } from '../UI'
 
-export default class Search extends Component {
+export default class Search extends PureComponent {
 
     constructor(props) {
         super(props)
@@ -31,6 +31,7 @@ export default class Search extends Component {
     state = {
         searchFetch: false,
         searchSuccessful: false,
+        searchWarning: false,
         searchFailure: '',
         searchPayload: [],
         searchType: '',
@@ -38,12 +39,9 @@ export default class Search extends Component {
     }
 
     searchFetchHandler = async () => {
-        try {
-            this.setState({
-                searchSuccessful: false,
-                searchFetch: true
-            })
+        this.searchCheckHandler()
 
+        try {
             const res = await axios.get(
                 '/search_recommendation',
                 { params: this.queryHandler() }
@@ -63,6 +61,23 @@ export default class Search extends Component {
         }
     }
 
+    searchCheckHandler = () => {
+        if (this.state.searchTextInput === '') {
+            this.setState({
+                searchSuccessful: false,
+                searchWarning: true
+            })
+            return false
+        }
+
+        this.setState({
+            searchFetch: true,
+            searchSuccessful: false,
+            searchWarning: false,
+            searchFailure: ''
+        })
+    }
+
     textInputHandler = textInput => {
         this.setState({ searchTextInput: textInput })
         this.searchFetchHandler()
@@ -78,17 +93,18 @@ export default class Search extends Component {
     queryHandler = () => {
         const { searchType, searchTextInput } = this.state
         let searchQuery = null
+        const query = encodeURIComponent(searchTextInput.replace(/\s+$/, ""))
 
         if (searchType !== '') {
             searchQuery = {
-                q: searchTextInput.replace(/\s+$/, ""),
+                q: query,
                 type: searchType
             }
             return searchQuery
         }
 
         searchQuery = {
-            q: searchTextInput.replace(/\s+$/, "")
+            q: query
         }
 
         return searchQuery
@@ -106,7 +122,7 @@ export default class Search extends Component {
         const {
             searchTextInput, searchFetch,
             searchFailure, searchSuccessful,
-            searchPayload
+            searchPayload, searchWarning
         } = this.state
 
         return (
@@ -142,7 +158,7 @@ export default class Search extends Component {
                                 <Picker.Item label="Mixed" value="2" />
                             </Picker>
                             <View style={styles.pickerIcon}>
-                                <IconMC name='chevron-down' size={24} color='#fff' />
+                                <IconMC name='chevron-down' size={24} color='#737373' />
                             </View>
                         </View>
 
@@ -176,10 +192,13 @@ export default class Search extends Component {
                     null
                 }
 
-                {searchFailure !== '' ?
-                    <Message text={searchFailure} />
-                    :
-                    null
+                {
+                    !searchSuccessful &&
+                        !searchWarning &&
+                        searchFailure !== '' ?
+                        <Message text={searchFailure} />
+                        :
+                        null
                 }
 
                 <ScrollView showsVerticalScrollIndicator={false}>

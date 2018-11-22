@@ -50,7 +50,8 @@ const styles = StyleSheet.create({
     box: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 20
+        marginBottom: 20,
+        padding: 5
     },
     boxText: {
         color: '#737373',

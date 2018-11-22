@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import {
     ScrollView,
     View,
@@ -15,7 +15,7 @@ import { imgPath } from '../config/constants'
 import { routeFix } from '../util/helpers'
 import { Container, Badge, Message } from './UI'
 
-export default class Person extends Component {
+export default class Person extends PureComponent {
     state = {
         personFetch: false,
         personSuccessful: false,

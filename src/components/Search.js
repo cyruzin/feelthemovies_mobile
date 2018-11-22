@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import {
     View,
     Text,
@@ -19,7 +19,7 @@ import { routeFix } from '../util/helpers'
 import { imgPath } from '../config/constants'
 import { Container, Badge, Message } from './UI'
 
-export default class Search extends Component {
+export default class Search extends PureComponent {
 
     constructor(props) {
         super(props)
@@ -30,15 +30,16 @@ export default class Search extends Component {
     state = {
         searchFetch: false,
         searchSuccessful: false,
+        searchWarning: false,
         searchFailure: '',
         searchPayload: [],
         searchTextInput: ''
     }
 
     searchFetchHandler = async () => {
-        try {
-            this.setState({ searchFetch: true })
+        this.searchCheckHandler()
 
+        try {
             const query = encodeURIComponent(this.state.searchTextInput)
             const res = await axiosTMDB.get(
                 `/search/multi?include_adult=false&query=${query}&page=1`
@@ -58,6 +59,23 @@ export default class Search extends Component {
         }
     }
 
+    searchCheckHandler = () => {
+        if (this.state.searchTextInput === '') {
+            this.setState({
+                searchSuccessful: false,
+                searchWarning: true
+            })
+            return false
+        }
+
+        this.setState({
+            searchFetch: true,
+            searchSuccessful: false,
+            searchWarning: false,
+            searchFailure: ''
+        })
+    }
+
     textInputHandler = textInput => {
         this.setState({ searchTextInput: textInput })
         this.searchFetchHandler()
@@ -75,7 +93,7 @@ export default class Search extends Component {
         const {
             searchTextInput, searchFetch,
             searchFailure, searchSuccessful,
-            searchPayload
+            searchPayload, searchWarning
         } = this.state
 
         return (
@@ -126,10 +144,13 @@ export default class Search extends Component {
                     null
                 }
 
-                {searchFailure !== '' ?
-                    <Message text={searchFailure} />
-                    :
-                    null
+                {
+                    !searchSuccessful &&
+                        !searchWarning &&
+                        searchFailure !== '' ?
+                        <Message text={searchFailure} />
+                        :
+                        null
                 }
 
                 <ScrollView showsVerticalScrollIndicator={false}>

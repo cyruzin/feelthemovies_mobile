@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import {
     StyleSheet,
     View,
@@ -15,7 +15,7 @@ import { imgPath } from '../../config/constants'
 import { limitChar, removeHTML, routeFix } from '../../util/helpers'
 import { Container, Message } from '../UI'
 
-export default class Recommendation extends Component {
+export default class Recommendation extends PureComponent {
     state = {
         itemsFetch: false,
         itemsSuccessful: false,
