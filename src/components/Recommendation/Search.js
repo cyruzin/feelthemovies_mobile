@@ -15,6 +15,7 @@ import axios from '../../config/axios'
 import debounce from 'lodash/debounce'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import IconMC from 'react-native-vector-icons/MaterialCommunityIcons'
 import { type, routeFix } from '../../util/helpers'
 import { imgPath } from '../../config/constants'
 import { Container, Badge, Message } from '../UI'
@@ -140,6 +141,9 @@ export default class Search extends Component {
                                 <Picker.Item label="TV" value="1" />
                                 <Picker.Item label="Mixed" value="2" />
                             </Picker>
+                            <View style={styles.pickerIcon}>
+                                <IconMC name='chevron-down' size={24} color='#fff' />
+                            </View>
                         </View>
 
                         {searchTextInput !== '' ?
@@ -270,6 +274,7 @@ const styles = StyleSheet.create({
         color: '#fff'
     },
     pickerBox: {
+        position: 'relative',
         marginTop: 10,
         borderRadius: 5,
         overflow: 'hidden'
@@ -281,6 +286,11 @@ const styles = StyleSheet.create({
     pickerItem: {
         backgroundColor: '#1b1919',
         color: '#737373'
+    },
+    pickerIcon: {
+        position: 'absolute',
+        top: 15,
+        right: 15
     },
     activityIndicatorBox: {
         position: 'absolute',

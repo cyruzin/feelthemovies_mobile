@@ -10,8 +10,21 @@ const About = () => (
             </Text>
 
             <Text style={styles.body}>
-                Excepteur fugiat veniam sit sit in reprehenderit deserunt laboris amet eu tempor ea irure aliquip. Officia cillum veniam anim non quis velit minim deserunt ad veniam eu officia. Do consequat excepteur laborum voluptate laboris aute in. Dolore et occaecat reprehenderit pariatur ipsum est exercitation nisi deserunt nulla velit. Aliqua proident id magna fugiat laborum pariatur nisi velit labore. Sit sint aliqua anim veniam elit. Eu laborum consequat Lorem sunt irure sit esse qui laborum exercitation pariatur elit voluptate.
+                Hello I'm Cyro Dubeux, the app developer.
+                This is an App made by a movie fan for movie fans.
+                If you have any suggestions to improve this project,
+                please send me an email: xorycx@gmail.com.
             </Text>
+
+            <Text style={styles.text}>
+                The Movie DB
+            </Text>
+
+            <Text style={styles.body}>
+                This product uses the TMDb API but is not
+                endorsed or certified by TMDb.
+            </Text>
+
         </View>
     </Container>
 )
@@ -27,8 +40,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 18,
         fontWeight: 'bold',
-        textAlign: 'center',
-        textDecorationLine: 'underline'
+        textAlign: 'center'
     },
     body: {
         color: '#737373',
