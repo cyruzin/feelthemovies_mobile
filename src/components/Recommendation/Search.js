@@ -93,7 +93,7 @@ export default class Search extends PureComponent {
     queryHandler = () => {
         const { searchType, searchTextInput } = this.state
         let searchQuery = null
-        const query = encodeURIComponent(searchTextInput.replace(/\s+$/, ""))
+        const query = searchTextInput.replace(/\s+$/, "")
 
         if (searchType !== '') {
             searchQuery = {
