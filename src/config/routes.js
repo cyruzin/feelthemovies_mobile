@@ -62,7 +62,8 @@ const styles = StyleSheet.create({
     navigationRightButton: {
         alignItems: 'center',
         justifyContent: 'center',
-        marginRight: 10,
+        marginRight: 15,
+        padding: 5,
         marginTop: 5
     }
 })

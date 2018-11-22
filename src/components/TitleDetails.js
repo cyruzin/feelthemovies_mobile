@@ -315,10 +315,14 @@ class TitleDetails extends PureComponent {
                                             null
                                         }
 
+
                                         <Text style={styles.otherInfoText}>
                                             Creator: {
-                                                created_by.map(c => c.name)
-                                                    .join(', ')
+                                                created_by.length > 0 ?
+                                                    created_by.map(c => c.name)
+                                                        .join(', ')
+                                                    :
+                                                    'Not Available'
                                             }
                                         </Text>
 

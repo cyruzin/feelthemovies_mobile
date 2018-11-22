@@ -1,8 +1,13 @@
 import React, { PureComponent } from 'react'
 import {
-    StyleSheet, Image, View, Text,
-    ScrollView, ActivityIndicator,
-    TouchableHighlight
+    StyleSheet,
+    Image,
+    View,
+    Text,
+    ScrollView,
+    ActivityIndicator,
+    TouchableHighlight,
+    RefreshControl
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import IconFeather from 'react-native-vector-icons/Feather'
@@ -17,6 +22,7 @@ export default class Home extends PureComponent {
     state = {
         recommendationFetch: false,
         recommendationSuccess: false,
+        recommendationRefreshing: false,
         recommendationError: '',
         recommendationPayload: []
     }
@@ -26,18 +32,21 @@ export default class Home extends PureComponent {
     }
 
     fetchRecommendations = async () => {
+        this.setState({ recommendationFetch: true })
+
         try {
-            this.setState({ recommendationFetch: true })
             const res = await axios.get('/recommendations')
             this.setState({
                 recommendationPayload: res.data.data,
                 recommendationSuccess: true,
+                recommendationRefreshing: false,
                 recommendationFetch: false
             })
         } catch (e) {
             this.setState({
                 recommendationError: 'Something went wrong',
-                recommendationFetch: false
+                recommendationFetch: false,
+                recommendationRefreshing: false
             })
         }
     }
@@ -72,14 +81,24 @@ export default class Home extends PureComponent {
                 </Text>
             )
         }
+    }
 
+    refreshHandler = () => {
+        this.setState({
+            recommendationRefreshing: true,
+            recommendationSuccess: false,
+            recommendationError: ''
+        })
+
+        this.fetchRecommendations()
     }
 
     render() {
 
         const {
             recommendationFetch, recommendationSuccess,
-            recommendationPayload, recommendationError
+            recommendationPayload, recommendationError,
+            recommendationRefreshing
         } = this.state
 
         return (
@@ -98,7 +117,17 @@ export default class Home extends PureComponent {
                 }
 
                 {recommendationSuccess ?
-                    <ScrollView showsVerticalScrollIndicator={false}>
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        refreshControl={
+                            <RefreshControl
+                                progressBackgroundColor='#0f0e0e'
+                                colors={['#0093cb', '#737373']}
+                                refreshing={recommendationRefreshing}
+                                onRefresh={this.refreshHandler}
+                            />
+                        }
+                    >
                         <View>
                             {recommendationPayload.map(recommendation => (
                                 <View key={recommendation.id} >
