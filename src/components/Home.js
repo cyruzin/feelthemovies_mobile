@@ -5,7 +5,7 @@ import {
     TouchableHighlight
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import IconMI from 'react-native-vector-icons/MaterialIcons'
+import IconFeather from 'react-native-vector-icons/Feather'
 import moment from 'moment'
 import axios from '../config/axios'
 import { imgPath } from '../config/constants'
@@ -56,8 +56,8 @@ export default class Home extends PureComponent {
         } else if (titleType === 1) {
             return (
                 <Text style={styles.contentFootBody}>
-                    <IconMI name='tv'
-                        size={12} color='#737373' /> {type(
+                    <IconFeather name='tv'
+                        size={11} color='#737373' /> {type(
                             titleType
                         )}
                 </Text>
@@ -66,7 +66,7 @@ export default class Home extends PureComponent {
             return (
                 <Text style={styles.contentFootBody}>
                     <Icon name='mixer'
-                        size={12} color='#737373' /> {type(
+                        size={11} color='#737373' /> {type(
                             titleType
                         )}
                 </Text>
