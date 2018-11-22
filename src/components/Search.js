@@ -3,7 +3,7 @@ import {
     View,
     Text,
     StyleSheet,
-    ScrollView,
+    FlatList,
     Image,
     TextInput,
     ActivityIndicator,
@@ -17,7 +17,7 @@ import moment from 'moment'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { routeFix } from '../util/helpers'
 import { imgPath } from '../config/constants'
-import { Container, Badge, Message } from './UI'
+import { SearchContainer, Badge, Message } from './UI'
 
 export default class Search extends PureComponent {
 
@@ -97,7 +97,7 @@ export default class Search extends PureComponent {
         } = this.state
 
         return (
-            <Container>
+            <SearchContainer>
                 <View style={styles.content}>
 
                     <TouchableWithoutFeedback onPress={() => Actions.pop()}>
@@ -153,159 +153,156 @@ export default class Search extends PureComponent {
                         null
                 }
 
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    {searchSuccessful ?
-                        <View>
-                            <View style={styles.searchResultsBox}>
-                                {searchPayload.map(search => {
-                                    if (
-                                        search.media_type === 'movie'
-                                        && search.poster_path !== null
-                                    ) {
-                                        return (
-                                            <TouchableWithoutFeedback
-                                                onPress={() =>
-                                                    routeFix('TitleDetails', {
-                                                        id: search.id,
-                                                        type: search.media_type
-                                                    })}
-                                                key={search.id}>
-                                                <View style={styles.titleBox}>
-                                                    <View style={styles.titleImage}>
-                                                        <Image
-                                                            style={styles.image}
-                                                            source={{
-                                                                uri: `${imgPath.W185}${search.poster_path}`
-                                                            }}
-                                                        />
-                                                        <Badge style={styles.titleBadge}>
-                                                            <Text style={styles.titleBadgeText}>
-                                                                {search.media_type.capitalize()}
-                                                            </Text>
-                                                        </Badge>
-                                                    </View>
-
-                                                    <View style={styles.titleInfo}>
-                                                        <Text style={styles.titleInfoText}>
-                                                            {search.title}
+                {searchSuccessful ?
+                    <View style={styles.searchResultsBox}>
+                        <FlatList
+                            showsVerticalScrollIndicator={false}
+                            keyExtractor={item => item.id.toString()}
+                            data={searchPayload}
+                            renderItem={({ item }) => {
+                                if (
+                                    item.media_type === 'movie'
+                                    && item.poster_path !== null
+                                ) {
+                                    return (
+                                        <TouchableWithoutFeedback
+                                            onPress={() =>
+                                                routeFix('TitleDetails', {
+                                                    id: item.id,
+                                                    type: item.media_type
+                                                })}>
+                                            <View style={styles.titleBox}>
+                                                <View style={styles.titleImage}>
+                                                    <Image
+                                                        style={styles.image}
+                                                        source={{
+                                                            uri: `${imgPath.W185}${item.poster_path}`
+                                                        }}
+                                                    />
+                                                    <Badge style={styles.titleBadge}>
+                                                        <Text style={styles.titleBadgeText}>
+                                                            {item.media_type.capitalize()}
                                                         </Text>
-
-                                                        <Text style={styles.titleInfoSubText}>
-                                                            {moment(search.release_date)
-                                                                .format('YYYY')}
-                                                        </Text>
-                                                    </View>
-
+                                                    </Badge>
                                                 </View>
-                                            </TouchableWithoutFeedback>
-                                        )
-                                    } else if (
-                                        search.media_type === 'tv'
-                                        && search.backdrop_path !== null
-                                    ) {
-                                        return (
-                                            <TouchableWithoutFeedback
-                                                onPress={() => routeFix('TitleDetails', {
-                                                    id: search.id,
-                                                    type: search.media_type
-                                                })}
-                                                key={search.id}>
-                                                <View style={styles.titleBox}>
-                                                    <View style={styles.titleImage}>
-                                                        <Image
-                                                            style={styles.image}
-                                                            source={{
-                                                                uri: `${imgPath.W185}${search.poster_path}`
-                                                            }}
-                                                        />
-                                                        <Badge style={styles.titleBadge}>
-                                                            <Text style={styles.titleBadgeText}>
-                                                                {search.media_type.toUpperCase()}
-                                                            </Text>
-                                                        </Badge>
-                                                    </View>
 
-                                                    <View style={styles.titleInfo}>
-                                                        <Text style={styles.titleInfoText}>
-                                                            {search.name}
-                                                        </Text>
+                                                <View style={styles.titleInfo}>
+                                                    <Text style={styles.titleInfoText}>
+                                                        {item.title}
+                                                    </Text>
 
-                                                        <Text style={styles.titleInfoSubText}>
-                                                            {moment(search.first_air_date)
-                                                                .format('YYYY')}
-                                                        </Text>
-                                                    </View>
-
+                                                    <Text style={styles.titleInfoSubText}>
+                                                        {moment(item.release_date)
+                                                            .format('YYYY')}
+                                                    </Text>
                                                 </View>
-                                            </TouchableWithoutFeedback>
-                                        )
-                                    } else if (
-                                        search.media_type === 'person'
-                                        && search.profile_path !== null
-                                    ) {
-                                        return (
-                                            <TouchableWithoutFeedback
-                                                onPress={() => routeFix('Person', {
-                                                    id: search.id
-                                                })}
-                                                key={search.id}>
-                                                <View style={styles.titleBox}>
-                                                    <View style={styles.titleImage}>
-                                                        <Image
-                                                            style={styles.image}
-                                                            source={{
-                                                                uri: `${imgPath.W185}${search.profile_path}`
-                                                            }}
-                                                        />
-                                                        <Badge style={styles.titleBadge}>
-                                                            <Text style={styles.titleBadgeText}>
-                                                                {search.media_type.capitalize()}
-                                                            </Text>
-                                                        </Badge>
-                                                    </View>
 
-                                                    <View style={styles.titleInfo}>
-                                                        <Text style={styles.titleInfoText}>
-                                                            {search.name}
+                                            </View>
+                                        </TouchableWithoutFeedback>
+                                    )
+                                } else if (
+                                    item.media_type === 'tv'
+                                    && item.backdrop_path !== null
+                                ) {
+                                    return (
+                                        <TouchableWithoutFeedback
+                                            onPress={() => routeFix('TitleDetails', {
+                                                id: item.id,
+                                                type: item.media_type
+                                            })}>
+                                            <View style={styles.titleBox}>
+                                                <View style={styles.titleImage}>
+                                                    <Image
+                                                        style={styles.image}
+                                                        source={{
+                                                            uri: `${imgPath.W185}${item.poster_path}`
+                                                        }}
+                                                    />
+                                                    <Badge style={styles.titleBadge}>
+                                                        <Text style={styles.titleBadgeText}>
+                                                            {item.media_type.toUpperCase()}
                                                         </Text>
-
-                                                        <Text style={styles.titleInfoSubText}>
-                                                            {
-                                                                orderBy(
-                                                                    search.known_for,
-                                                                    'vote_count',
-                                                                    'desc'
-                                                                )
-                                                                    .slice(0, 3)
-                                                                    .map(m => {
-                                                                        if (
-                                                                            m.media_type === 'movie'
-                                                                        ) {
-                                                                            return m.title
-                                                                        } else if (
-                                                                            m.media_type === 'tv'
-                                                                        ) {
-                                                                            return m.name
-                                                                        }
-                                                                    })
-                                                                    .join(', ')
-                                                            }
-                                                        </Text>
-                                                    </View>
+                                                    </Badge>
                                                 </View>
-                                            </TouchableWithoutFeedback>
-                                        )
-                                    }
+
+                                                <View style={styles.titleInfo}>
+                                                    <Text style={styles.titleInfoText}>
+                                                        {item.name}
+                                                    </Text>
+
+                                                    <Text style={styles.titleInfoSubText}>
+                                                        {moment(item.first_air_date)
+                                                            .format('YYYY')}
+                                                    </Text>
+                                                </View>
+
+                                            </View>
+                                        </TouchableWithoutFeedback>
+                                    )
+                                } else if (
+                                    item.media_type === 'person'
+                                    && item.profile_path !== null
+                                ) {
+                                    return (
+                                        <TouchableWithoutFeedback
+                                            onPress={() => routeFix('Person', {
+                                                id: item.id
+                                            })}>
+                                            <View style={styles.titleBox}>
+                                                <View style={styles.titleImage}>
+                                                    <Image
+                                                        style={styles.image}
+                                                        source={{
+                                                            uri: `${imgPath.W185}${item.profile_path}`
+                                                        }}
+                                                    />
+                                                    <Badge style={styles.titleBadge}>
+                                                        <Text style={styles.titleBadgeText}>
+                                                            {item.media_type.capitalize()}
+                                                        </Text>
+                                                    </Badge>
+                                                </View>
+
+                                                <View style={styles.titleInfo}>
+                                                    <Text style={styles.titleInfoText}>
+                                                        {item.name}
+                                                    </Text>
+
+                                                    <Text style={styles.titleInfoSubText}>
+                                                        {
+                                                            orderBy(
+                                                                item.known_for,
+                                                                'vote_count',
+                                                                'desc'
+                                                            )
+                                                                .slice(0, 3)
+                                                                .map(m => {
+                                                                    if (
+                                                                        m.media_type === 'movie'
+                                                                    ) {
+                                                                        return m.title
+                                                                    } else if (
+                                                                        m.media_type === 'tv'
+                                                                    ) {
+                                                                        return m.name
+                                                                    }
+                                                                })
+                                                                .join(', ')
+                                                        }
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                        </TouchableWithoutFeedback>
+                                    )
                                 }
-                                )
-                                }
-                            </View>
-                        </View>
-                        :
-                        null
-                    }
-                </ScrollView>
-            </Container>
+                            }}
+                        />
+                    </View>
+                    :
+                    null
+                }
+
+            </SearchContainer>
         )
     }
 }
@@ -345,8 +342,8 @@ const styles = StyleSheet.create({
     activityIndicatorBox: {
         position: 'absolute',
         top: '50%',
-        left: '45%',
-        margin: 0
+        left: '50%',
+        marginLeft: -10
     },
     searchResultsBox: {
         flex: 1,

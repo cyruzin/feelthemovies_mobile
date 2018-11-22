@@ -6,7 +6,8 @@ import {
     Image,
     Text,
     ActivityIndicator,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    FlatList
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import axios from '../../config/axios'
@@ -94,79 +95,83 @@ export default class Recommendation extends PureComponent {
                         </View>
 
                         <View style={styles.contentBody}>
-                            {itemsPayload.map(item => (
-                                <View key={item.id}>
-                                    <TouchableWithoutFeedback
-                                        onPress={() => routeFix('TitleDetails', {
-                                            id: item.tmdb_id,
-                                            type: item.media_type
-                                        })}
-                                    >
-                                        <View
-                                            style={styles.contentBodyBox}>
-                                            <View style={{ width: '30%' }}>
-                                                <Image
-                                                    style={styles.image}
-                                                    source={{
-                                                        uri: `${imgPath.W185}${item.poster}`
-                                                    }} />
-                                            </View>
-                                            <View style={{ width: '70%', marginLeft: 10 }}>
-                                                <Text style={styles.contentName}>
-                                                    {item.name}
-                                                </Text>
-                                                <Text style={styles.contentDate}>
-                                                    {moment(item.year).format('YYYY')
-                                                    }</Text>
-                                                <Text style={styles.contentOverview}>
-                                                    {limitChar(item.overview, 200, 180)}
-                                                </Text>
+
+                            <FlatList
+                                showsVerticalScrollIndicator={false}
+                                keyExtractor={item => item.id.toString()}
+                                data={itemsPayload}
+                                renderItem={({ item }) => (
+                                    <View>
+                                        <TouchableWithoutFeedback
+                                            onPress={() => routeFix('TitleDetails', {
+                                                id: item.tmdb_id,
+                                                type: item.media_type
+                                            })}
+                                        >
+                                            <View
+                                                style={styles.contentBodyBox}>
+                                                <View style={{ width: '30%' }}>
+                                                    <Image
+                                                        style={styles.image}
+                                                        source={{
+                                                            uri: `${imgPath.W185}${item.poster}`
+                                                        }} />
+                                                </View>
+                                                <View style={{ width: '70%', marginLeft: 10 }}>
+                                                    <Text style={styles.contentName}>
+                                                        {item.name}
+                                                    </Text>
+                                                    <Text style={styles.contentDate}>
+                                                        {moment(item.year).format('YYYY')
+                                                        }</Text>
+                                                    <Text style={styles.contentOverview}>
+                                                        {limitChar(item.overview, 200, 180)}
+                                                    </Text>
+                                                </View>
+
                                             </View>
 
-                                        </View>
-
-                                    </TouchableWithoutFeedback>
-                                    {item.commentary !== '' ?
+                                        </TouchableWithoutFeedback>
+                                        {item.commentary !== '' ?
+                                            <View style={{
+                                                margin: 10
+                                            }}>
+                                                <Text style={{
+                                                    fontSize: 14,
+                                                    color: '#737373',
+                                                    textAlign: 'center'
+                                                }}>
+                                                    <Icon name='format-quote' size={14} color='#fff' />
+                                                    {removeHTML(item.commentary)}
+                                                </Text>
+                                            </View>
+                                            :
+                                            null
+                                        }
                                         <View style={{
-                                            margin: 10
+                                            margin: 10,
+                                            flexDirection: 'row',
+                                            flexWrap: 'wrap',
+                                            justifyContent: 'flex-start',
                                         }}>
                                             <Text style={{
-                                                fontSize: 14,
                                                 color: '#737373',
-                                                textAlign: 'center'
+                                                marginRight: 5,
+                                                fontSize: 14
                                             }}>
-                                                <Icon name='format-quote' size={14} color='#fff' />
-                                                {removeHTML(item.commentary)}
+                                                Watch On:
+                                        </Text>
+                                            <Text style={{
+                                                color: '#fff',
+                                                fontSize: 14
+                                            }}>
+                                                {item.sources.map(s => s.name).join(', ')}
                                             </Text>
                                         </View>
-                                        :
-                                        null
-                                    }
-                                    <View style={{
-                                        margin: 10,
-                                        flexDirection: 'row',
-                                        flexWrap: 'wrap',
-                                        justifyContent: 'flex-start',
-                                    }}>
-                                        <Text style={{
-                                            color: '#737373',
-                                            marginRight: 5,
-                                            fontSize: 14
-                                        }}>
-                                            Watch On:
-                                        </Text>
-                                        <Text style={{
-                                            color: '#fff',
-                                            fontSize: 14
-                                        }}>
-                                            {item.sources.map(s => s.name).join(', ')}
-                                        </Text>
                                     </View>
-                                </View>
-                            ))}
+                                )}
+                            />
                         </View>
-
-
 
                         <View
                             style={styles.contentKeywordsBox}>

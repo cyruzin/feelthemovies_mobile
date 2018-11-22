@@ -6,6 +6,7 @@ import {
     Image,
     ActivityIndicator,
     ScrollView,
+    FlatList,
     TouchableWithoutFeedback,
     TouchableHighlight,
     Linking
@@ -180,49 +181,49 @@ class TitleDetails extends PureComponent {
                             </Text>
 
                             <View style={styles.creditsBox}>
-                                <ScrollView
+                                <FlatList
                                     horizontal
-                                    showsHorizontalScrollIndicator={false}>
-                                    {credits.cast
-                                        .slice(0, 10)
-                                        .map(cast => {
-                                            if (cast.profile_path !== null) {
-                                                return (
-                                                    <TouchableWithoutFeedback
-                                                        key={cast.id}
-                                                        onPress={() => routeFix('Person', {
-                                                            id: cast.id
-                                                        })}>
-                                                        <View style={styles.creditContainer}>
-                                                            <View>
-                                                                <Image
-                                                                    style={styles.creditsImage}
-                                                                    source={{
-                                                                        uri: `${imgPath.W500}${cast.profile_path}`
-                                                                    }} />
+                                    showsHorizontalScrollIndicator={false}
+                                    keyExtractor={item => item.id.toString()}
+                                    data={credits.cast.slice(0, 10)}
+                                    renderItem={({ item }) => {
+                                        if (item.profile_path !== null) {
+                                            return (
+                                                <TouchableWithoutFeedback
+                                                    onPress={() => routeFix('Person', {
+                                                        id: item.id
+                                                    })}>
+                                                    <View style={styles.creditContainer}>
+                                                        <View>
+                                                            <Image
+                                                                style={styles.creditsImage}
+                                                                source={{
+                                                                    uri: `${imgPath.W500}${item.profile_path}`
+                                                                }} />
 
 
-                                                            </View>
-                                                            <View style={{
-                                                                flexDirection: 'column',
-                                                                justifyContent: 'center',
-                                                                maxWidth: 100
-                                                            }}>
-                                                                <Text
-                                                                    style={styles.creditsText}>
-                                                                    {cast.name}
-                                                                </Text>
-                                                                <Text
-                                                                    style={styles.creditsSubText}>
-                                                                    {cast.character}
-                                                                </Text>
-                                                            </View>
                                                         </View>
-                                                    </TouchableWithoutFeedback>
-                                                )
-                                            }
-                                        })}
-                                </ScrollView>
+                                                        <View style={{
+                                                            flexDirection: 'column',
+                                                            justifyContent: 'center',
+                                                            maxWidth: 100
+                                                        }}>
+                                                            <Text
+                                                                style={styles.creditsText}>
+                                                                {item.name}
+                                                            </Text>
+                                                            <Text
+                                                                style={styles.creditsSubText}>
+                                                                {item.character}
+                                                            </Text>
+                                                        </View>
+                                                    </View>
+                                                </TouchableWithoutFeedback>
+                                            )
+                                        }
+                                    }
+                                    }
+                                />
                             </View>
 
                             <Text style={[styles.sectionTitle, { marginBottom: 5 }]}>

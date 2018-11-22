@@ -3,7 +3,7 @@ import {
     View,
     Text,
     StyleSheet,
-    ScrollView,
+    FlatList,
     TouchableWithoutFeedback,
     Image,
     ActivityIndicator
@@ -69,58 +69,53 @@ export default class UpComing extends PureComponent {
                         null
                     }
 
-                    <ScrollView showsVerticalScrollIndicator={false}>
-                        {movieSuccessful ?
-                            <View>
-                                <View style={{
-                                    margin: 10
-                                }}>
-                                    {moviePayload
-                                        .filter(movie => movie.poster_path !== null)
-                                        .map(movie => {
-                                            return (
-                                                <TouchableWithoutFeedback
-                                                    onPress={() =>
-                                                        routeFix('TitleDetails', {
-                                                            id: movie.id,
-                                                            type: 'movie'
-                                                        })}
-                                                    key={movie.id}>
-                                                    <View style={styles.titleBox}>
-                                                        <View style={styles.titleImage}>
-                                                            <Image
-                                                                style={styles.image}
-                                                                source={{
-                                                                    uri: `${imgPath.W185}${movie.poster_path}`
-                                                                }}
-                                                            />
-                                                        </View>
+                    {movieSuccessful ?
+                        <View style={{ margin: 10 }}>
+                            <FlatList
+                                showsVerticalScrollIndicator={false}
+                                keyExtractor={item => item.id.toString()}
+                                data={moviePayload
+                                    .filter(movie => movie.poster_path !== null)
+                                }
+                                renderItem={({ item }) => (
+                                    <TouchableWithoutFeedback
+                                        onPress={() =>
+                                            routeFix('TitleDetails', {
+                                                id: item.id,
+                                                type: 'movie'
+                                            })}
+                                        key={item.id}>
+                                        <View style={styles.titleBox}>
+                                            <View style={styles.titleImage}>
+                                                <Image
+                                                    style={styles.image}
+                                                    source={{
+                                                        uri: `${imgPath.W185}${item.poster_path}`
+                                                    }}
+                                                />
+                                            </View>
 
-                                                        <View style={styles.titleInfo}>
-                                                            <Text style={styles.titleInfoText}>
-                                                                {movie.title}
-                                                            </Text>
+                                            <View style={styles.titleInfo}>
+                                                <Text style={styles.titleInfoText}>
+                                                    {item.title}
+                                                </Text>
 
-                                                            <Text style={styles.titleInfoSubText}>
-                                                                {moment(movie.release_date)
-                                                                    .format('YYYY')}
-                                                            </Text>
-                                                        </View>
+                                                <Text style={styles.titleInfoSubText}>
+                                                    {moment(item.release_date)
+                                                        .format('YYYY')}
+                                                </Text>
+                                            </View>
 
-                                                    </View>
-                                                </TouchableWithoutFeedback>
-                                            )
-                                        }
-                                        )
-                                    }
-                                </View>
-                            </View>
-                            :
-                            null
-                        }
-                    </ScrollView>
+                                        </View>
+                                    </TouchableWithoutFeedback>
+                                )}
+                            />
+                        </View>
+                        :
+                        null
+                    }
                 </View>
-            </Container>
+            </Container >
         )
     }
 }

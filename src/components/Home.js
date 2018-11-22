@@ -4,10 +4,10 @@ import {
     Image,
     View,
     Text,
-    ScrollView,
     ActivityIndicator,
     TouchableHighlight,
-    RefreshControl
+    RefreshControl,
+    FlatList
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import IconFeather from 'react-native-vector-icons/Feather'
@@ -117,7 +117,7 @@ export default class Home extends PureComponent {
                 }
 
                 {recommendationSuccess ?
-                    <ScrollView
+                    <FlatList
                         showsVerticalScrollIndicator={false}
                         refreshControl={
                             <RefreshControl
@@ -127,70 +127,72 @@ export default class Home extends PureComponent {
                                 onRefresh={this.refreshHandler}
                             />
                         }
-                    >
-                        <View>
-                            {recommendationPayload.map(recommendation => (
-                                <View key={recommendation.id} >
-                                    <TouchableHighlight
-                                        onPress={() => routeFix('Recommendation', {
-                                            id: recommendation.id,
-                                            recommendation: recommendation
-                                        })}>
-                                        <View>
-                                            <Image
-                                                style={styles.contentImage}
-                                                source={{
-                                                    uri: `${imgPath.W500}${recommendation.backdrop}`
-                                                }} />
-                                        </View>
-                                    </TouchableHighlight>
-                                    <View style={styles.contentDate}>
-                                        <Text style={styles.contentDateText}>
-                                            {moment(recommendation.created_at).format('D MMM')}
-                                        </Text>
+                        data={recommendationPayload}
+                        keyExtractor={item => item.id.toString()}
+                        renderItem={({ item }) => (
+                            <View>
+                                <TouchableHighlight
+                                    onPress={() => routeFix('Recommendation', {
+                                        id: item.id,
+                                        recommendation: item
+                                    })}>
+                                    <View>
+                                        <Image
+                                            style={styles.contentImage}
+                                            source={{
+                                                uri: `${imgPath.W500}${item.backdrop}`
+                                            }} />
                                     </View>
-                                    <View style={{ position: 'relative' }}>
-                                        <View style={styles.contentGenres}>
-                                            <Text style={styles.contentGenresText}>
-                                                {recommendation.genres
-                                                    .slice(0, 4)
-                                                    .map(g => g.name)
-                                                    .join(', ')}
-                                            </Text>
-                                        </View>
-                                    </View>
-                                    <TouchableHighlight
-                                        onPress={() => routeFix('Recommendation', {
-                                            id: recommendation.id
-                                        })}>
-                                        <View style={styles.content}>
-
-                                            <Text style={styles.contentTitle}>
-                                                {recommendation.title}
-                                            </Text>
-                                            <Text style={styles.contentBody}>
-                                                {removeHTML(recommendation.body)}
-                                            </Text>
-                                        </View>
-                                    </TouchableHighlight>
-                                    <View style={styles.contentFoot}>
-                                        <Text style={styles.contentFootBody}>
-                                            <Icon name='clock-outline'
-                                                size={12} color='#737373' /> {
-                                                moment(recommendation.created_at).fromNow()
-                                            }
+                                </TouchableHighlight>
+                                <View style={styles.contentDate}>
+                                    <Text style={styles.contentDateText}>
+                                        {moment(item.created_at).format('D MMM')}
+                                    </Text>
+                                </View>
+                                <View style={{ position: 'relative' }}>
+                                    <View style={styles.contentGenres}>
+                                        <Text style={styles.contentGenresText}>
+                                            {item.genres
+                                                .slice(0, 4)
+                                                .map(g => g.name)
+                                                .join(', ')}
                                         </Text>
-                                        {this.typeHandler(
-                                            recommendation.type
-                                        )}
                                     </View>
                                 </View>
-                            ))}
-                        </View>
-                    </ScrollView>
+                                <TouchableHighlight
+                                    onPress={() => routeFix('Recommendation', {
+                                        id: item.id
+                                    })}>
+                                    <View style={styles.content}>
+
+                                        <Text style={styles.contentTitle}>
+                                            {item.title}
+                                        </Text>
+                                        <Text style={styles.contentBody}>
+                                            {removeHTML(item.body)}
+                                        </Text>
+                                    </View>
+                                </TouchableHighlight>
+                                <View style={styles.contentFoot}>
+                                    <Text style={styles.contentFootBody}>
+                                        <Icon name='clock-outline'
+                                            size={12} color='#737373' /> {
+                                            moment(item.created_at).fromNow()
+                                        }
+                                    </Text>
+                                    {this.typeHandler(
+                                        item.type
+                                    )}
+                                </View>
+                            </View>
+                        )
+
+                        }
+                    />
                     :
                     null
                 }
+
             </Container>
         )
     }

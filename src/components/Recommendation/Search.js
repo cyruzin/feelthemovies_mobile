@@ -3,7 +3,7 @@ import {
     View,
     Text,
     StyleSheet,
-    ScrollView,
+    FlatList,
     Image,
     TextInput,
     Picker,
@@ -18,7 +18,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import IconMC from 'react-native-vector-icons/MaterialCommunityIcons'
 import { type, routeFix } from '../../util/helpers'
 import { imgPath } from '../../config/constants'
-import { Container, Badge, Message } from '../UI'
+import { SearchContainer, Badge, Message } from '../UI'
 
 export default class Search extends PureComponent {
 
@@ -126,7 +126,7 @@ export default class Search extends PureComponent {
         } = this.state
 
         return (
-            <Container>
+            <SearchContainer>
                 <View style={styles.content}>
 
                     <TouchableWithoutFeedback onPress={() => Actions.pop()}>
@@ -201,61 +201,60 @@ export default class Search extends PureComponent {
                         null
                 }
 
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    {searchSuccessful ?
-                        <View>
-                            <View style={styles.searchResultsBox}>
-                                {searchPayload.map(search => {
-
-                                    return (
-                                        <TouchableWithoutFeedback
-                                            onPress={() =>
-                                                routeFix('Recommendation', {
-                                                    id: search.id,
-                                                    recommendation: search
-                                                })}
-                                            key={search.id}>
-                                            <View style={styles.titleBox}>
-                                                <View style={styles.titleImage}>
-                                                    <Image
-                                                        style={styles.image}
-                                                        source={{
-                                                            uri: `${imgPath.W185}${search.poster}`
-                                                        }}
-                                                    />
-                                                    <Badge style={styles.titleBadge}>
-                                                        <Text style={styles.titleBadgeText}>
-                                                            {
-                                                                type(search.type)
-                                                            }
-                                                        </Text>
-                                                    </Badge>
-                                                </View>
-
-                                                <View style={styles.titleInfo}>
-                                                    <Text style={styles.titleInfoText}>
-                                                        {search.title}
+                {searchSuccessful ?
+                    <View style={styles.searchResultsBox}>
+                        <FlatList
+                            showsVerticalScrollIndicator={false}
+                            keyExtractor={item => item.id.toString()}
+                            data={searchPayload}
+                            renderItem={({ item }) => {
+                                return (
+                                    <TouchableWithoutFeedback
+                                        onPress={() =>
+                                            routeFix('Recommendation', {
+                                                id: item.id,
+                                                recommendation: item
+                                            })}
+                                        key={item.id}>
+                                        <View style={styles.titleBox}>
+                                            <View style={styles.titleImage}>
+                                                <Image
+                                                    style={styles.image}
+                                                    source={{
+                                                        uri: `${imgPath.W185}${item.poster}`
+                                                    }}
+                                                />
+                                                <Badge style={styles.titleBadge}>
+                                                    <Text style={styles.titleBadgeText}>
+                                                        {
+                                                            type(item.type)
+                                                        }
                                                     </Text>
-
-                                                    <Text style={styles.titleInfoSubText}>
-                                                        {moment(search.created_at)
-                                                            .format('YYYY')}
-                                                    </Text>
-                                                </View>
-
+                                                </Badge>
                                             </View>
-                                        </TouchableWithoutFeedback>
-                                    )
-                                }
+
+                                            <View style={styles.titleInfo}>
+                                                <Text style={styles.titleInfoText}>
+                                                    {item.title}
+                                                </Text>
+
+                                                <Text style={styles.titleInfoSubText}>
+                                                    {moment(item.created_at)
+                                                        .format('YYYY')}
+                                                </Text>
+                                            </View>
+
+                                        </View>
+                                    </TouchableWithoutFeedback>
                                 )
-                                }
-                            </View>
-                        </View>
-                        :
-                        null
-                    }
-                </ScrollView>
-            </Container>
+                            }}
+                        />
+                    </View>
+                    :
+                    null
+                }
+
+            </SearchContainer>
         )
     }
 }
@@ -314,8 +313,8 @@ const styles = StyleSheet.create({
     activityIndicatorBox: {
         position: 'absolute',
         top: '50%',
-        left: '45%',
-        margin: 0
+        left: '50%',
+        marginLeft: -10
     },
     searchResultsBox: {
         flex: 1,
