@@ -210,15 +210,14 @@ export default class Search extends PureComponent {
                             data={searchPayload}
                             renderItem={({ item }) => {
                                 return (
-                                    <TouchableWithoutFeedback
-                                        hitSlop={styles.titleHitSlop}
-                                        onPress={() =>
-                                            routeFix('Recommendation', {
-                                                id: item.id,
-                                                recommendation: item
-                                            })}
-                                        key={item.id}>
-                                        <View style={styles.titleBox}>
+                                    <View style={styles.titleBox}>
+                                        <TouchableWithoutFeedback
+                                            hitSlop={styles.titleHitSlop}
+                                            onPress={() =>
+                                                routeFix('Recommendation', {
+                                                    id: item.id,
+                                                    recommendation: item
+                                                })}>
                                             <View style={styles.titleImage}>
                                                 <Image
                                                     style={styles.image}
@@ -234,7 +233,15 @@ export default class Search extends PureComponent {
                                                     </Text>
                                                 </Badge>
                                             </View>
+                                        </TouchableWithoutFeedback>
 
+                                        <TouchableWithoutFeedback
+                                            hitSlop={styles.titleHitSlop}
+                                            onPress={() =>
+                                                routeFix('Recommendation', {
+                                                    id: item.id,
+                                                    recommendation: item
+                                                })}>
                                             <View style={styles.titleInfo}>
                                                 <Text style={styles.titleInfoText}>
                                                     {item.title}
@@ -245,9 +252,8 @@ export default class Search extends PureComponent {
                                                         .format('YYYY')}
                                                 </Text>
                                             </View>
-
-                                        </View>
-                                    </TouchableWithoutFeedback>
+                                        </TouchableWithoutFeedback>
+                                    </View>
                                 )
                             }}
                         />
@@ -368,9 +374,9 @@ const styles = StyleSheet.create({
         right: 10
     },
     titleHitSlop: {
-        top: 10,
+        top: 20,
         left: 10,
-        bottom: 10,
+        bottom: 20,
         right: 10
     }
 })

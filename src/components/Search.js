@@ -166,14 +166,14 @@ export default class Search extends PureComponent {
                                     && item.poster_path !== null
                                 ) {
                                     return (
-                                        <TouchableWithoutFeedback
-                                            hitSlop={styles.titleHitSlop}
-                                            onPress={() =>
-                                                routeFix('TitleDetails', {
-                                                    id: item.id,
-                                                    type: item.media_type
-                                                })}>
-                                            <View style={styles.titleBox}>
+                                        <View style={styles.titleBox}>
+                                            <TouchableWithoutFeedback
+                                                hitSlop={styles.titleHitSlop}
+                                                onPress={() =>
+                                                    routeFix('TitleDetails', {
+                                                        id: item.id,
+                                                        type: item.media_type
+                                                    })}>
                                                 <View style={styles.titleImage}>
                                                     <Image
                                                         style={styles.image}
@@ -187,33 +187,40 @@ export default class Search extends PureComponent {
                                                         </Text>
                                                     </Badge>
                                                 </View>
+                                            </TouchableWithoutFeedback>
 
+                                            <TouchableWithoutFeedback
+                                                hitSlop={styles.titleHitSlop}
+                                                onPress={() =>
+                                                    routeFix('TitleDetails', {
+                                                        id: item.id,
+                                                        type: item.media_type
+                                                    })}>
                                                 <View style={styles.titleInfo}>
                                                     <Text style={styles.titleInfoText}>
                                                         {item.title}
                                                     </Text>
-
                                                     <Text style={styles.titleInfoSubText}>
                                                         {moment(item.release_date)
                                                             .format('YYYY')}
                                                     </Text>
                                                 </View>
 
-                                            </View>
-                                        </TouchableWithoutFeedback>
+                                            </TouchableWithoutFeedback>
+                                        </View>
                                     )
                                 } else if (
                                     item.media_type === 'tv'
                                     && item.backdrop_path !== null
                                 ) {
                                     return (
-                                        <TouchableWithoutFeedback
-                                            hitSlop={styles.titleHitSlop}
-                                            onPress={() => routeFix('TitleDetails', {
-                                                id: item.id,
-                                                type: item.media_type
-                                            })}>
-                                            <View style={styles.titleBox}>
+                                        <View style={styles.titleBox}>
+                                            <TouchableWithoutFeedback
+                                                hitSlop={styles.titleHitSlop}
+                                                onPress={() => routeFix('TitleDetails', {
+                                                    id: item.id,
+                                                    type: item.media_type
+                                                })}>
                                                 <View style={styles.titleImage}>
                                                     <Image
                                                         style={styles.image}
@@ -227,7 +234,13 @@ export default class Search extends PureComponent {
                                                         </Text>
                                                     </Badge>
                                                 </View>
-
+                                            </TouchableWithoutFeedback>
+                                            <TouchableWithoutFeedback
+                                                hitSlop={styles.titleHitSlop}
+                                                onPress={() => routeFix('TitleDetails', {
+                                                    id: item.id,
+                                                    type: item.media_type
+                                                })}>
                                                 <View style={styles.titleInfo}>
                                                     <Text style={styles.titleInfoText}>
                                                         {item.name}
@@ -238,21 +251,20 @@ export default class Search extends PureComponent {
                                                             .format('YYYY')}
                                                     </Text>
                                                 </View>
-
-                                            </View>
-                                        </TouchableWithoutFeedback>
+                                            </TouchableWithoutFeedback>
+                                        </View>
                                     )
                                 } else if (
                                     item.media_type === 'person'
                                     && item.profile_path !== null
                                 ) {
                                     return (
-                                        <TouchableWithoutFeedback
-                                            hitSlop={styles.titleHitSlop}
-                                            onPress={() => routeFix('Person', {
-                                                id: item.id
-                                            })}>
-                                            <View style={styles.titleBox}>
+                                        <View style={styles.titleBox}>
+                                            <TouchableWithoutFeedback
+                                                hitSlop={styles.titleHitSlop}
+                                                onPress={() => routeFix('Person', {
+                                                    id: item.id
+                                                })}>
                                                 <View style={styles.titleImage}>
                                                     <Image
                                                         style={styles.image}
@@ -266,7 +278,13 @@ export default class Search extends PureComponent {
                                                         </Text>
                                                     </Badge>
                                                 </View>
+                                            </TouchableWithoutFeedback>
 
+                                            <TouchableWithoutFeedback
+                                                hitSlop={styles.titleHitSlop}
+                                                onPress={() => routeFix('Person', {
+                                                    id: item.id
+                                                })}>
                                                 <View style={styles.titleInfo}>
                                                     <Text style={styles.titleInfoText}>
                                                         {item.name}
@@ -295,8 +313,8 @@ export default class Search extends PureComponent {
                                                         }
                                                     </Text>
                                                 </View>
-                                            </View>
-                                        </TouchableWithoutFeedback>
+                                            </TouchableWithoutFeedback>
+                                        </View>
                                     )
                                 }
                             }}
@@ -399,9 +417,9 @@ const styles = StyleSheet.create({
         right: 10
     },
     titleHitSlop: {
-        top: 10,
+        top: 20,
         left: 10,
-        bottom: 10,
+        bottom: 20,
         right: 10
     }
 })
