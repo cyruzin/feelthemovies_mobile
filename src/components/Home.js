@@ -200,7 +200,8 @@ export default class Home extends PureComponent {
                                 </View>
                                 <TouchableHighlight
                                     onPress={() => routeFix('Recommendation', {
-                                        id: item.id
+                                        id: item.id,
+                                        recommendation: item
                                     })}>
                                     <View style={styles.content}>
 

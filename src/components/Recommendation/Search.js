@@ -164,6 +164,7 @@ export default class Search extends PureComponent {
 
                         {searchTextInput !== '' ?
                             <TouchableWithoutFeedback
+                                hitSlop={styles.clearHitSlop}
                                 onPress={this.clearInputHandler}>
                                 <Icon
                                     name='cancel'
@@ -210,6 +211,7 @@ export default class Search extends PureComponent {
                             renderItem={({ item }) => {
                                 return (
                                     <TouchableWithoutFeedback
+                                        hitSlop={styles.titleHitSlop}
                                         onPress={() =>
                                             routeFix('Recommendation', {
                                                 id: item.id,
@@ -358,5 +360,17 @@ const styles = StyleSheet.create({
     titleInfoSubText: {
         color: '#737373',
         fontSize: 14,
+    },
+    clearHitSlop: {
+        top: 10,
+        left: 10,
+        bottom: 10,
+        right: 10
+    },
+    titleHitSlop: {
+        top: 10,
+        left: 10,
+        bottom: 10,
+        right: 10
     }
 })

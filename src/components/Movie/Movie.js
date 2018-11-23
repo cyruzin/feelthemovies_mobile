@@ -13,21 +13,27 @@ const Movie = () => {
     return (
         <Container>
             <View style={styles.content}>
-                <TouchableWithoutFeedback onPress={() => routeFix('NowPlaying')}>
+                <TouchableWithoutFeedback
+                    hitSlop={styles.hitSlop}
+                    onPress={() => routeFix('NowPlaying')}>
                     <View style={styles.box}>
                         <Icon name='tago' size={20} color='#fff' />
                         <Text style={styles.boxText}>Now Playing</Text>
                     </View>
                 </TouchableWithoutFeedback>
 
-                <TouchableWithoutFeedback onPress={() => routeFix('UpComing')}>
+                <TouchableWithoutFeedback
+                    hitSlop={styles.hitSlop}
+                    onPress={() => routeFix('UpComing')}>
                     <View style={styles.box}>
                         <Icon name='playcircleo' size={20} color='#fff' />
                         <Text style={styles.boxText}>UpComing</Text>
                     </View>
                 </TouchableWithoutFeedback>
 
-                <TouchableWithoutFeedback onPress={() => routeFix('RecommendationSearch')}>
+                <TouchableWithoutFeedback
+                    hitSlop={styles.hitSlop}
+                    onPress={() => routeFix('RecommendationSearch')}>
                     <View style={styles.box}>
                         <Icon name='search1' size={20} color='#fff' />
                         <Text style={styles.boxText}>Recommendation Search</Text>
@@ -57,6 +63,12 @@ const styles = StyleSheet.create({
         color: '#737373',
         fontSize: 15,
         marginLeft: 15
+    },
+    hitSlop: {
+        top: 10,
+        left: 20,
+        bottom: 10,
+        right: 20
     }
 
 })

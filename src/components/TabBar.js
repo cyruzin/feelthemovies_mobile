@@ -15,6 +15,7 @@ const TabBar = () => {
         <View style={styles.tabBar}>
 
             <TouchableWithoutFeedback
+                hitSlop={styles.tabHitSlop}
                 onPress={() => Actions.replace('Home')}>
                 <View style={styles.tabBarBody}>
                     <Icon name='home' size={22} color='#fff' />
@@ -25,6 +26,7 @@ const TabBar = () => {
             </TouchableWithoutFeedback>
 
             <TouchableWithoutFeedback
+                hitSlop={styles.tabHitSlop}
                 onPress={() => routeFix('Search')}>
                 <View style={styles.tabBarBody}>
                     <Icon name='search1' size={22} color='#fff' />
@@ -35,6 +37,7 @@ const TabBar = () => {
             </TouchableWithoutFeedback>
 
             <TouchableWithoutFeedback
+                hitSlop={styles.tabHitSlop}
                 onPress={() => routeFix('Movie')}>
                 <View>
                     <IconMC name='movie-roll' size={22} color='#fff' />
@@ -61,6 +64,12 @@ const styles = StyleSheet.create({
         fontSize: 10,
         marginTop: 3
     },
+    tabHitSlop: {
+        top: 10,
+        left: 20,
+        bottom: 10,
+        right: 20
+    }
 })
 
 export default TabBar

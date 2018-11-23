@@ -116,6 +116,7 @@ export default class Search extends PureComponent {
 
                         {searchTextInput !== '' ?
                             <TouchableWithoutFeedback
+                                hitSlop={styles.clearHitSlop}
                                 onPress={this.clearInputHandler}>
                                 <Icon
                                     name='cancel'
@@ -166,6 +167,7 @@ export default class Search extends PureComponent {
                                 ) {
                                     return (
                                         <TouchableWithoutFeedback
+                                            hitSlop={styles.titleHitSlop}
                                             onPress={() =>
                                                 routeFix('TitleDetails', {
                                                     id: item.id,
@@ -206,6 +208,7 @@ export default class Search extends PureComponent {
                                 ) {
                                     return (
                                         <TouchableWithoutFeedback
+                                            hitSlop={styles.titleHitSlop}
                                             onPress={() => routeFix('TitleDetails', {
                                                 id: item.id,
                                                 type: item.media_type
@@ -245,6 +248,7 @@ export default class Search extends PureComponent {
                                 ) {
                                     return (
                                         <TouchableWithoutFeedback
+                                            hitSlop={styles.titleHitSlop}
                                             onPress={() => routeFix('Person', {
                                                 id: item.id
                                             })}>
@@ -387,5 +391,17 @@ const styles = StyleSheet.create({
     titleInfoSubText: {
         color: '#737373',
         fontSize: 14,
+    },
+    clearHitSlop: {
+        top: 10,
+        left: 10,
+        bottom: 10,
+        right: 10
+    },
+    titleHitSlop: {
+        top: 10,
+        left: 10,
+        bottom: 10,
+        right: 10
     }
 })

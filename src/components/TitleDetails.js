@@ -185,43 +185,43 @@ class TitleDetails extends PureComponent {
                                     horizontal
                                     showsHorizontalScrollIndicator={false}
                                     keyExtractor={item => item.id.toString()}
-                                    data={credits.cast.slice(0, 10)}
-                                    renderItem={({ item }) => {
-                                        if (item.profile_path !== null) {
-                                            return (
-                                                <TouchableWithoutFeedback
-                                                    onPress={() => routeFix('Person', {
-                                                        id: item.id
-                                                    })}>
-                                                    <View style={styles.creditContainer}>
-                                                        <View>
-                                                            <Image
-                                                                style={styles.creditsImage}
-                                                                source={{
-                                                                    uri: `${imgPath.W500}${item.profile_path}`
-                                                                }} />
-
-
-                                                        </View>
-                                                        <View style={{
-                                                            flexDirection: 'column',
-                                                            justifyContent: 'center',
-                                                            maxWidth: 100
-                                                        }}>
-                                                            <Text
-                                                                style={styles.creditsText}>
-                                                                {item.name}
-                                                            </Text>
-                                                            <Text
-                                                                style={styles.creditsSubText}>
-                                                                {item.character}
-                                                            </Text>
-                                                        </View>
-                                                    </View>
-                                                </TouchableWithoutFeedback>
-                                            )
-                                        }
+                                    data={
+                                        credits.cast
+                                            .slice(0, 20)
+                                            .filter(title => title.profile_path !== null)
                                     }
+                                    renderItem={({ item }) => (
+                                        <TouchableWithoutFeedback
+                                            onPress={() => routeFix('Person', {
+                                                id: item.id
+                                            })}>
+                                            <View style={styles.creditContainer}>
+                                                <View>
+                                                    <Image
+                                                        style={styles.creditsImage}
+                                                        source={{
+                                                            uri: `${imgPath.W500}${item.profile_path}`
+                                                        }} />
+
+
+                                                </View>
+                                                <View style={{
+                                                    flexDirection: 'column',
+                                                    justifyContent: 'center',
+                                                    maxWidth: 100
+                                                }}>
+                                                    <Text
+                                                        style={styles.creditsText}>
+                                                        {item.name}
+                                                    </Text>
+                                                    <Text
+                                                        style={styles.creditsSubText}>
+                                                        {item.character}
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                        </TouchableWithoutFeedback>
+                                    )
                                     }
                                 />
                             </View>
