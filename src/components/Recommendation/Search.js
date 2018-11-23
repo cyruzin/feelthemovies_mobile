@@ -206,6 +206,7 @@ export default class Search extends PureComponent {
                     <View style={styles.searchResultsBox}>
                         <FlatList
                             showsVerticalScrollIndicator={false}
+                            keyboardShouldPersistTaps='always'
                             keyExtractor={item => item.id.toString()}
                             data={searchPayload}
                             renderItem={({ item }) => {
@@ -374,9 +375,9 @@ const styles = StyleSheet.create({
         right: 10
     },
     titleHitSlop: {
-        top: 20,
+        top: 10,
         left: 10,
-        bottom: 20,
+        bottom: 10,
         right: 10
     }
 })
