@@ -23,8 +23,11 @@ export default class Home extends PureComponent {
         recommendationFetch: false,
         recommendationSuccess: false,
         recommendationRefreshing: false,
+        recommendationScroll: false,
         recommendationError: '',
-        recommendationPayload: []
+        recommendationPayload: [],
+        recommendationCurrentPage: 1,
+        recommendationLastPage: 0
     }
 
     componentDidMount() {
@@ -32,22 +35,66 @@ export default class Home extends PureComponent {
     }
 
     fetchRecommendations = async () => {
-        this.setState({ recommendationFetch: true })
+        const {
+            recommendationPayload,
+            recommendationCurrentPage,
+            recommendationScroll,
+            recommendationRefreshing
+        } = this.state
+
+        if (!recommendationScroll) {
+            this.setState({ recommendationFetch: true })
+        }
 
         try {
-            const res = await axios.get('/recommendations')
+            const res = await axios.get(`/recommendations?page=${recommendationCurrentPage}`)
+
             this.setState({
-                recommendationPayload: res.data.data,
+                recommendationPayload: [
+                    ...recommendationPayload,
+                    ...res.data.data
+                ],
+                recommendationLastPage: res.data.last_page,
                 recommendationSuccess: true,
                 recommendationRefreshing: false,
-                recommendationFetch: false
+                recommendationScroll: false,
+                recommendationFetch: false,
             })
+
         } catch (e) {
             this.setState({
                 recommendationError: 'Something went wrong',
                 recommendationFetch: false,
-                recommendationRefreshing: false
+                recommendationRefreshing: false,
+                recommendationScroll: false
             })
+        }
+    }
+
+    refreshHandler = () => {
+        this.setState({
+            recommendationRefreshing: true,
+            recommendationSuccess: false,
+            recommendationPayload: [],
+            recommendationCurrentPage: 1,
+            recommendationError: ''
+        }, () =>
+                this.fetchRecommendations()
+        )
+    }
+
+    scrollHandler = () => {
+        const {
+            recommendationCurrentPage,
+            recommendationLastPage
+        } = this.state
+
+        if (recommendationCurrentPage < recommendationLastPage) {
+            this.setState({
+                recommendationCurrentPage: recommendationCurrentPage + 1,
+                recommendationScroll: true
+            }, () => this.fetchRecommendations()
+            )
         }
     }
 
@@ -81,16 +128,6 @@ export default class Home extends PureComponent {
                 </Text>
             )
         }
-    }
-
-    refreshHandler = () => {
-        this.setState({
-            recommendationRefreshing: true,
-            recommendationSuccess: false,
-            recommendationError: ''
-        })
-
-        this.fetchRecommendations()
     }
 
     render() {
@@ -127,6 +164,8 @@ export default class Home extends PureComponent {
                                 onRefresh={this.refreshHandler}
                             />
                         }
+                        onEndReachedThreshold={0.5}
+                        onEndReached={this.scrollHandler}
                         data={recommendationPayload}
                         keyExtractor={item => item.id.toString()}
                         renderItem={({ item }) => (
@@ -192,7 +231,6 @@ export default class Home extends PureComponent {
                     :
                     null
                 }
-
             </Container>
         )
     }

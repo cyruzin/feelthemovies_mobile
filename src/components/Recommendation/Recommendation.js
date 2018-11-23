@@ -125,7 +125,7 @@ export default class Recommendation extends PureComponent {
                                                         {moment(item.year).format('YYYY')
                                                         }</Text>
                                                     <Text style={styles.contentOverview}>
-                                                        {limitChar(item.overview, 200, 180)}
+                                                        {limitChar(item.overview, 200, 170)}
                                                     </Text>
                                                 </View>
 
@@ -148,26 +148,31 @@ export default class Recommendation extends PureComponent {
                                             :
                                             null
                                         }
-                                        <View style={{
-                                            margin: 10,
-                                            flexDirection: 'row',
-                                            flexWrap: 'wrap',
-                                            justifyContent: 'flex-start',
-                                        }}>
-                                            <Text style={{
-                                                color: '#737373',
-                                                marginRight: 5,
-                                                fontSize: 14
+                                        {item.sources.length > 0 ?
+                                            <View style={{
+                                                margin: 10,
+                                                flexDirection: 'row',
+                                                flexWrap: 'wrap',
+                                                justifyContent: 'flex-start',
                                             }}>
-                                                Watch On:
+                                                <Text style={{
+                                                    color: '#737373',
+                                                    marginRight: 5,
+                                                    fontSize: 14
+                                                }}>
+                                                    Watch On:
                                         </Text>
-                                            <Text style={{
-                                                color: '#fff',
-                                                fontSize: 14
-                                            }}>
-                                                {item.sources.map(s => s.name).join(', ')}
-                                            </Text>
-                                        </View>
+                                                <Text style={{
+                                                    color: '#fff',
+                                                    fontSize: 14
+                                                }}>
+                                                    {item.sources.map(s => s.name).join(', ')}
+                                                </Text>
+                                            </View>
+                                            :
+                                            null
+                                        }
+
                                     </View>
                                 )}
                             />
