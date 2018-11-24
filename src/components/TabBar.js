@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import {
     StyleSheet,
     TouchableWithoutFeedback,
@@ -10,44 +10,68 @@ import IconMC from 'react-native-vector-icons/MaterialCommunityIcons'
 import { routeFix } from '../util/helpers';
 import { Text } from './UI'
 
-const TabBar = () => {
-    return (
-        <View style={styles.tabBar}>
+class TabBar extends Component {
 
-            <TouchableWithoutFeedback
-                hitSlop={styles.tabHitSlop}
-                onPress={() => Actions.replace('Home')}>
-                <View style={styles.tabBarBody}>
-                    <Icon name='home' size={22} color='#fff' />
-                    <Text style={styles.tabBarItem}>
-                        Home
-                </Text>
-                </View>
-            </TouchableWithoutFeedback>
+    state = {
+        activeTab: 'Home',
+        activeColor: '#fff',
+        inactiveColor: '#737373'
+    }
 
-            <TouchableWithoutFeedback
-                hitSlop={styles.tabHitSlop}
-                onPress={() => routeFix('Search')}>
-                <View style={styles.tabBarBody}>
-                    <Icon name='search1' size={22} color='#fff' />
-                    <Text style={styles.tabBarItem}>
-                        Search
-                </Text>
-                </View>
-            </TouchableWithoutFeedback>
+    isActive = route => {
+        Actions.replace(route)
+        this.setState({ activeTab: route })
+    }
 
-            <TouchableWithoutFeedback
-                hitSlop={styles.tabHitSlop}
-                onPress={() => routeFix('Movie')}>
-                <View>
-                    <IconMC name='movie-roll' size={22} color='#fff' />
-                    <Text style={styles.tabBarItem}>
-                        Movie
+
+
+    render() {
+        const { activeTab, activeColor, inactiveColor } = this.state
+
+        return (
+            <View style={styles.tabBar}>
+
+                <TouchableWithoutFeedback
+                    hitSlop={styles.tabHitSlop}
+                    onPress={() => this.isActive('Home')}>
+                    <View style={styles.tabBarBody}>
+                        <Icon name='home' size={22} color='#fff' />
+                        <Text style={[styles.tabBarItem, {
+                            color: activeTab === 'Home' ? activeColor : inactiveColor
+                        }]}>
+                            Home
+                        </Text>
+                    </View>
+                </TouchableWithoutFeedback>
+
+                <TouchableWithoutFeedback
+                    hitSlop={styles.tabHitSlop}
+                    onPress={() => this.isActive('Search')}>
+                    <View style={styles.tabBarBody}>
+                        <Icon name='search1' size={22} color='#fff' />
+                        <Text style={[styles.tabBarItem, {
+                            color: activeTab === 'Search' ? activeColor : inactiveColor
+                        }]}>
+                            Search
                 </Text>
-                </View>
-            </TouchableWithoutFeedback>
-        </View>
-    )
+                    </View>
+                </TouchableWithoutFeedback>
+
+                <TouchableWithoutFeedback
+                    hitSlop={styles.tabHitSlop}
+                    onPress={() => this.isActive('Movie')}>
+                    <View>
+                        <IconMC name='movie-roll' size={22} color='#fff' />
+                        <Text style={[styles.tabBarItem, {
+                            color: activeTab === 'Movie' ? activeColor : inactiveColor
+                        }]}>
+                            Movie
+                </Text>
+                    </View>
+                </TouchableWithoutFeedback>
+            </View>
+        )
+    }
 }
 
 const styles = StyleSheet.create({
@@ -60,9 +84,9 @@ const styles = StyleSheet.create({
         padding: 5
     },
     tabBarItem: {
-        color: '#737373',
         fontSize: 10,
-        marginTop: 3
+        marginTop: 3,
+        textAlign: 'center'
     },
     tabHitSlop: {
         top: 10,
