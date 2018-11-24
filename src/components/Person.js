@@ -4,16 +4,13 @@ import {
     FlatList,
     View,
     Image,
-    TouchableWithoutFeedback,
     ActivityIndicator,
     StyleSheet
 } from 'react-native'
-import moment from 'moment'
 import orderBy from 'lodash/orderBy'
 import { axiosTMDB } from '../config/axios'
 import { imgPath } from '../config/constants'
-import { routeFix } from '../util/helpers'
-import { Container, Badge, Message, Title, Text } from './UI'
+import { Container, Badge, Message, Title, Text, Credits } from './UI'
 
 export default class Person extends PureComponent {
     state = {
@@ -136,65 +133,20 @@ export default class Person extends PureComponent {
                                                     && c.poster_path !== null
                                                 )}
                                             renderItem={({ item }) => (
-                                                <TouchableWithoutFeedback
-                                                    onPress={() => routeFix('TitleDetails', {
-                                                        id: item.id,
-                                                        type: item.media_type
-                                                    })}>
-                                                    <View
-                                                        style={{
-                                                            padding: 5,
-                                                            flexDirection: 'column'
-                                                        }}>
-                                                        <View>
-                                                            <Image
-                                                                style={{
-                                                                    flex: 1,
-                                                                    width: 100,
-                                                                    height: 130,
-                                                                    borderWidth: 1,
-                                                                    borderColor: '#fff',
-                                                                    resizeMode: 'contain'
-                                                                }}
-                                                                source={{
-                                                                    uri: `${imgPath.W185}${item.poster_path}`
-                                                                }}
-                                                            />
-                                                        </View>
-                                                        <View
-                                                            style={{
-                                                                flexDirection: 'column',
-                                                                maxWidth: 100
-                                                            }}>
-                                                            <Title
-                                                                style={{
-                                                                    color: '#fff',
-                                                                    fontSize: 12,
-                                                                    maxWidth: 100,
-                                                                    flexWrap: 'wrap',
-                                                                    textAlign: 'center',
-                                                                    marginTop: 5
-                                                                }}>
-                                                                {item.title !== undefined ?
-                                                                    item.title : item.name
-                                                                }
-                                                            </Title>
-                                                            <Text style={{
-                                                                color: '#737373',
-                                                                fontSize: 12,
-                                                                flexWrap: 'wrap',
-                                                                textAlign: 'center',
-                                                                marginTop: 3
-                                                            }}>
-                                                                {item.release_date !== undefined ?
-                                                                    moment(item.release_date).format('YYYY')
-                                                                    :
-                                                                    moment(item.first_air_date).format('YYYY')
-                                                                }
-                                                            </Text>
-                                                        </View>
-                                                    </View>
-                                                </TouchableWithoutFeedback>
+                                                <Credits
+                                                    route='TitleDetails'
+                                                    id={item.id}
+                                                    type={item.media_type}
+                                                    title={item.title !== undefined ?
+                                                        item.title : item.name
+                                                    }
+                                                    date={item.release_date !== undefined ?
+                                                        item.release_date
+                                                        :
+                                                        item.first_air_date
+                                                    }
+                                                    image={item.poster_path}
+                                                />
                                             )
                                             }
                                         />

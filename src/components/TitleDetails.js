@@ -15,7 +15,7 @@ import moment from 'moment'
 import { axiosTMDB } from '../config/axios'
 import { imgPath } from '../config/constants'
 import { routeFix } from '../util/helpers'
-import { Container, Message, Title, Text } from './UI'
+import { Container, Message, Title, Text, Credits } from './UI'
 
 class TitleDetails extends PureComponent {
     state = {
@@ -65,12 +65,6 @@ class TitleDetails extends PureComponent {
             }
         })
         return date !== null ? date : ' Not Available'
-    }
-
-    runtimeHandler = time => {
-        if (time !== undefined) {
-
-        }
     }
 
     getCrew = (data, crewType) => {
@@ -190,36 +184,13 @@ class TitleDetails extends PureComponent {
                                             .filter(title => title.profile_path !== null)
                                     }
                                     renderItem={({ item }) => (
-                                        <TouchableWithoutFeedback
-                                            onPress={() => routeFix('Person', {
-                                                id: item.id
-                                            })}>
-                                            <View style={styles.creditContainer}>
-                                                <View>
-                                                    <Image
-                                                        style={styles.creditsImage}
-                                                        source={{
-                                                            uri: `${imgPath.W500}${item.profile_path}`
-                                                        }} />
-
-
-                                                </View>
-                                                <View style={{
-                                                    flexDirection: 'column',
-                                                    justifyContent: 'center',
-                                                    maxWidth: 100
-                                                }}>
-                                                    <Title
-                                                        style={styles.creditsText}>
-                                                        {item.name}
-                                                    </Title>
-                                                    <Text
-                                                        style={styles.creditsSubText}>
-                                                        {item.character}
-                                                    </Text>
-                                                </View>
-                                            </View>
-                                        </TouchableWithoutFeedback>
+                                        <Credits
+                                            route='Person'
+                                            id={item.id}
+                                            image={item.profile_path}
+                                            title={item.name}
+                                            character={item.character}
+                                        />
                                     )
                                     }
                                 />
