@@ -16,7 +16,7 @@ import debounce from 'lodash/debounce'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import IconMC from 'react-native-vector-icons/MaterialCommunityIcons'
-import { type, routeFix } from '../../util/helpers'
+import { type, routeFix, limitChar, removeHTML } from '../../util/helpers'
 import { imgPath } from '../../config/constants'
 import { SearchContainer, Badge, Message } from '../UI'
 
@@ -252,6 +252,16 @@ export default class Search extends PureComponent {
                                                     {moment(item.created_at)
                                                         .format('YYYY')}
                                                 </Text>
+
+                                                <Text style={styles.titleInfoSubText}>
+                                                    {limitChar(
+                                                        removeHTML(
+                                                            item.body
+                                                        ),
+                                                        200,
+                                                        170
+                                                    )}
+                                                </Text>
                                             </View>
                                         </TouchableWithoutFeedback>
                                     </View>
@@ -336,11 +346,11 @@ const styles = StyleSheet.create({
     },
     titleImage: {
         position: 'relative',
-        width: '20%'
+        width: '30%'
     },
     image: {
-        width: 60,
-        height: 80,
+        width: 100,
+        height: 150,
         borderWidth: 1,
         borderColor: '#fff',
         resizeMode: 'contain'
@@ -356,8 +366,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     titleInfo: {
-        width: '80%',
-        margin: 5
+        width: '70%',
+        margin: 5,
+        marginLeft: 10
     },
     titleInfoText: {
         fontSize: 14,
@@ -367,6 +378,7 @@ const styles = StyleSheet.create({
     titleInfoSubText: {
         color: '#737373',
         fontSize: 14,
+        marginTop: 3
     },
     clearHitSlop: {
         top: 10,

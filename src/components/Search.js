@@ -15,7 +15,7 @@ import debounce from 'lodash/debounce'
 import orderBy from 'lodash/orderBy'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { routeFix } from '../util/helpers'
+import { routeFix, limitChar } from '../util/helpers'
 import { imgPath } from '../config/constants'
 import { SearchContainer, Badge, Message } from './UI'
 
@@ -205,6 +205,9 @@ export default class Search extends PureComponent {
                                                         {moment(item.release_date)
                                                             .format('YYYY')}
                                                     </Text>
+                                                    <Text style={styles.titleInfoSubText}>
+                                                        {limitChar(item.overview, 200, 170)}
+                                                    </Text>
                                                 </View>
 
                                             </TouchableWithoutFeedback>
@@ -250,6 +253,9 @@ export default class Search extends PureComponent {
                                                     <Text style={styles.titleInfoSubText}>
                                                         {moment(item.first_air_date)
                                                             .format('YYYY')}
+                                                    </Text>
+                                                    <Text style={styles.titleInfoSubText}>
+                                                        {limitChar(item.overview, 200, 170)}
                                                     </Text>
                                                 </View>
                                             </TouchableWithoutFeedback>
@@ -379,11 +385,11 @@ const styles = StyleSheet.create({
     },
     titleImage: {
         position: 'relative',
-        width: '20%'
+        width: '30%'
     },
     image: {
-        width: 60,
-        height: 80,
+        width: 100,
+        height: 150,
         borderWidth: 1,
         borderColor: '#fff',
         resizeMode: 'contain'
@@ -399,8 +405,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     titleInfo: {
-        width: '80%',
-        margin: 5
+        width: '70%',
+        margin: 5,
+        marginLeft: 10
     },
     titleInfoText: {
         fontSize: 14,
@@ -410,6 +417,7 @@ const styles = StyleSheet.create({
     titleInfoSubText: {
         color: '#737373',
         fontSize: 14,
+        marginTop: 3
     },
     clearHitSlop: {
         top: 10,

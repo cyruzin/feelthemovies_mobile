@@ -11,7 +11,7 @@ import {
 import moment from 'moment'
 import { axiosTMDB } from '../../config/axios'
 import { imgPath } from '../../config/constants'
-import { routeFix } from '../../util/helpers'
+import { routeFix, limitChar } from '../../util/helpers'
 import { Container, Message } from '../UI'
 
 export default class UpComing extends PureComponent {
@@ -104,6 +104,10 @@ export default class UpComing extends PureComponent {
                                                     {moment(item.release_date)
                                                         .format('YYYY')}
                                                 </Text>
+
+                                                <Text style={styles.titleInfoSubText}>
+                                                    {limitChar(item.overview, 200, 150)}
+                                                </Text>
                                             </View>
 
                                         </View>
@@ -149,18 +153,19 @@ const styles = StyleSheet.create({
     },
     titleImage: {
         position: 'relative',
-        width: '20%'
+        width: '30%'
     },
     image: {
-        width: 60,
-        height: 80,
+        width: 100,
+        height: 150,
         borderWidth: 1,
         borderColor: '#fff',
         resizeMode: 'contain'
     },
     titleInfo: {
-        width: '80%',
-        margin: 5
+        width: '70%',
+        margin: 5,
+        marginLeft: 10
     },
     titleInfoText: {
         fontSize: 14,
@@ -169,6 +174,7 @@ const styles = StyleSheet.create({
     },
     titleInfoSubText: {
         color: '#737373',
+        marginTop: 3,
         fontSize: 14
     }
 })

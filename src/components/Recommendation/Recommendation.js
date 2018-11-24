@@ -283,13 +283,13 @@ const styles = StyleSheet.create({
     contentDate: {
         fontSize: 14,
         color: '#737373',
-        marginTop: 5
+        marginTop: 3
     },
     image: {
         width: 100,
         height: 150,
         maxHeight: 150,
-        borderWidth: 2,
+        borderWidth: 1,
         borderColor: '#fff'
     }
 })
