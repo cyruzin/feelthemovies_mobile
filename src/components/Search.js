@@ -206,7 +206,7 @@ export default class Search extends PureComponent {
                                                             .format('YYYY')}
                                                     </Text>
                                                     <Text style={styles.titleInfoSubText}>
-                                                        {limitChar(item.overview, 200, 170)}
+                                                        {limitChar(item.overview, 200, 130)}
                                                     </Text>
                                                 </View>
 
@@ -255,7 +255,7 @@ export default class Search extends PureComponent {
                                                             .format('YYYY')}
                                                     </Text>
                                                     <Text style={styles.titleInfoSubText}>
-                                                        {limitChar(item.overview, 200, 170)}
+                                                        {limitChar(item.overview, 200, 130)}
                                                     </Text>
                                                 </View>
                                             </TouchableWithoutFeedback>
