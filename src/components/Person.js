@@ -14,15 +14,15 @@ import { Container, Badge, Message, Title, Text, Credits } from './UI'
 
 export default class Person extends PureComponent {
     state = {
-        personFetch: false,
-        personSuccessful: false,
-        personFailure: '',
-        personPayload: ''
+        fetch: false,
+        successful: false,
+        failure: '',
+        payload: ''
     }
 
     async componentDidMount() {
         try {
-            this.setState({ personFetch: true })
+            this.setState({ fetch: true })
 
             const { id } = this.props
 
@@ -31,47 +31,46 @@ export default class Person extends PureComponent {
             )
 
             this.setState({
-                personPayload: res.data,
-                personSuccessful: true,
-                personFetch: false
+                payload: res.data,
+                successful: true,
+                fetch: false
             })
 
         } catch (e) {
             this.setState({
-                personFailure: 'Something went wrong',
-                personFetch: false
+                failure: 'Something went wrong',
+                fetch: false
             })
         }
     }
 
     render() {
         const {
-            personFetch, personSuccessful,
-            personFailure
+            fetch, successful, failure
         } = this.state
 
         const {
             name, profile_path, biography, combined_credits,
             birthday, deathday, gender, place_of_birth
-        } = this.state.personPayload
+        } = this.state.payload
 
         return (
             <Container>
 
-                {personFetch ?
+                {fetch ?
                     <ActivityIndicator
                         size='large'
                         color='#737373' />
                     : null
                 }
 
-                {personFailure !== '' ?
-                    <Message text={personFailure} />
+                {failure !== '' ?
+                    <Message text={failure} />
                     :
                     null
                 }
 
-                {personSuccessful ?
+                {successful ?
                     <ScrollView showsVerticalScrollIndicator={false}>
 
                         <View style={styles.content}>
@@ -104,14 +103,8 @@ export default class Person extends PureComponent {
 
                             {combined_credits.cast.length > 0 ?
                                 <View>
-                                    <View style={{
-                                        margin: 10
-                                    }}>
-                                        <Title style={{
-                                            fontSize: 16,
-                                            fontWeight: 'bold',
-                                            color: '#fff'
-                                        }}>
+                                    <View style={styles.section}>
+                                        <Title style={styles.sectionTitle}>
                                             Known For
                                         </Title>
                                     </View>
@@ -156,23 +149,13 @@ export default class Person extends PureComponent {
                                 null
                             }
 
-                            <View style={{
-                                margin: 10
-                            }}>
-                                <Title style={{
-                                    fontSize: 16,
-                                    fontWeight: 'bold',
-                                    color: '#fff'
-                                }}>
+                            <View style={styles.section}>
+                                <Title style={styles.sectionTitle}>
                                     Other Info
                                 </Title>
                             </View>
 
-                            <View style={{
-                                marginLeft: 10,
-                                marginRight: 10,
-                                marginBottom: 10
-                            }}>
+                            <View style={styles.otherInfoBox}>
                                 {gender !== null ?
                                     <Text style={styles.otherInfoText}>
                                         Gender: {gender === 1 ? 'Female' : 'Male'}
@@ -211,7 +194,6 @@ export default class Person extends PureComponent {
                     :
                     null
                 }
-
             </Container>
         )
     }
@@ -244,6 +226,18 @@ const styles = StyleSheet.create({
     biography: {
         color: '#737373',
         fontSize: 16
+    },
+    section: {
+        margin: 10
+    },
+    sectionTitle: {
+        fontSize: 16,
+        color: '#fff'
+    },
+    otherInfoBox: {
+        marginLeft: 10,
+        marginRight: 10,
+        marginBottom: 10
     },
     otherInfoText: {
         fontSize: 16,

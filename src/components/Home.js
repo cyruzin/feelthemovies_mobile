@@ -19,14 +19,14 @@ import { Container, Message, Title, Text } from './UI'
 export default class Home extends PureComponent {
 
     state = {
-        recommendationFetch: false,
-        recommendationSuccess: false,
-        recommendationRefreshing: false,
-        recommendationScroll: false,
-        recommendationError: '',
-        recommendationPayload: [],
-        recommendationCurrentPage: 1,
-        recommendationLastPage: 0
+        fetch: false,
+        success: false,
+        refreshing: false,
+        scroll: false,
+        error: '',
+        payload: [],
+        currentPage: 1,
+        lastPage: 0
     }
 
     componentDidMount() {
@@ -35,48 +35,45 @@ export default class Home extends PureComponent {
 
     fetchRecommendations = async () => {
         const {
-            recommendationPayload,
-            recommendationCurrentPage,
-            recommendationScroll,
-            recommendationRefreshing
+            payload, currentPage, scroll, refreshing
         } = this.state
 
-        if (!recommendationScroll) {
-            this.setState({ recommendationFetch: true })
+        if (!scroll) {
+            this.setState({ fetch: true })
         }
 
         try {
-            const res = await axios.get(`/recommendations?page=${recommendationCurrentPage}`)
+            const res = await axios.get(`/recommendations?page=${currentPage}`)
 
             this.setState({
-                recommendationPayload: [
-                    ...recommendationPayload,
+                payload: [
+                    ...payload,
                     ...res.data.data
                 ],
-                recommendationLastPage: res.data.last_page,
-                recommendationSuccess: true,
-                recommendationRefreshing: false,
-                recommendationScroll: false,
-                recommendationFetch: false,
+                lastPage: res.data.last_page,
+                success: true,
+                refreshing: false,
+                scroll: false,
+                fetch: false,
             })
 
         } catch (e) {
             this.setState({
-                recommendationError: 'Something went wrong',
-                recommendationFetch: false,
-                recommendationRefreshing: false,
-                recommendationScroll: false
+                error: 'Something went wrong',
+                fetch: false,
+                refreshing: false,
+                scroll: false
             })
         }
     }
 
     refreshHandler = () => {
         this.setState({
-            recommendationRefreshing: true,
-            recommendationSuccess: false,
-            recommendationPayload: [],
-            recommendationCurrentPage: 1,
-            recommendationError: ''
+            refreshing: true,
+            success: false,
+            payload: [],
+            currentPage: 1,
+            error: ''
         }, () =>
                 this.fetchRecommendations()
         )
@@ -84,14 +81,13 @@ export default class Home extends PureComponent {
 
     scrollHandler = () => {
         const {
-            recommendationCurrentPage,
-            recommendationLastPage
+            currentPage, lastPage
         } = this.state
 
-        if (recommendationCurrentPage < recommendationLastPage) {
+        if (currentPage < lastPage) {
             this.setState({
-                recommendationCurrentPage: recommendationCurrentPage + 1,
-                recommendationScroll: true
+                currentPage: currentPage + 1,
+                scroll: true
             }, () => this.fetchRecommendations()
             )
         }
@@ -132,40 +128,38 @@ export default class Home extends PureComponent {
     render() {
 
         const {
-            recommendationFetch, recommendationSuccess,
-            recommendationPayload, recommendationError,
-            recommendationRefreshing
+            fetch, success, payload, error, refreshing
         } = this.state
 
         return (
             <Container>
-                {recommendationFetch ?
+                {fetch ?
                     <ActivityIndicator
                         size='large'
                         color='#737373' />
                     : null
                 }
 
-                {recommendationError !== '' ?
-                    <Message text={recommendationError} />
+                {error !== '' ?
+                    <Message text={error} />
                     :
                     null
                 }
 
-                {recommendationSuccess ?
+                {success ?
                     <FlatList
                         showsVerticalScrollIndicator={false}
                         refreshControl={
                             <RefreshControl
                                 progressBackgroundColor='#0f0e0e'
                                 colors={['#0093cb', '#737373']}
-                                refreshing={recommendationRefreshing}
+                                refreshing={refreshing}
                                 onRefresh={this.refreshHandler}
                             />
                         }
                         onEndReachedThreshold={0.5}
                         onEndReached={this.scrollHandler}
-                        data={recommendationPayload}
+                        data={payload}
                         keyExtractor={item => item.id.toString()}
                         renderItem={({ item }) => (
                             <View>

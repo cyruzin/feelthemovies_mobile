@@ -6,7 +6,6 @@ import {
     ActivityIndicator,
     ScrollView,
     FlatList,
-    TouchableWithoutFeedback,
     TouchableHighlight,
     Linking
 } from 'react-native'
@@ -19,15 +18,15 @@ import { Container, Message, Title, Text, Credits } from './UI'
 
 class TitleDetails extends PureComponent {
     state = {
-        titleFetch: false,
-        titleSuccessful: false,
-        titleFailure: '',
-        titlePayload: ''
+        fetch: false,
+        successful: false,
+        failure: '',
+        payload: ''
     }
 
     async componentDidMount() {
         try {
-            this.setState({ titleFetch: true })
+            this.setState({ fetch: true })
 
             const { type, id } = this.props
 
@@ -36,15 +35,15 @@ class TitleDetails extends PureComponent {
             )
 
             this.setState({
-                titlePayload: res.data,
-                titleSuccessful: true,
-                titleFetch: false
+                payload: res.data,
+                successful: true,
+                fetch: false
             })
 
         } catch (e) {
             this.setState({
-                titleFailure: 'Something went wrong',
-                titleFetch: false
+                failure: 'Something went wrong',
+                fetch: false
             })
         }
     }
@@ -84,7 +83,7 @@ class TitleDetails extends PureComponent {
     }
 
     render() {
-        const { titleSuccessful, titleFailure, titleFetch } = this.state
+        const { successful, failure, fetch } = this.state
 
         const {
             title, name, release_date, first_air_date,
@@ -93,24 +92,24 @@ class TitleDetails extends PureComponent {
             created_by, next_episode_to_air, last_air_date,
             number_of_episodes, number_of_seasons,
             release_dates
-        } = this.state.titlePayload
+        } = this.state.payload
 
         return (
             <Container style={styles.container}>
-                {titleFetch ?
+                {fetch ?
                     <ActivityIndicator
                         size='large'
                         color='#737373' />
                     : null
                 }
 
-                {titleFailure !== '' ?
-                    <Message text={titleFailure} />
+                {failure !== '' ?
+                    <Message text={failure} />
                     :
                     null
                 }
 
-                {titleSuccessful ?
+                {successful ?
                     <ScrollView showsVerticalScrollIndicator={false}>
 
                         <View style={styles.content}>
