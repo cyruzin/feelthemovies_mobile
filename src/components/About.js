@@ -1,13 +1,13 @@
 import React from 'react'
-import { Text, View, StyleSheet } from 'react-native'
-import { Container } from './UI'
+import { View, StyleSheet } from 'react-native'
+import { Container, Title, Text } from './UI'
 
 const About = () => (
     <Container>
         <View style={styles.content}>
-            <Text style={styles.text}>
+            <Title style={styles.text}>
                 Feel the Movies v4.0
-            </Text>
+            </Title>
 
             <Text style={styles.body}>
                 Hello I'm Cyro Dubeux, the app developer.
@@ -16,9 +16,9 @@ const About = () => (
                 please send me an email: xorycx@gmail.com.
             </Text>
 
-            <Text style={styles.text}>
+            <Title style={styles.text}>
                 The Movie DB
-            </Text>
+            </Title>
 
             <Text style={styles.body}>
                 This product uses the TMDb API but is not
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     text: {
         color: '#fff',
         fontSize: 18,
-        fontWeight: 'bold',
         textAlign: 'center'
     },
     body: {

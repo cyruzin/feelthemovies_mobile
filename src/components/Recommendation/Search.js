@@ -1,10 +1,8 @@
 import React, { PureComponent } from 'react'
 import {
     View,
-    Text,
     StyleSheet,
     FlatList,
-    Image,
     TextInput,
     Picker,
     ActivityIndicator,
@@ -13,12 +11,10 @@ import {
 import { Actions } from 'react-native-router-flux'
 import axios from '../../config/axios'
 import debounce from 'lodash/debounce'
-import moment from 'moment'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import IconMC from 'react-native-vector-icons/MaterialCommunityIcons'
-import { type, routeFix, limitChar, removeHTML } from '../../util/helpers'
-import { imgPath } from '../../config/constants'
-import { SearchContainer, Badge, Message } from '../UI'
+import { type, limitChar, removeHTML } from '../../util/helpers'
+import { Container, Message, List } from '../UI'
 
 export default class Search extends PureComponent {
 
@@ -29,13 +25,13 @@ export default class Search extends PureComponent {
     }
 
     state = {
-        searchFetch: false,
-        searchSuccessful: false,
-        searchWarning: false,
-        searchFailure: '',
-        searchPayload: [],
-        searchType: '',
-        searchTextInput: ''
+        fetch: false,
+        successful: false,
+        warning: false,
+        failure: '',
+        payload: [],
+        type: '',
+        textInput: ''
     }
 
     searchFetchHandler = async () => {
@@ -48,57 +44,57 @@ export default class Search extends PureComponent {
             )
 
             this.setState({
-                searchPayload: res.data,
-                searchSuccessful: true,
-                searchFetch: false
+                payload: res.data,
+                successful: true,
+                fetch: false
             })
 
         } catch (e) {
             this.setState({
-                searchFailure: 'Something went wrong',
-                searchFetch: false
+                failure: 'Something went wrong',
+                fetch: false
             })
         }
     }
 
     searchCheckHandler = () => {
-        if (this.state.searchTextInput === '') {
+        if (this.state.textInput === '') {
             this.setState({
-                searchSuccessful: false,
-                searchWarning: true
+                successful: false,
+                warning: true
             })
             return false
         }
 
         this.setState({
-            searchFetch: true,
-            searchSuccessful: false,
-            searchWarning: false,
-            searchFailure: ''
+            fetch: true,
+            successful: false,
+            warning: false,
+            failure: ''
         })
     }
 
     textInputHandler = textInput => {
-        this.setState({ searchTextInput: textInput })
+        this.setState({ textInput: textInput })
         this.searchFetchHandler()
     }
 
     typeHandler = value => {
-        this.setState({ searchType: value })
-        if (this.state.searchTextInput !== '') {
+        this.setState({ type: value })
+        if (this.state.textInput !== '') {
             this.searchFetchHandler()
         }
     }
 
     queryHandler = () => {
-        const { searchType, searchTextInput } = this.state
+        const { type, textInput } = this.state
         let searchQuery = null
-        const query = searchTextInput.replace(/\s+$/, "")
+        const query = textInput.replace(/\s+$/, "")
 
-        if (searchType !== '') {
+        if (type !== '') {
             searchQuery = {
                 q: query,
-                type: searchType
+                type: type
             }
             return searchQuery
         }
@@ -113,20 +109,18 @@ export default class Search extends PureComponent {
     clearInputHandler = () => {
         this.searchRef.current.clear()
         this.setState({
-            searchTextInput: '',
-            searchSuccessful: false
+            textInput: '',
+            successful: false
         })
     }
 
     render() {
         const {
-            searchTextInput, searchFetch,
-            searchFailure, searchSuccessful,
-            searchPayload, searchWarning
+            textInput, fetch, failure, successful, payload, warning
         } = this.state
 
         return (
-            <SearchContainer>
+            <Container style={styles.container}>
                 <View style={styles.content}>
 
                     <TouchableWithoutFeedback onPress={() => Actions.pop()}>
@@ -162,9 +156,8 @@ export default class Search extends PureComponent {
                             </View>
                         </View>
 
-                        {searchTextInput !== '' ?
+                        {textInput !== '' ?
                             <TouchableWithoutFeedback
-                                hitSlop={styles.clearHitSlop}
                                 onPress={this.clearInputHandler}>
                                 <Icon
                                     name='cancel'
@@ -179,7 +172,7 @@ export default class Search extends PureComponent {
                 </View>
 
                 <View style={styles.activityIndicatorBox}>
-                    {searchFetch ?
+                    {fetch ?
                         <ActivityIndicator
                             size='large'
                             color='#737373' />
@@ -187,98 +180,62 @@ export default class Search extends PureComponent {
                     }
                 </View>
 
-                {searchSuccessful && searchPayload.length === 0 ?
+                {successful && payload.length === 0 ?
                     <Message text='No Result' />
                     :
                     null
                 }
 
                 {
-                    !searchSuccessful &&
-                        !searchWarning &&
-                        searchFailure !== '' ?
-                        <Message text={searchFailure} />
+                    !successful && !warning && failure !== '' ?
+                        <Message text={failure} />
                         :
                         null
                 }
 
-                {searchSuccessful ?
+                {successful ?
                     <View style={styles.searchResultsBox}>
                         <FlatList
                             showsVerticalScrollIndicator={false}
                             keyboardShouldPersistTaps='always'
                             keyExtractor={item => item.id.toString()}
-                            data={searchPayload}
-                            renderItem={({ item }) => {
-                                return (
-                                    <View style={styles.titleBox}>
-                                        <TouchableWithoutFeedback
-                                            hitSlop={styles.titleHitSlop}
-                                            onPress={() =>
-                                                routeFix('Recommendation', {
-                                                    id: item.id,
-                                                    recommendation: item
-                                                })}>
-                                            <View style={styles.titleImage}>
-                                                <Image
-                                                    style={styles.image}
-                                                    source={{
-                                                        uri: `${imgPath.W185}${item.poster}`
-                                                    }}
-                                                />
-                                                <Badge style={styles.titleBadge}>
-                                                    <Text style={styles.titleBadgeText}>
-                                                        {
-                                                            type(item.type)
-                                                        }
-                                                    </Text>
-                                                </Badge>
-                                            </View>
-                                        </TouchableWithoutFeedback>
-
-                                        <TouchableWithoutFeedback
-                                            hitSlop={styles.titleHitSlop}
-                                            onPress={() =>
-                                                routeFix('Recommendation', {
-                                                    id: item.id,
-                                                    recommendation: item
-                                                })}>
-                                            <View style={styles.titleInfo}>
-                                                <Text style={styles.titleInfoText}>
-                                                    {item.title}
-                                                </Text>
-
-                                                <Text style={styles.titleInfoSubText}>
-                                                    {moment(item.created_at)
-                                                        .format('YYYY')}
-                                                </Text>
-
-                                                <Text style={styles.titleInfoSubText}>
-                                                    {limitChar(
-                                                        removeHTML(
-                                                            item.body
-                                                        ),
-                                                        200,
-                                                        170
-                                                    )}
-                                                </Text>
-                                            </View>
-                                        </TouchableWithoutFeedback>
-                                    </View>
-                                )
-                            }}
+                            data={payload}
+                            renderItem={({ item }) => (
+                                <List
+                                    route='Recommendation'
+                                    id={item.id}
+                                    recommendation={item}
+                                    image={item.poster}
+                                    badge
+                                    badgeText={type(item.type)}
+                                    title={item.title}
+                                    date={item.created_at}
+                                    body={
+                                        limitChar(
+                                            removeHTML(
+                                                item.body
+                                            ),
+                                            200,
+                                            170
+                                        )
+                                    }
+                                />
+                            )
+                            }
                         />
                     </View>
                     :
                     null
                 }
-
-            </SearchContainer>
+            </Container>
         )
     }
 }
 
 const styles = StyleSheet.create({
+    container: {
+        justifyContent: 'flex-start'
+    },
     content: {
         backgroundColor: '#0f0e0e',
         flexDirection: 'row',
@@ -308,7 +265,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
         borderRadius: 5,
         backgroundColor: '#1b1919',
-        color: '#fff'
+        color: '#fff',
+        fontFamily: 'OpenSansCondensed-Light'
     },
     pickerBox: {
         position: 'relative',
@@ -339,57 +297,5 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         margin: 10
-    },
-    titleBox: {
-        flexDirection: 'row',
-        margin: 10
-    },
-    titleImage: {
-        position: 'relative',
-        width: '30%'
-    },
-    image: {
-        width: 100,
-        height: 150,
-        borderWidth: 1,
-        borderColor: '#fff',
-        resizeMode: 'contain'
-    },
-    titleBadge: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0
-    },
-    titleBadgeText: {
-        color: '#fff',
-        fontSize: 10,
-        fontWeight: 'bold'
-    },
-    titleInfo: {
-        width: '70%',
-        margin: 5,
-        marginLeft: 10
-    },
-    titleInfoText: {
-        fontSize: 14,
-        color: '#fff',
-        fontWeight: 'bold'
-    },
-    titleInfoSubText: {
-        color: '#737373',
-        fontSize: 14,
-        marginTop: 3
-    },
-    clearHitSlop: {
-        top: 10,
-        left: 10,
-        bottom: 10,
-        right: 10
-    },
-    titleHitSlop: {
-        top: 10,
-        left: 10,
-        bottom: 10,
-        right: 10
     }
 })

@@ -1,10 +1,8 @@
 import React, { PureComponent } from 'react'
 import {
     View,
-    Text,
     StyleSheet,
     FlatList,
-    Image,
     TextInput,
     ActivityIndicator,
     TouchableWithoutFeedback
@@ -13,11 +11,8 @@ import { Actions } from 'react-native-router-flux'
 import { axiosTMDB } from '../config/axios'
 import debounce from 'lodash/debounce'
 import orderBy from 'lodash/orderBy'
-import moment from 'moment'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { routeFix, limitChar } from '../util/helpers'
-import { imgPath } from '../config/constants'
-import { SearchContainer, Badge, Message } from './UI'
+import { Container, List, Message } from './UI'
 
 export default class Search extends PureComponent {
 
@@ -28,76 +23,74 @@ export default class Search extends PureComponent {
     }
 
     state = {
-        searchFetch: false,
-        searchSuccessful: false,
-        searchWarning: false,
-        searchFailure: '',
-        searchPayload: [],
-        searchTextInput: ''
+        fetch: false,
+        successful: false,
+        warning: false,
+        failure: '',
+        payload: [],
+        textInput: ''
     }
 
     searchFetchHandler = async () => {
         this.searchCheckHandler()
 
         try {
-            const query = encodeURIComponent(this.state.searchTextInput)
+            const query = encodeURIComponent(this.state.textInput)
             const res = await axiosTMDB.get(
                 `/search/multi?include_adult=false&query=${query}&page=1`
             )
 
             this.setState({
-                searchPayload: res.data.results,
-                searchSuccessful: true,
-                searchFetch: false
+                payload: res.data.results,
+                successful: true,
+                fetch: false
             })
 
         } catch (e) {
             this.setState({
-                searchFailure: 'Something went wrong',
-                searchFetch: false
+                failure: 'Something went wrong',
+                fetch: false
             })
         }
     }
 
     searchCheckHandler = () => {
-        if (this.state.searchTextInput === '') {
+        if (this.state.textInput === '') {
             this.setState({
-                searchSuccessful: false,
-                searchWarning: true
+                successful: false,
+                warning: true
             })
             return false
         }
 
         this.setState({
-            searchFetch: true,
-            searchSuccessful: false,
-            searchWarning: false,
-            searchFailure: ''
+            fetch: true,
+            successful: false,
+            warning: false,
+            failure: ''
         })
     }
 
     textInputHandler = textInput => {
-        this.setState({ searchTextInput: textInput })
+        this.setState({ textInput: textInput })
         this.searchFetchHandler()
     }
 
     clearInputHandler = () => {
         this.searchRef.current.clear()
         this.setState({
-            searchTextInput: '',
-            searchSuccessful: false
+            textInput: '',
+            successful: false
         })
     }
 
     render() {
         const {
-            searchTextInput, searchFetch,
-            searchFailure, searchSuccessful,
-            searchPayload, searchWarning
+            textInput, fetch, failure, successful, payload, warning
         } = this.state
 
         return (
-            <SearchContainer>
+            <Container style={styles.container}>
                 <View style={styles.content}>
 
                     <TouchableWithoutFeedback onPress={() => Actions.pop()}>
@@ -114,9 +107,8 @@ export default class Search extends PureComponent {
                             onChangeText={this.textInputHandler}
                             ref={this.searchRef} />
 
-                        {searchTextInput !== '' ?
+                        {textInput !== '' ?
                             <TouchableWithoutFeedback
-                                hitSlop={styles.clearHitSlop}
                                 onPress={this.clearInputHandler}>
                                 <Icon
                                     name='cancel'
@@ -131,7 +123,7 @@ export default class Search extends PureComponent {
                 </View>
 
                 <View style={styles.activityIndicatorBox}>
-                    {searchFetch ?
+                    {fetch ?
                         <ActivityIndicator
                             size='large'
                             color='#737373' />
@@ -139,189 +131,92 @@ export default class Search extends PureComponent {
                     }
                 </View>
 
-                {searchSuccessful && searchPayload.length === 0 ?
+                {successful && payload.length === 0 ?
                     <Message text='No Result' />
                     :
                     null
                 }
 
                 {
-                    !searchSuccessful &&
-                        !searchWarning &&
-                        searchFailure !== '' ?
+                    !successful && !warning && failure !== '' ?
                         <Message text={searchFailure} />
                         :
                         null
                 }
 
-                {searchSuccessful ?
+                {successful ?
                     <View style={styles.searchResultsBox}>
                         <FlatList
                             showsVerticalScrollIndicator={false}
                             keyboardShouldPersistTaps='always'
                             keyExtractor={item => item.id.toString()}
-                            data={searchPayload}
+                            data={payload}
                             renderItem={({ item }) => {
                                 if (
                                     item.media_type === 'movie'
                                     && item.poster_path !== null
                                 ) {
                                     return (
-                                        <View style={styles.titleBox}>
-                                            <TouchableWithoutFeedback
-                                                hitSlop={styles.titleHitSlop}
-                                                onPress={() =>
-                                                    routeFix('TitleDetails', {
-                                                        id: item.id,
-                                                        type: item.media_type
-                                                    })}>
-                                                <View style={styles.titleImage}>
-                                                    <Image
-                                                        style={styles.image}
-                                                        source={{
-                                                            uri: `${imgPath.W185}${item.poster_path}`
-                                                        }}
-                                                    />
-                                                    <Badge style={styles.titleBadge}>
-                                                        <Text style={styles.titleBadgeText}>
-                                                            {item.media_type.capitalize()}
-                                                        </Text>
-                                                    </Badge>
-                                                </View>
-                                            </TouchableWithoutFeedback>
-
-                                            <TouchableWithoutFeedback
-                                                hitSlop={styles.titleHitSlop}
-                                                onPress={() =>
-                                                    routeFix('TitleDetails', {
-                                                        id: item.id,
-                                                        type: item.media_type
-                                                    })}>
-                                                <View style={styles.titleInfo}>
-                                                    <Text style={styles.titleInfoText}>
-                                                        {item.title}
-                                                    </Text>
-                                                    <Text style={styles.titleInfoSubText}>
-                                                        {moment(item.release_date)
-                                                            .format('YYYY')}
-                                                    </Text>
-                                                    <Text style={styles.titleInfoSubText}>
-                                                        {limitChar(item.overview, 200, 130)}
-                                                    </Text>
-                                                </View>
-
-                                            </TouchableWithoutFeedback>
-                                        </View>
+                                        <List
+                                            route='TitleDetails'
+                                            id={item.id}
+                                            type={item.media_type}
+                                            image={item.poster_path}
+                                            badge
+                                            badgeText={item.media_type.capitalize()}
+                                            title={item.title}
+                                            date={item.release_date}
+                                            body={item.overview} />
                                     )
                                 } else if (
                                     item.media_type === 'tv'
                                     && item.backdrop_path !== null
                                 ) {
                                     return (
-                                        <View style={styles.titleBox}>
-                                            <TouchableWithoutFeedback
-                                                hitSlop={styles.titleHitSlop}
-                                                onPress={() => routeFix('TitleDetails', {
-                                                    id: item.id,
-                                                    type: item.media_type
-                                                })}>
-                                                <View style={styles.titleImage}>
-                                                    <Image
-                                                        style={styles.image}
-                                                        source={{
-                                                            uri: `${imgPath.W185}${item.poster_path}`
-                                                        }}
-                                                    />
-                                                    <Badge style={styles.titleBadge}>
-                                                        <Text style={styles.titleBadgeText}>
-                                                            {item.media_type.toUpperCase()}
-                                                        </Text>
-                                                    </Badge>
-                                                </View>
-                                            </TouchableWithoutFeedback>
-                                            <TouchableWithoutFeedback
-                                                hitSlop={styles.titleHitSlop}
-                                                onPress={() => routeFix('TitleDetails', {
-                                                    id: item.id,
-                                                    type: item.media_type
-                                                })}>
-                                                <View style={styles.titleInfo}>
-                                                    <Text style={styles.titleInfoText}>
-                                                        {item.name}
-                                                    </Text>
-
-                                                    <Text style={styles.titleInfoSubText}>
-                                                        {moment(item.first_air_date)
-                                                            .format('YYYY')}
-                                                    </Text>
-                                                    <Text style={styles.titleInfoSubText}>
-                                                        {limitChar(item.overview, 200, 130)}
-                                                    </Text>
-                                                </View>
-                                            </TouchableWithoutFeedback>
-                                        </View>
+                                        <List
+                                            route='TitleDetails'
+                                            id={item.id}
+                                            type={item.media_type}
+                                            image={item.poster_path}
+                                            badge
+                                            badgeText={item.media_type.toUpperCase()}
+                                            title={item.name}
+                                            date={item.first_air_date}
+                                            body={item.overview} />
                                     )
                                 } else if (
                                     item.media_type === 'person'
                                     && item.profile_path !== null
                                 ) {
                                     return (
-                                        <View style={styles.titleBox}>
-                                            <TouchableWithoutFeedback
-                                                hitSlop={styles.titleHitSlop}
-                                                onPress={() => routeFix('Person', {
-                                                    id: item.id
-                                                })}>
-                                                <View style={styles.titleImage}>
-                                                    <Image
-                                                        style={styles.image}
-                                                        source={{
-                                                            uri: `${imgPath.W185}${item.profile_path}`
-                                                        }}
-                                                    />
-                                                    <Badge style={styles.titleBadge}>
-                                                        <Text style={styles.titleBadgeText}>
-                                                            {item.media_type.capitalize()}
-                                                        </Text>
-                                                    </Badge>
-                                                </View>
-                                            </TouchableWithoutFeedback>
-
-                                            <TouchableWithoutFeedback
-                                                hitSlop={styles.titleHitSlop}
-                                                onPress={() => routeFix('Person', {
-                                                    id: item.id
-                                                })}>
-                                                <View style={styles.titleInfo}>
-                                                    <Text style={styles.titleInfoText}>
-                                                        {item.name}
-                                                    </Text>
-
-                                                    <Text style={styles.titleInfoSubText}>
-                                                        {
-                                                            orderBy(
-                                                                item.known_for,
-                                                                'vote_count',
-                                                                'desc'
-                                                            )
-                                                                .slice(0, 3)
-                                                                .map(m => {
-                                                                    if (
-                                                                        m.media_type === 'movie'
-                                                                    ) {
-                                                                        return m.title
-                                                                    } else if (
-                                                                        m.media_type === 'tv'
-                                                                    ) {
-                                                                        return m.name
-                                                                    }
-                                                                })
-                                                                .join(', ')
+                                        <List
+                                            route='Person'
+                                            id={item.id}
+                                            type={item.media_type}
+                                            image={item.profile_path}
+                                            badge
+                                            badgeText={item.media_type.capitalize()}
+                                            title={item.name}
+                                            body={
+                                                orderBy(
+                                                    item.known_for,
+                                                    'vote_count',
+                                                    'desc'
+                                                )
+                                                    .slice(0, 3)
+                                                    .map(m => {
+                                                        if (
+                                                            m.media_type === 'movie'
+                                                        ) {
+                                                            return m.title
+                                                        } else if (
+                                                            m.media_type === 'tv'
+                                                        ) {
+                                                            return m.name
                                                         }
-                                                    </Text>
-                                                </View>
-                                            </TouchableWithoutFeedback>
-                                        </View>
+                                                    })
+                                                    .join(', ')
+                                            } />
                                     )
                                 }
                             }}
@@ -330,13 +225,15 @@ export default class Search extends PureComponent {
                     :
                     null
                 }
-
-            </SearchContainer>
+            </Container>
         )
     }
 }
 
 const styles = StyleSheet.create({
+    container: {
+        justifyContent: 'flex-start'
+    },
     content: {
         backgroundColor: '#0f0e0e',
         flexDirection: 'row',
@@ -347,7 +244,6 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.75,
         shadowRadius: 5
-
     },
     backButton: {
         justifyContent: 'center',
@@ -378,57 +274,5 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         margin: 10
-    },
-    titleBox: {
-        flexDirection: 'row',
-        margin: 10
-    },
-    titleImage: {
-        position: 'relative',
-        width: '30%'
-    },
-    image: {
-        width: 100,
-        height: 150,
-        borderWidth: 1,
-        borderColor: '#fff',
-        resizeMode: 'contain'
-    },
-    titleBadge: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0
-    },
-    titleBadgeText: {
-        color: '#fff',
-        fontSize: 10,
-        fontWeight: 'bold'
-    },
-    titleInfo: {
-        width: '70%',
-        margin: 5,
-        marginLeft: 10
-    },
-    titleInfoText: {
-        fontSize: 14,
-        color: '#fff',
-        fontWeight: 'bold'
-    },
-    titleInfoSubText: {
-        color: '#737373',
-        fontSize: 14,
-        marginTop: 3
-    },
-    clearHitSlop: {
-        top: 10,
-        left: 10,
-        bottom: 10,
-        right: 10
-    },
-    titleHitSlop: {
-        top: 10,
-        left: 10,
-        bottom: 10,
-        right: 10
     }
 })

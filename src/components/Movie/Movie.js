@@ -1,13 +1,12 @@
 import React from 'react'
 import {
     View,
-    Text,
     StyleSheet,
     TouchableWithoutFeedback
 } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { routeFix } from '../../util/helpers'
-import { Container } from '../UI'
+import { Container, Text } from '../UI'
 
 const Movie = () => {
     return (
@@ -61,7 +60,7 @@ const styles = StyleSheet.create({
     },
     boxText: {
         color: '#737373',
-        fontSize: 15,
+        fontSize: 18,
         marginLeft: 15
     },
     hitSlop: {

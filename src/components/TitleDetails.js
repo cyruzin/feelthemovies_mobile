@@ -2,7 +2,6 @@ import React, { PureComponent, Fragment } from 'react'
 import {
     StyleSheet,
     View,
-    Text,
     Image,
     ActivityIndicator,
     ScrollView,
@@ -16,7 +15,7 @@ import moment from 'moment'
 import { axiosTMDB } from '../config/axios'
 import { imgPath } from '../config/constants'
 import { routeFix } from '../util/helpers'
-import { Container, Message } from './UI'
+import { Container, Message, Title, Text } from './UI'
 
 class TitleDetails extends PureComponent {
     state = {
@@ -128,9 +127,9 @@ class TitleDetails extends PureComponent {
                                         uri: `${imgPath.W500}${backdrop_path}`
                                     }} />
                                 <View style={styles.titleBox}>
-                                    <Text style={styles.title}>
+                                    <Title style={styles.title}>
                                         {title !== undefined ? title : name}
-                                    </Text>
+                                    </Title>
                                 </View>
                                 <View style={styles.yearBox}>
                                     <Text style={styles.year}>
@@ -176,9 +175,9 @@ class TitleDetails extends PureComponent {
                                 <Text style={styles.overview}>{overview}</Text>
                             </View>
 
-                            <Text style={styles.sectionTitle}>
+                            <Title style={styles.sectionTitle}>
                                 Top Billed Cast
-                            </Text>
+                            </Title>
 
                             <View style={styles.creditsBox}>
                                 <FlatList
@@ -210,10 +209,10 @@ class TitleDetails extends PureComponent {
                                                     justifyContent: 'center',
                                                     maxWidth: 100
                                                 }}>
-                                                    <Text
+                                                    <Title
                                                         style={styles.creditsText}>
                                                         {item.name}
-                                                    </Text>
+                                                    </Title>
                                                     <Text
                                                         style={styles.creditsSubText}>
                                                         {item.character}
@@ -226,9 +225,9 @@ class TitleDetails extends PureComponent {
                                 />
                             </View>
 
-                            <Text style={[styles.sectionTitle, { marginBottom: 5 }]}>
+                            <Title style={[styles.sectionTitle, { marginBottom: 5 }]}>
                                 Other Info
-                            </Text>
+                            </Title>
 
                             {/* Movie */}
                             <View style={styles.otherInfo}>
@@ -409,8 +408,7 @@ const styles = StyleSheet.create({
     },
     title: {
         color: '#fff',
-        fontSize: 18,
-        fontWeight: 'bold'
+        fontSize: 18
     },
     yearBox: {
         position: 'absolute',
@@ -448,7 +446,6 @@ const styles = StyleSheet.create({
     sectionTitle: {
         margin: 10,
         fontSize: 18,
-        fontWeight: 'bold',
         color: '#fff'
     },
     creditsBox: {
@@ -468,7 +465,6 @@ const styles = StyleSheet.create({
     creditsText: {
         color: '#fff',
         fontSize: 12,
-        fontWeight: 'bold',
         textAlign: 'center',
         marginTop: 5
     },

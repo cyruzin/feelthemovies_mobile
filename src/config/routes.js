@@ -57,7 +57,8 @@ const styles = StyleSheet.create({
     },
     navigationBarTitle: {
         color: '#fff',
-        fontSize: 18
+        fontSize: 18,
+        fontFamily: 'OpenSansCondensed-Bold'
     },
     navigationRightButton: {
         alignItems: 'center',

@@ -1,180 +1,81 @@
 import React, { PureComponent } from 'react'
 import {
-    View,
-    Text,
-    StyleSheet,
-    FlatList,
-    TouchableWithoutFeedback,
-    Image,
-    ActivityIndicator
+    ActivityIndicator,
+    FlatList
 } from 'react-native'
-import moment from 'moment'
 import { axiosTMDB } from '../../config/axios'
-import { imgPath } from '../../config/constants'
-import { routeFix, limitChar } from '../../util/helpers'
-import { Container, Message } from '../UI'
+import { Container, List, Message } from '../UI'
 
 export default class NowPlaying extends PureComponent {
 
     state = {
-        movieFetch: false,
-        movieSuccessful: false,
-        movieFailure: '',
-        moviePayload: []
+        fetch: false,
+        successful: false,
+        failure: '',
+        payload: []
     }
 
     async componentDidMount() {
         try {
-            this.setState({ movieFetch: true })
+            this.setState({ fetch: true })
 
             const res = await axiosTMDB.get(
                 `/movie/now_playing?region=us&page=1`
             )
 
             this.setState({
-                moviePayload: res.data.results,
-                movieSuccessful: true,
-                movieFetch: false
+                payload: res.data.results,
+                successful: true,
+                fetch: false
             })
 
         } catch (e) {
             this.setState({
-                movieFailure: 'Something went wrong',
-                movieFetch: false
+                failure: 'Something went wrong',
+                fetch: false
             })
         }
     }
 
     render() {
-        const {
-            movieFetch, moviePayload,
-            movieSuccessful, movieFailure
-        } = this.state
+        const { fetch, successful, failure, payload } = this.state
 
         return (
             <Container>
-                <View style={{ alignItems: 'center' }}>
+                {fetch ?
+                    <ActivityIndicator
+                        size='large'
+                        color='#737373' />
+                    : null
+                }
 
-                    {movieFetch ?
-                        <ActivityIndicator
-                            size='large'
-                            color='#737373' />
-                        : null
-                    }
+                {failure !== '' ?
+                    <Message text={moviefailure} />
+                    :
+                    null
+                }
 
-
-                    {movieFailure !== '' ?
-                        <Message text={movieFailure} />
-                        :
-                        null
-                    }
-
-                    {movieSuccessful ?
-                        <View style={{ margin: 10 }}>
-                            <FlatList
-                                showsVerticalScrollIndicator={false}
-                                keyExtractor={item => item.id.toString()}
-                                data={moviePayload
-                                    .filter(movie => movie.poster_path !== null)
-                                }
-                                renderItem={({ item }) => (
-                                    <TouchableWithoutFeedback
-                                        onPress={() =>
-                                            routeFix('TitleDetails', {
-                                                id: item.id,
-                                                type: 'movie'
-                                            })}
-                                        key={item.id}>
-                                        <View style={styles.titleBox}>
-                                            <View style={styles.titleImage}>
-                                                <Image
-                                                    style={styles.image}
-                                                    source={{
-                                                        uri: `${imgPath.W185}${item.poster_path}`
-                                                    }}
-                                                />
-                                            </View>
-
-                                            <View style={styles.titleInfo}>
-                                                <Text style={styles.titleInfoText}>
-                                                    {item.title}
-                                                </Text>
-
-                                                <Text style={styles.titleInfoSubText}>
-                                                    {moment(item.release_date)
-                                                        .format('YYYY')}
-                                                </Text>
-
-                                                <Text style={styles.titleInfoSubText}>
-                                                    {limitChar(item.overview, 200, 150)}
-                                                </Text>
-                                            </View>
-
-                                        </View>
-                                    </TouchableWithoutFeedback>
-                                )}
+                {successful ?
+                    <FlatList
+                        showsVerticalScrollIndicator={false}
+                        keyExtractor={item => item.id.toString()}
+                        data={payload.filter(item => item.poster_path !== null)}
+                        renderItem={({ item }) =>
+                            <List
+                                route='TitleDetails'
+                                image={item.poster_path}
+                                title={item.title}
+                                id={item.id}
+                                type='movie'
+                                date={item.release_date}
+                                body={item.overview}
                             />
-                        </View>
-                        :
-                        null
-                    }
-                </View>
-            </Container >
+                        }
+                    />
+                    :
+                    null
+                }
+            </Container>
         )
     }
 }
-
-const styles = StyleSheet.create({
-    content: {
-        backgroundColor: '#0f0e0e',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        padding: 10,
-        elevation: 1,
-        shadowColor: '#737373',
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.75,
-        shadowRadius: 5
-    },
-    activityIndicatorBox: {
-        position: 'absolute',
-        top: '50%',
-        left: '45%',
-        margin: 0
-    },
-    searchResultsBox: {
-        flex: 1,
-        justifyContent: 'center',
-        margin: 10
-    },
-    titleBox: {
-        flexDirection: 'row',
-        margin: 10
-    },
-    titleImage: {
-        position: 'relative',
-        width: '30%'
-    },
-    image: {
-        width: 100,
-        height: 150,
-        borderWidth: 1,
-        borderColor: '#fff',
-        resizeMode: 'contain'
-    },
-    titleInfo: {
-        width: '70%',
-        margin: 5,
-        marginLeft: 10
-    },
-    titleInfoText: {
-        fontSize: 14,
-        color: '#fff',
-        fontWeight: 'bold'
-    },
-    titleInfoSubText: {
-        color: '#737373',
-        marginTop: 3,
-        fontSize: 14
-    }
-})

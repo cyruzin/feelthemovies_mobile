@@ -3,7 +3,6 @@ import {
     ScrollView,
     FlatList,
     View,
-    Text,
     Image,
     TouchableWithoutFeedback,
     ActivityIndicator,
@@ -14,7 +13,7 @@ import orderBy from 'lodash/orderBy'
 import { axiosTMDB } from '../config/axios'
 import { imgPath } from '../config/constants'
 import { routeFix } from '../util/helpers'
-import { Container, Badge, Message } from './UI'
+import { Container, Badge, Message, Title, Text } from './UI'
 
 export default class Person extends PureComponent {
     state = {
@@ -92,7 +91,7 @@ export default class Person extends PureComponent {
                                     bottom: 0,
                                     left: 0
                                 }}>
-                                    <Text style={styles.name}>{name}</Text>
+                                    <Title style={styles.name}>{name}</Title>
                                 </Badge>
                             </View>
 
@@ -111,13 +110,13 @@ export default class Person extends PureComponent {
                                     <View style={{
                                         margin: 10
                                     }}>
-                                        <Text style={{
+                                        <Title style={{
                                             fontSize: 16,
                                             fontWeight: 'bold',
                                             color: '#fff'
                                         }}>
                                             Known For
-                                </Text>
+                                        </Title>
                                     </View>
 
                                     <View style={{
@@ -167,20 +166,19 @@ export default class Person extends PureComponent {
                                                                 flexDirection: 'column',
                                                                 maxWidth: 100
                                                             }}>
-                                                            <Text
+                                                            <Title
                                                                 style={{
                                                                     color: '#fff',
                                                                     fontSize: 12,
                                                                     maxWidth: 100,
                                                                     flexWrap: 'wrap',
                                                                     textAlign: 'center',
-                                                                    fontWeight: 'bold',
                                                                     marginTop: 5
                                                                 }}>
                                                                 {item.title !== undefined ?
                                                                     item.title : item.name
                                                                 }
-                                                            </Text>
+                                                            </Title>
                                                             <Text style={{
                                                                 color: '#737373',
                                                                 fontSize: 12,
@@ -209,13 +207,13 @@ export default class Person extends PureComponent {
                             <View style={{
                                 margin: 10
                             }}>
-                                <Text style={{
+                                <Title style={{
                                     fontSize: 16,
                                     fontWeight: 'bold',
                                     color: '#fff'
                                 }}>
                                     Other Info
-                                </Text>
+                                </Title>
                             </View>
 
                             <View style={{
@@ -285,7 +283,6 @@ const styles = StyleSheet.create({
     },
     name: {
         fontSize: 18,
-        fontWeight: 'bold',
         color: '#fff'
     },
     biographyBox: {

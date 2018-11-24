@@ -1,4 +1,6 @@
 export { default as Container } from './Container'
-export { default as SearchContainer } from './SearchContainer'
+export { default as Title } from './Title'
+export { default as Text } from './Text'
 export { default as Badge } from './Badge'
+export { default as List } from './List'
 export { default as Message } from './Message'

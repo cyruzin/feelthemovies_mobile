@@ -2,13 +2,13 @@ import React from 'react'
 import {
     StyleSheet,
     TouchableWithoutFeedback,
-    View,
-    Text
+    View
 } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/AntDesign'
 import IconMC from 'react-native-vector-icons/MaterialCommunityIcons'
 import { routeFix } from '../util/helpers';
+import { Text } from './UI'
 
 const TabBar = () => {
     return (

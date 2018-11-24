@@ -3,7 +3,6 @@ import {
     StyleSheet,
     Image,
     View,
-    Text,
     ActivityIndicator,
     TouchableHighlight,
     RefreshControl,
@@ -15,7 +14,7 @@ import moment from 'moment'
 import axios from '../config/axios'
 import { imgPath } from '../config/constants'
 import { removeHTML, routeFix, type } from '../util/helpers'
-import { Container, Message } from './UI'
+import { Container, Message, Title, Text } from './UI'
 
 export default class Home extends PureComponent {
 
@@ -205,9 +204,9 @@ export default class Home extends PureComponent {
                                     })}>
                                     <View style={styles.content}>
 
-                                        <Text style={styles.contentTitle}>
+                                        <Title style={styles.contentTitle}>
                                             {item.title}
-                                        </Text>
+                                        </Title>
                                         <Text style={styles.contentBody}>
                                             {removeHTML(item.body)}
                                         </Text>
@@ -282,17 +281,14 @@ const styles = StyleSheet.create({
     },
     contentTitle: {
         fontSize: 18,
-        fontWeight: 'bold',
         textAlign: 'center',
-        color: '#fff',
-        fontFamily: 'Open Sans'
+        color: '#fff'
     },
     contentBody: {
         fontSize: 16,
         textAlign: 'justify',
         marginTop: 10,
-        color: '#737373',
-        fontFamily: 'Open Sans'
+        color: '#737373'
     },
     contentFoot: {
         margin: 20,

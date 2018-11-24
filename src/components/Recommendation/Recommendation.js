@@ -3,41 +3,36 @@ import {
     StyleSheet,
     View,
     ScrollView,
-    Image,
-    Text,
     ActivityIndicator,
-    TouchableWithoutFeedback,
     FlatList
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import axios from '../../config/axios'
-import moment from 'moment'
-import { imgPath } from '../../config/constants'
-import { limitChar, removeHTML, routeFix } from '../../util/helpers'
-import { Container, Message } from '../UI'
+import { limitChar, removeHTML } from '../../util/helpers'
+import { Container, Message, Title, Text, List } from '../UI'
 
 export default class Recommendation extends PureComponent {
     state = {
-        itemsFetch: false,
-        itemsSuccessful: false,
-        itemsFailure: '',
-        itemsPayload: []
+        fetch: false,
+        successful: false,
+        failure: '',
+        payload: []
     }
 
     async componentDidMount() {
         try {
             const { id } = this.props
-            this.setState({ itemsFetch: true })
+            this.setState({ fetch: true })
             const res = await axios.get(`recommendation_items/${id}`)
             this.setState({
-                itemsPayload: res.data.data,
-                itemsFetch: false,
-                itemsSuccessful: true
+                payload: res.data.data,
+                fetch: false,
+                successful: true
             })
         } catch (e) {
             this.setState({
-                itemsFailure: 'Something went wrong',
-                itemsFetch: false
+                failure: 'Something went wrong',
+                fetch: false
             })
         }
     }
@@ -46,47 +41,46 @@ export default class Recommendation extends PureComponent {
         const { recommendation } = this.props
 
         const {
-            itemsFetch, itemsFailure,
-            itemsSuccessful, itemsPayload
+            fetch, failure, successful, payload
         } = this.state
 
         return (
             <Container>
 
-                {itemsFetch ?
+                {fetch ?
                     <ActivityIndicator
                         size='large'
                         color='#737373' />
                     : null
                 }
 
-                {itemsFailure !== '' ?
-                    <Message text={itemsFailure} />
+                {failure !== '' ?
+                    <Message text={failure} />
                     :
                     null
                 }
 
-                {itemsSuccessful ?
+                {successful ?
                     <ScrollView
                         showsVerticalScrollIndicator={false}>
 
-                        <View style={styles.contentHeader}>
-                            <Text style={styles.contentTitle}>
+                        <View style={styles.header}>
+                            <Title style={styles.title}>
                                 {recommendation.title}
-                            </Text>
-                            <Text style={styles.contentDescription}>
+                            </Title>
+                            <Text style={styles.description}>
                                 {removeHTML(recommendation.body)}
                             </Text>
                         </View>
 
-                        <View style={styles.contentGenres}>
+                        <View style={styles.genres}>
                             {recommendation.genres
                                 .slice(0, 4)
                                 .map(genres => (
                                     <View
                                         key={genres.id}
-                                        style={styles.contentGenresBox}>
-                                        <Text style={styles.contentGenresText}>
+                                        style={styles.genresBox}>
+                                        <Text style={styles.genresText}>
                                             {genres.name}
                                         </Text>
                                     </View>
@@ -94,53 +88,28 @@ export default class Recommendation extends PureComponent {
                             }
                         </View>
 
-                        <View style={styles.contentBody}>
+                        <View style={styles.body}>
 
                             <FlatList
                                 showsVerticalScrollIndicator={false}
                                 keyExtractor={item => item.id.toString()}
-                                data={itemsPayload}
+                                data={payload}
                                 renderItem={({ item }) => (
                                     <View>
-                                        <TouchableWithoutFeedback
-                                            onPress={() => routeFix('TitleDetails', {
-                                                id: item.tmdb_id,
-                                                type: item.media_type
-                                            })}
-                                        >
-                                            <View
-                                                style={styles.contentBodyBox}>
-                                                <View style={{ width: '30%' }}>
-                                                    <Image
-                                                        style={styles.image}
-                                                        source={{
-                                                            uri: `${imgPath.W185}${item.poster}`
-                                                        }} />
-                                                </View>
-                                                <View style={{ width: '70%', marginLeft: 10 }}>
-                                                    <Text style={styles.contentName}>
-                                                        {item.name}
-                                                    </Text>
-                                                    <Text style={styles.contentDate}>
-                                                        {moment(item.year).format('YYYY')
-                                                        }</Text>
-                                                    <Text style={styles.contentOverview}>
-                                                        {limitChar(item.overview, 200, 170)}
-                                                    </Text>
-                                                </View>
+                                        <List
+                                            route='TitleDetails'
+                                            id={item.tmdb_id}
+                                            type={item.media_type}
+                                            recommendation={item}
+                                            image={item.poster}
+                                            title={item.name}
+                                            date={item.year}
+                                            body={limitChar(item.overview, 200, 170)}
+                                        />
 
-                                            </View>
-
-                                        </TouchableWithoutFeedback>
                                         {item.commentary !== '' ?
-                                            <View style={{
-                                                margin: 10
-                                            }}>
-                                                <Text style={{
-                                                    fontSize: 14,
-                                                    color: '#737373',
-                                                    textAlign: 'center'
-                                                }}>
+                                            <View style={styles.commentaryBox}>
+                                                <Text style={styles.commentaryText}>
                                                     <Icon name='format-quote' size={14} color='#fff' />
                                                     {removeHTML(item.commentary)}
                                                 </Text>
@@ -148,24 +117,13 @@ export default class Recommendation extends PureComponent {
                                             :
                                             null
                                         }
+
                                         {item.sources.length > 0 ?
-                                            <View style={{
-                                                margin: 10,
-                                                flexDirection: 'row',
-                                                flexWrap: 'wrap',
-                                                justifyContent: 'flex-start',
-                                            }}>
-                                                <Text style={{
-                                                    color: '#737373',
-                                                    marginRight: 5,
-                                                    fontSize: 14
-                                                }}>
+                                            <View style={styles.sourcesBox}>
+                                                <Text style={styles.sourcesText}>
                                                     Watch On:
-                                        </Text>
-                                                <Text style={{
-                                                    color: '#fff',
-                                                    fontSize: 14
-                                                }}>
+                                                </Text>
+                                                <Text style={styles.sourcesSubText}>
                                                     {item.sources.map(s => s.name).join(', ')}
                                                 </Text>
                                             </View>
@@ -179,14 +137,14 @@ export default class Recommendation extends PureComponent {
                         </View>
 
                         <View
-                            style={styles.contentKeywordsBox}>
+                            style={styles.keywordsBox}>
                             {recommendation.keywords
                                 .map(keywords => (
                                     <Text
                                         key={keywords.id}
-                                        style={styles.contentKeywordsText}>
+                                        style={styles.keywordsText}>
                                         <Text
-                                            style={styles.contentKeywordsHashTag}>
+                                            style={styles.keywordsHashTag}>
                                             #
                                         </Text>
                                         {keywords.name}
@@ -210,77 +168,98 @@ const styles = StyleSheet.create({
         backgroundColor: '#0f0e0e',
         justifyContent: 'center'
     },
-    contentHeader: {
+    header: {
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center'
     },
-    contentTitle: {
+    title: {
         color: '#fff',
         fontSize: 18,
-        fontWeight: 'bold',
         margin: 10,
         textAlign: 'center'
     },
-    contentDescription: {
+    description: {
         margin: 10,
         marginTop: 0,
         color: '#737373',
         fontSize: 16,
         textAlign: 'center'
     },
-    contentGenres: {
+    genres: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
     },
-    contentGenresBox: {
+    genresBox: {
         backgroundColor: '#0093cb',
         margin: 5,
         padding: 3
     },
-    contentGenresText: {
+    genresText: {
         color: '#fff',
         fontSize: 12
     },
-    contentBody: {
+    body: {
         flexDirection: 'column',
         marginTop: 10
     },
-    contentBodyBox: {
+    bodyBox: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         margin: 10,
         marginTop: 20
     },
-    contentName: {
+    name: {
         color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold'
+        fontSize: 16
     },
-    contentOverview: {
+    overview: {
         color: '#737373',
         fontSize: 14,
         marginTop: 5
     },
-    contentKeywordsBox: {
+    commentaryBox: {
+        margin: 10
+    },
+    commentaryText: {
+        fontSize: 14,
+        color: '#737373',
+        textAlign: 'center'
+    },
+    sourcesBox: {
+        margin: 10,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start'
+    },
+    sourcesText: {
+        color: '#737373',
+        marginRight: 5,
+        fontSize: 14
+    },
+    sourcesSubText: {
+        color: '#fff',
+        fontSize: 14
+    },
+    keywordsBox: {
         margin: 5,
         marginTop: 20,
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'center'
     },
-    contentKeywordsText: {
+    keywordsText: {
         color: '#fff',
         fontSize: 14,
         margin: 5
     },
-    contentKeywordsHashTag: {
+    keywordsHashTag: {
         fontSize: 14,
         fontWeight: 'bold',
         color: '#0093cb'
     },
-    contentDate: {
+    date: {
         fontSize: 14,
         color: '#737373',
         marginTop: 3
