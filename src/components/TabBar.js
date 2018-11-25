@@ -29,8 +29,6 @@ class TabBar extends PureComponent {
         routeFix(route)
     }
 
-
-
     render() {
         const { activeTab, activeColor, inactiveColor } = this.state
 
@@ -43,7 +41,7 @@ class TabBar extends PureComponent {
                     <View style={styles.tabBarBody}>
                         <Icon
                             name='home'
-                            size={22}
+                            size={24}
                             color={activeTab === 'Home' ? activeColor : inactiveColor} />
                         <Text style={[styles.tabBarItem, {
                             color: activeTab === 'Home' ? activeColor : inactiveColor
@@ -59,7 +57,7 @@ class TabBar extends PureComponent {
                     <View style={styles.tabBarBody}>
                         <Icon
                             name='search1'
-                            size={22}
+                            size={24}
                             color={activeTab === 'Search' ? activeColor : inactiveColor} />
                         <Text style={[styles.tabBarItem, {
                             color: activeTab === 'Search' ? activeColor : inactiveColor
@@ -75,7 +73,7 @@ class TabBar extends PureComponent {
                     <View>
                         <IconMC
                             name='movie-roll'
-                            size={22}
+                            size={24}
                             color={activeTab === 'Movie' ? activeColor : inactiveColor} />
                         <Text style={[styles.tabBarItem, {
                             color: activeTab === 'Movie' ? activeColor : inactiveColor
