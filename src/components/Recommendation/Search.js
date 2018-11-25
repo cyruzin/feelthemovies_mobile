@@ -109,6 +109,7 @@ export default class Search extends PureComponent {
             payload: [],
             currentPage: 1,
             lastPage: 0,
+            screenPosition: 0,
             failure: ''
         })
     }
@@ -167,7 +168,8 @@ export default class Search extends PureComponent {
         this.searchRef.current.clear()
         this.setState({
             textInput: '',
-            successful: false
+            successful: false,
+            screenPosition: 0
         })
     }
 
