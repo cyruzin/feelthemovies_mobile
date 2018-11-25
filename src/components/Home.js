@@ -10,23 +10,31 @@ import {
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import IconFeather from 'react-native-vector-icons/Feather'
+import IconAnt from 'react-native-vector-icons/AntDesign'
 import moment from 'moment'
 import axios from '../config/axios'
 import { imgPath } from '../config/constants'
 import { removeHTML, routeFix, type } from '../util/helpers'
-import { Container, Message, Title, Text } from './UI'
+import { Container, Message, Title, Text, ScrollTop } from './UI'
 
 export default class Home extends PureComponent {
 
-    state = {
-        fetch: false,
-        success: false,
-        refreshing: false,
-        scroll: false,
-        error: '',
-        payload: [],
-        currentPage: 1,
-        lastPage: 0
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            fetch: false,
+            success: false,
+            refreshing: false,
+            scroll: false,
+            error: '',
+            payload: [],
+            currentPage: 1,
+            lastPage: 0,
+            screenPosition: 0
+        }
+
+        this.scrollRef = React.createRef()
     }
 
     componentDidMount() {
@@ -93,6 +101,10 @@ export default class Home extends PureComponent {
         }
     }
 
+    scrollTopHandler = () => {
+        this.scrollRef.current.scrollToOffset({ x: 0, y: 0, animated: true })
+    }
+
     typeHandler = titleType => {
         var titleType = parseInt(titleType)
         if (titleType === 0) {
@@ -128,7 +140,7 @@ export default class Home extends PureComponent {
     render() {
 
         const {
-            fetch, success, payload, error, refreshing
+            fetch, success, payload, error, refreshing, screenPosition
         } = this.state
 
         return (
@@ -149,6 +161,10 @@ export default class Home extends PureComponent {
                 {success ?
                     <FlatList
                         showsVerticalScrollIndicator={false}
+                        ref={this.scrollRef}
+                        onScroll={event => this.setState({
+                            screenPosition: event.nativeEvent.contentOffset.y
+                        })}
                         refreshControl={
                             <RefreshControl
                                 progressBackgroundColor='#0f0e0e'
@@ -221,6 +237,13 @@ export default class Home extends PureComponent {
                         )
 
                         }
+                    />
+                    :
+                    null
+                }
+                {screenPosition >= 250 ?
+                    <ScrollTop
+                        onPress={this.scrollTopHandler}
                     />
                     :
                     null

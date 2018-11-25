@@ -14,27 +14,30 @@ import debounce from 'lodash/debounce'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import IconMC from 'react-native-vector-icons/MaterialCommunityIcons'
 import { type, limitChar, removeHTML } from '../../util/helpers'
-import { Container, Message, List } from '../UI'
+import { Container, Message, List, ScrollTop } from '../UI'
 
 export default class Search extends PureComponent {
 
     constructor(props) {
         super(props)
+
+        this.state = {
+            fetch: false,
+            successful: false,
+            warning: false,
+            scroll: false,
+            failure: '',
+            payload: [],
+            type: '',
+            textInput: '',
+            currentPage: 1,
+            lastPage: 0,
+            screenPosition: 0
+        }
+
+        this.scrollRef = React.createRef()
         this.searchRef = React.createRef()
         this.searchFetchHandler = debounce(this.searchFetchHandler, 800)
-    }
-
-    state = {
-        fetch: false,
-        successful: false,
-        warning: false,
-        scroll: false,
-        failure: '',
-        payload: [],
-        type: '',
-        textInput: '',
-        currentPage: 1,
-        lastPage: 0,
     }
 
     searchFetchHandler = async () => {
@@ -124,6 +127,10 @@ export default class Search extends PureComponent {
         }
     }
 
+    scrollTopHandler = () => {
+        this.scrollRef.current.scrollToOffset({ x: 0, y: 0, animated: true })
+    }
+
     textInputHandler = textInput => {
         this.setState({ textInput: textInput })
         this.searchFetchHandler()
@@ -166,7 +173,8 @@ export default class Search extends PureComponent {
 
     render() {
         const {
-            textInput, fetch, failure, successful, payload, warning
+            textInput, fetch, failure, successful,
+            payload, warning, screenPosition
         } = this.state
 
         return (
@@ -248,6 +256,10 @@ export default class Search extends PureComponent {
                         <FlatList
                             showsVerticalScrollIndicator={false}
                             keyboardShouldPersistTaps='always'
+                            ref={this.scrollRef}
+                            onScroll={event => this.setState({
+                                screenPosition: event.nativeEvent.contentOffset.y
+                            })}
                             onEndReachedThreshold={0.5}
                             onEndReached={this.scrollHandler}
                             keyExtractor={item => item.id.toString()}
@@ -276,6 +288,13 @@ export default class Search extends PureComponent {
                             }
                         />
                     </View>
+                    :
+                    null
+                }
+                {screenPosition >= 250 ?
+                    <ScrollTop
+                        onPress={this.scrollTopHandler}
+                    />
                     :
                     null
                 }

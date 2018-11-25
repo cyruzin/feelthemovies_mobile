@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import {
     StyleSheet,
     TouchableWithoutFeedback,
@@ -10,7 +10,7 @@ import IconMC from 'react-native-vector-icons/MaterialCommunityIcons'
 import { routeFix } from '../util/helpers';
 import { Text } from './UI'
 
-class TabBar extends Component {
+class TabBar extends PureComponent {
 
     state = {
         activeTab: 'Home',
@@ -19,8 +19,14 @@ class TabBar extends Component {
     }
 
     isActive = route => {
-        Actions.replace(route)
         this.setState({ activeTab: route })
+
+        if (route === 'Home') {
+            Actions.replace(route)
+            return false
+        }
+
+        routeFix(route)
     }
 
 
@@ -35,7 +41,10 @@ class TabBar extends Component {
                     hitSlop={styles.tabHitSlop}
                     onPress={() => this.isActive('Home')}>
                     <View style={styles.tabBarBody}>
-                        <Icon name='home' size={22} color='#fff' />
+                        <Icon
+                            name='home'
+                            size={22}
+                            color={activeTab === 'Home' ? activeColor : inactiveColor} />
                         <Text style={[styles.tabBarItem, {
                             color: activeTab === 'Home' ? activeColor : inactiveColor
                         }]}>
@@ -48,7 +57,10 @@ class TabBar extends Component {
                     hitSlop={styles.tabHitSlop}
                     onPress={() => this.isActive('Search')}>
                     <View style={styles.tabBarBody}>
-                        <Icon name='search1' size={22} color='#fff' />
+                        <Icon
+                            name='search1'
+                            size={22}
+                            color={activeTab === 'Search' ? activeColor : inactiveColor} />
                         <Text style={[styles.tabBarItem, {
                             color: activeTab === 'Search' ? activeColor : inactiveColor
                         }]}>
@@ -61,7 +73,10 @@ class TabBar extends Component {
                     hitSlop={styles.tabHitSlop}
                     onPress={() => this.isActive('Movie')}>
                     <View>
-                        <IconMC name='movie-roll' size={22} color='#fff' />
+                        <IconMC
+                            name='movie-roll'
+                            size={22}
+                            color={activeTab === 'Movie' ? activeColor : inactiveColor} />
                         <Text style={[styles.tabBarItem, {
                             color: activeTab === 'Movie' ? activeColor : inactiveColor
                         }]}>

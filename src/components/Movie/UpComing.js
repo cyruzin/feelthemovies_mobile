@@ -4,19 +4,28 @@ import {
     FlatList
 } from 'react-native'
 import { axiosTMDB } from '../../config/axios'
-import { Container, List, Message } from '../UI'
+import { Container, List, Message, ScrollTop } from '../UI'
 
-export default class NowPlaying extends PureComponent {
+export default class UpComing extends PureComponent {
 
-    state = {
-        fetch: false,
-        successful: false,
-        scroll: false,
-        failure: '',
-        payload: [],
-        currentPage: 1,
-        lastPage: 0
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            fetch: false,
+            successful: false,
+            scroll: false,
+            failure: '',
+            payload: [],
+            currentPage: 1,
+            lastPage: 0,
+            screenPosition: 0
+        }
+
+        this.scrollRef = React.createRef()
     }
+
+
 
     componentDidMount() {
         this.fetchNowPlaying()
@@ -69,8 +78,12 @@ export default class NowPlaying extends PureComponent {
         }
     }
 
+    scrollTopHandler = () => {
+        this.scrollRef.current.scrollToOffset({ x: 0, y: 0, animated: true })
+    }
+
     render() {
-        const { fetch, successful, failure, payload } = this.state
+        const { fetch, successful, failure, payload, screenPosition } = this.state
 
         return (
             <Container>
@@ -90,6 +103,10 @@ export default class NowPlaying extends PureComponent {
                 {successful ?
                     <FlatList
                         showsVerticalScrollIndicator={false}
+                        ref={this.scrollRef}
+                        onScroll={event => this.setState({
+                            screenPosition: event.nativeEvent.contentOffset.y
+                        })}
                         keyExtractor={item => item.id.toString()}
                         onEndReachedThreshold={0.5}
                         onEndReached={this.scrollHandler}
@@ -105,6 +122,13 @@ export default class NowPlaying extends PureComponent {
                                 body={item.overview}
                             />
                         }
+                    />
+                    :
+                    null
+                }
+                {screenPosition >= 250 ?
+                    <ScrollTop
+                        onPress={this.scrollTopHandler}
                     />
                     :
                     null

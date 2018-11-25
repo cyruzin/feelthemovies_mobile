@@ -11,27 +11,31 @@ import { Actions } from 'react-native-router-flux'
 import { axiosTMDB } from '../config/axios'
 import debounce from 'lodash/debounce'
 import orderBy from 'lodash/orderBy'
+import uniqBy from 'lodash/uniqBy'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { Container, List, Message } from './UI'
+import { Container, List, Message, ScrollTop } from './UI'
 
 export default class Search extends PureComponent {
 
     constructor(props) {
         super(props)
-        this.searchRef = React.createRef()
-        this.searchFetchHandler = debounce(this.searchFetchHandler, 800)
-    }
 
-    state = {
-        fetch: false,
-        successful: false,
-        warning: false,
-        scroll: false,
-        failure: '',
-        payload: [],
-        textInput: '',
-        currentPage: 1,
-        lastPage: 0
+        this.state = {
+            fetch: false,
+            successful: false,
+            warning: false,
+            scroll: false,
+            failure: '',
+            payload: [],
+            textInput: '',
+            currentPage: 1,
+            lastPage: 0,
+            screenPosition: 0
+        }
+
+        this.searchRef = React.createRef()
+        this.scrollRef = React.createRef()
+        this.searchFetchHandler = debounce(this.searchFetchHandler, 800)
     }
 
     searchFetchHandler = async () => {
@@ -68,10 +72,10 @@ export default class Search extends PureComponent {
             )
 
             this.setState({
-                payload: [
+                payload: uniqBy([
                     ...payload,
                     ...res.data.results
-                ],
+                ], 'id'),
                 lastPage: res.data.total_pages,
                 scroll: false,
                 successful: true,
@@ -122,6 +126,10 @@ export default class Search extends PureComponent {
         }
     }
 
+    scrollTopHandler = () => {
+        this.scrollRef.current.scrollToOffset({ x: 0, y: 0, animated: true })
+    }
+
     textInputHandler = textInput => {
         this.setState({ textInput: textInput })
         this.searchFetchHandler()
@@ -137,10 +145,9 @@ export default class Search extends PureComponent {
 
     render() {
         const {
-            textInput, fetch, failure, successful, payload, warning
+            textInput, fetch, failure, successful,
+            payload, warning, screenPosition
         } = this.state
-
-        console.log(this.state)
 
         return (
             <Container style={styles.container}>
@@ -202,6 +209,10 @@ export default class Search extends PureComponent {
                         <FlatList
                             showsVerticalScrollIndicator={false}
                             keyboardShouldPersistTaps='always'
+                            ref={this.scrollRef}
+                            onScroll={event => this.setState({
+                                screenPosition: event.nativeEvent.contentOffset.y
+                            })}
                             onEndReachedThreshold={0.5}
                             onEndReached={this.scrollHandler}
                             keyExtractor={item => item.id.toString()}
@@ -276,6 +287,13 @@ export default class Search extends PureComponent {
                                 }
                             }}
                         />
+                        {screenPosition >= 250 ?
+                            <ScrollTop
+                                onPress={this.scrollTopHandler}
+                            />
+                            :
+                            null
+                        }
                     </View>
                     :
                     null
@@ -328,6 +346,7 @@ const styles = StyleSheet.create({
     },
     searchResultsBox: {
         flex: 1,
+        position: 'relative',
         justifyContent: 'center',
         margin: 10
     }
