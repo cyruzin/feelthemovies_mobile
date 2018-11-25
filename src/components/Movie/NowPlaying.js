@@ -11,29 +11,61 @@ export default class NowPlaying extends PureComponent {
     state = {
         fetch: false,
         successful: false,
+        scroll: false,
         failure: '',
-        payload: []
+        payload: [],
+        currentPage: 1,
+        lastPage: 0
     }
 
-    async componentDidMount() {
-        try {
+    componentDidMount() {
+        this.fetchNowPlaying()
+    }
+
+    fetchNowPlaying = async () => {
+        const { currentPage, scroll, payload } = this.state
+
+        if (!scroll) {
             this.setState({ fetch: true })
+        }
+
+        try {
 
             const res = await axiosTMDB.get(
-                `/movie/now_playing?region=us&page=1`
+                `/movie/now_playing?region=us&page=${currentPage}`
             )
 
             this.setState({
-                payload: res.data.results,
+                payload: [
+                    ...payload,
+                    ...res.data.results
+                ],
+                lastPage: res.data.total_pages,
                 successful: true,
-                fetch: false
+                fetch: false,
+                scroll: false
             })
 
         } catch (e) {
             this.setState({
                 failure: 'Something went wrong',
-                fetch: false
+                fetch: false,
+                scroll: false
             })
+        }
+    }
+
+    scrollHandler = () => {
+        const {
+            currentPage, lastPage
+        } = this.state
+
+        if (currentPage < lastPage) {
+            this.setState({
+                currentPage: currentPage + 1,
+                scroll: true
+            }, () => this.fetchNowPlaying()
+            )
         }
     }
 
@@ -59,6 +91,8 @@ export default class NowPlaying extends PureComponent {
                     <FlatList
                         showsVerticalScrollIndicator={false}
                         keyExtractor={item => item.id.toString()}
+                        onEndReachedThreshold={0.5}
+                        onEndReached={this.scrollHandler}
                         data={payload.filter(item => item.poster_path !== null)}
                         renderItem={({ item }) =>
                             <List

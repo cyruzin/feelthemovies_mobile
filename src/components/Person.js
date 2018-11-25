@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
         resizeMode: 'cover'
     },
     name: {
-        fontSize: 18,
+        fontSize: 20,
         color: '#fff'
     },
     biographyBox: {
@@ -225,13 +225,13 @@ const styles = StyleSheet.create({
     },
     biography: {
         color: '#737373',
-        fontSize: 16
+        fontSize: 18
     },
     section: {
         margin: 10
     },
     sectionTitle: {
-        fontSize: 16,
+        fontSize: 20,
         color: '#fff'
     },
     otherInfoBox: {
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     otherInfoText: {
-        fontSize: 16,
+        fontSize: 18,
         color: '#737373',
         marginTop: 5
     }

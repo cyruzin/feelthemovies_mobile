@@ -125,13 +125,13 @@ class TitleDetails extends PureComponent {
                                     </Title>
                                 </View>
                                 <View style={styles.yearBox}>
-                                    <Text style={styles.year}>
+                                    <Title style={styles.year}>
                                         {release_date !== undefined ?
                                             moment(release_date).format('YYYY')
                                             :
                                             moment(first_air_date).format('YYYY')
                                         }
-                                    </Text>
+                                    </Title>
                                 </View>
                             </View>
 
@@ -378,7 +378,7 @@ const styles = StyleSheet.create({
     },
     title: {
         color: '#fff',
-        fontSize: 18
+        fontSize: 20
     },
     yearBox: {
         position: 'absolute',
@@ -388,7 +388,8 @@ const styles = StyleSheet.create({
     },
     year: {
         color: '#fff',
-        padding: 5
+        padding: 5,
+        fontSize: 16
     },
     bodyBox: {
         alignItems: 'center',
@@ -405,45 +406,22 @@ const styles = StyleSheet.create({
         marginLeft: 3
     },
     infoText: {
-        fontSize: 12,
+        fontSize: 16,
         color: '#fff',
         marginLeft: 2
     },
     overview: {
         color: '#737373',
-        fontSize: 16,
+        fontSize: 18,
     },
     sectionTitle: {
         margin: 10,
-        fontSize: 18,
+        fontSize: 20,
         color: '#fff'
     },
     creditsBox: {
         marginLeft: 10,
         marginRight: 10,
-    },
-    creditContainer: {
-        margin: 5
-    },
-    creditsImage: {
-        width: 100,
-        height: 130,
-        borderWidth: 1,
-        borderColor: '#fff',
-        resizeMode: 'contain'
-    },
-    creditsText: {
-        color: '#fff',
-        fontSize: 12,
-        textAlign: 'center',
-        marginTop: 5
-    },
-    creditsSubText: {
-        color: '#737373',
-        fontSize: 12,
-        textAlign: 'center',
-        flexWrap: 'wrap',
-        marginTop: 3
     },
     otherInfo: {
         flex: 1
@@ -454,7 +432,7 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     otherInfoText: {
-        fontSize: 16,
+        fontSize: 18,
         color: '#737373',
         marginTop: 5
     }

@@ -8,7 +8,8 @@ import {
 import moment from 'moment'
 import { imgPath } from '../../config/constants'
 import { routeFix } from '../../util/helpers'
-import { Title, Text } from '.'
+import Title from './Title'
+import Text from './Text'
 
 export default props => (
     <TouchableWithoutFeedback
@@ -33,7 +34,7 @@ export default props => (
                 </Title>
 
                 {props.date !== undefined ?
-                    <Text style={styles.subTile}>
+                    <Text style={styles.subTitle}>
                         {moment(props.date).format('YYYY')}
                     </Text>
                     :
@@ -41,7 +42,7 @@ export default props => (
                 }
 
                 {props.character !== undefined ?
-                    <Text style={styles.subTile}>
+                    <Text style={styles.subTitle}>
                         {props.character}
                     </Text>
                     :
@@ -64,15 +65,15 @@ const styles = StyleSheet.create({
     },
     title: {
         color: '#fff',
-        fontSize: 12,
+        fontSize: 14,
         maxWidth: 100,
         flexWrap: 'wrap',
         textAlign: 'center',
         marginTop: 5
     },
-    subTile: {
+    subTitle: {
         color: '#737373',
-        fontSize: 12,
+        fontSize: 14,
         flexWrap: 'wrap',
         textAlign: 'center',
         marginTop: 3

@@ -35,7 +35,7 @@ export default class Home extends PureComponent {
 
     fetchRecommendations = async () => {
         const {
-            payload, currentPage, scroll, refreshing
+            payload, currentPage, scroll
         } = this.state
 
         if (!scroll) {
@@ -99,7 +99,7 @@ export default class Home extends PureComponent {
             return (
                 <Text style={styles.contentFootBody}>
                     <Icon name='movie-roll'
-                        size={12} color='#737373' /> {type(
+                        size={13} color='#737373' /> {type(
                             titleType
                         )}
                 </Text>
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     contentDateText: {
         color: '#fff',
         padding: 5,
-        fontSize: 12,
+        fontSize: 14,
     },
     contentGenres: {
         position: 'absolute',
@@ -271,15 +271,15 @@ const styles = StyleSheet.create({
     },
     contentGenresText: {
         color: '#fff',
-        fontSize: 12,
+        fontSize: 14,
     },
     contentTitle: {
-        fontSize: 18,
+        fontSize: 20,
         textAlign: 'center',
         color: '#fff'
     },
     contentBody: {
-        fontSize: 16,
+        fontSize: 18,
         textAlign: 'justify',
         marginTop: 10,
         color: '#737373'
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
     },
     contentFootBody: {
         color: '#737373',
-        fontSize: 12,
+        fontSize: 14,
         padding: 5
     }
 })

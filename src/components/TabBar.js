@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
         padding: 5
     },
     tabBarItem: {
-        fontSize: 10,
+        fontSize: 12,
         marginTop: 3,
         textAlign: 'center'
     },

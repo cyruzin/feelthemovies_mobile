@@ -28,10 +28,13 @@ export default class Search extends PureComponent {
         fetch: false,
         successful: false,
         warning: false,
+        scroll: false,
         failure: '',
         payload: [],
         type: '',
-        textInput: ''
+        textInput: '',
+        currentPage: 1,
+        lastPage: 0,
     }
 
     searchFetchHandler = async () => {
@@ -39,13 +42,14 @@ export default class Search extends PureComponent {
 
         try {
             const res = await axios.get(
-                '/search_recommendation',
+                '/search_recommendation?page=1',
                 { params: this.queryHandler() }
             )
 
             this.setState({
-                payload: res.data,
+                payload: res.data.data,
                 successful: true,
+                lastPage: res.data.last_page,
                 fetch: false
             })
 
@@ -53,6 +57,34 @@ export default class Search extends PureComponent {
             this.setState({
                 failure: 'Something went wrong',
                 fetch: false
+            })
+        }
+    }
+
+    loadMoreHandler = async () => {
+        const { payload, currentPage } = this.state
+        try {
+            const res = await axios.get(
+                `/search_recommendation?page=${currentPage}`,
+                { params: this.queryHandler() }
+            )
+
+            this.setState({
+                payload: [
+                    ...payload,
+                    ...res.data.data
+                ],
+                lastPage: res.data.last_page,
+                scroll: false,
+                successful: true,
+                fetch: false
+            })
+
+        } catch (e) {
+            this.setState({
+                failure: 'Something went wrong',
+                fetch: false,
+                scroll: false
             })
         }
     }
@@ -70,8 +102,26 @@ export default class Search extends PureComponent {
             fetch: true,
             successful: false,
             warning: false,
+            scroll: false,
+            payload: [],
+            currentPage: 1,
+            lastPage: 0,
             failure: ''
         })
+    }
+
+    scrollHandler = () => {
+        const {
+            currentPage, lastPage
+        } = this.state
+
+        if (currentPage < lastPage) {
+            this.setState({
+                currentPage: currentPage + 1,
+                scroll: true
+            }, () => this.loadMoreHandler()
+            )
+        }
     }
 
     textInputHandler = textInput => {
@@ -143,7 +193,7 @@ export default class Search extends PureComponent {
                                 mode='dropdown'
                                 style={styles.picker}
                                 itemStyle={styles.pickerItem}
-                                selectedValue={this.state.searchType}
+                                selectedValue={this.state.type}
                                 onValueChange={this.typeHandler}
                             >
                                 <Picker.Item label="All" value="" />
@@ -198,6 +248,8 @@ export default class Search extends PureComponent {
                         <FlatList
                             showsVerticalScrollIndicator={false}
                             keyboardShouldPersistTaps='always'
+                            onEndReachedThreshold={0.5}
+                            onEndReached={this.scrollHandler}
                             keyExtractor={item => item.id.toString()}
                             data={payload}
                             renderItem={({ item }) => (

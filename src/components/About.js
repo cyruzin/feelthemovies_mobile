@@ -38,12 +38,13 @@ const styles = StyleSheet.create({
     },
     text: {
         color: '#fff',
-        fontSize: 18,
-        textAlign: 'center'
+        fontSize: 20,
+        textAlign: 'center',
+        marginTop: 20
     },
     body: {
         color: '#737373',
-        fontSize: 16,
+        fontSize: 18,
         margin: 10
     }
 })

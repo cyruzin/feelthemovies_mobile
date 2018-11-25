@@ -8,7 +8,9 @@ import {
 import moment from 'moment'
 import { imgPath } from '../../config/constants'
 import { limitChar, routeFix } from '../../util/helpers'
-import { Title, Text, Badge } from '.'
+import Title from './Title'
+import Text from './Text'
+import Badge from './Badge'
 
 export default props => (
     <TouchableWithoutFeedback
@@ -67,7 +69,8 @@ const styles = StyleSheet.create({
     },
     titleImage: {
         position: 'relative',
-        width: '30%'
+        width: '30%',
+        height: 150
     },
     titleInfo: {
         width: '70%',
@@ -75,13 +78,13 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
     titleInfoText: {
-        fontSize: 14,
+        fontSize: 18,
         color: '#fff'
     },
     titleInfoSubText: {
         color: '#737373',
         marginTop: 3,
-        fontSize: 14
+        fontSize: 16
     },
     titleBadge: {
         position: 'absolute',
@@ -90,7 +93,7 @@ const styles = StyleSheet.create({
     },
     titleBadgeText: {
         color: '#fff',
-        fontSize: 10
+        fontSize: 14
     },
     image: {
         width: 100,

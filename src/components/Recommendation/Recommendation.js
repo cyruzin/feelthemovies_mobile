@@ -143,10 +143,10 @@ export default class Recommendation extends PureComponent {
                                     <Text
                                         key={keywords.id}
                                         style={styles.keywordsText}>
-                                        <Text
+                                        <Title
                                             style={styles.keywordsHashTag}>
                                             #
-                                        </Text>
+                                        </Title>
                                         {keywords.name}
                                     </Text>
                                 ))
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     },
     title: {
         color: '#fff',
-        fontSize: 18,
+        fontSize: 20,
         margin: 10,
         textAlign: 'center'
     },
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
         margin: 10,
         marginTop: 0,
         color: '#737373',
-        fontSize: 16,
+        fontSize: 18,
         textAlign: 'center'
     },
     genres: {
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     },
     genresText: {
         color: '#fff',
-        fontSize: 12
+        fontSize: 14
     },
     body: {
         flexDirection: 'column',
@@ -212,18 +212,18 @@ const styles = StyleSheet.create({
     },
     name: {
         color: '#fff',
-        fontSize: 16
+        fontSize: 20
     },
     overview: {
         color: '#737373',
-        fontSize: 14,
+        fontSize: 18,
         marginTop: 5
     },
     commentaryBox: {
         margin: 10
     },
     commentaryText: {
-        fontSize: 14,
+        fontSize: 16,
         color: '#737373',
         textAlign: 'center'
     },
@@ -236,11 +236,11 @@ const styles = StyleSheet.create({
     sourcesText: {
         color: '#737373',
         marginRight: 5,
-        fontSize: 14
+        fontSize: 16
     },
     sourcesSubText: {
         color: '#fff',
-        fontSize: 14
+        fontSize: 16
     },
     keywordsBox: {
         margin: 5,
@@ -251,24 +251,11 @@ const styles = StyleSheet.create({
     },
     keywordsText: {
         color: '#fff',
-        fontSize: 14,
+        fontSize: 16,
         margin: 5
     },
     keywordsHashTag: {
-        fontSize: 14,
-        fontWeight: 'bold',
+        fontSize: 16,
         color: '#0093cb'
-    },
-    date: {
-        fontSize: 14,
-        color: '#737373',
-        marginTop: 3
-    },
-    image: {
-        width: 100,
-        height: 150,
-        maxHeight: 150,
-        borderWidth: 1,
-        borderColor: '#fff'
     }
 })
