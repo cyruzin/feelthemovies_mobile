@@ -14,7 +14,7 @@ export default props => (
             <IconAnt
                 name='upcircle'
                 color='#737373'
-                size={24}
+                size={26}
                 style={styles.icon}
             />
         </TouchableWithoutFeedback>
