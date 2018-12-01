@@ -10,7 +10,6 @@ import {
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import IconFeather from 'react-native-vector-icons/Feather'
-import IconAnt from 'react-native-vector-icons/AntDesign'
 import moment from 'moment'
 import axios from '../config/axios'
 import { imgPath } from '../config/constants'
@@ -254,14 +253,6 @@ export default class Home extends PureComponent {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        flexDirection: 'column',
-        position: 'relative',
-        backgroundColor: '#0f0e0e',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
     content: {
         marginLeft: 20,
         marginRight: 20,

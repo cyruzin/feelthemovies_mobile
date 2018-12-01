@@ -193,6 +193,7 @@ export default class Search extends PureComponent {
                         <View>
                             <TextInput
                                 style={styles.textInput}
+                                autoFocus
                                 placeholderTextColor='#737373'
                                 placeholder='Search for a keyword or genre'
                                 onChangeText={this.textInputHandler}
