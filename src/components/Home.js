@@ -13,7 +13,7 @@ import IconFeather from 'react-native-vector-icons/Feather'
 import moment from 'moment'
 import axios from '../config/axios'
 import { imgPath } from '../config/constants'
-import { removeHTML, routeFix, type } from '../util/helpers'
+import { routeFix, type } from '../util/helpers'
 import { Container, Message, Title, Text, ScrollTop } from './UI'
 
 export default class Home extends PureComponent {
@@ -187,7 +187,7 @@ export default class Home extends PureComponent {
                                         <Image
                                             style={styles.contentImage}
                                             source={{
-                                                uri: `${imgPath.W500}${item.poster}`
+                                                uri: `${imgPath.W500}${item.backdrop}`
                                             }} />
                                     </View>
                                 </TouchableHighlight>
@@ -217,7 +217,7 @@ export default class Home extends PureComponent {
                                             {item.title}
                                         </Title>
                                         <Text style={styles.contentBody}>
-                                            {removeHTML(item.body)}
+                                            {item.body}
                                         </Text>
                                     </View>
                                 </TouchableHighlight>

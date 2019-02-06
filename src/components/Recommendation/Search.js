@@ -13,7 +13,7 @@ import axios from '../../config/axios'
 import debounce from 'lodash/debounce'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 //import IconMC from 'react-native-vector-icons/MaterialCommunityIcons'
-import { type, limitChar, removeHTML } from '../../util/helpers'
+import { type, limitChar } from '../../util/helpers'
 import { Container, Message, List, ScrollTop } from '../UI'
 
 export default class Search extends PureComponent {
@@ -279,9 +279,8 @@ export default class Search extends PureComponent {
                                     date={item.created_at}
                                     body={
                                         limitChar(
-                                            removeHTML(
-                                                item.body
-                                            ),
+                                            item.body
+                                            ,
                                             200,
                                             170
                                         )

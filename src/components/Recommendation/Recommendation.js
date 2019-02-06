@@ -8,7 +8,7 @@ import {
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import axios from '../../config/axios'
-import { limitChar, removeHTML } from '../../util/helpers'
+import { limitChar } from '../../util/helpers'
 import { Container, Message, Title, Text, List } from '../UI'
 
 export default class Recommendation extends PureComponent {
@@ -69,7 +69,7 @@ export default class Recommendation extends PureComponent {
                                 {recommendation.title}
                             </Title>
                             <Text style={styles.description}>
-                                {removeHTML(recommendation.body)}
+                                {recommendation.body}
                             </Text>
                         </View>
 
@@ -111,7 +111,7 @@ export default class Recommendation extends PureComponent {
                                             <View style={styles.commentaryBox}>
                                                 <Text style={styles.commentaryText}>
                                                     <Icon name='format-quote' size={14} color='#fff' />
-                                                    {removeHTML(item.commentary)}
+                                                    {item.commentary}
                                                 </Text>
                                             </View>
                                             :
