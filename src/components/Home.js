@@ -54,8 +54,8 @@ export default class Home extends PureComponent {
 
             this.setState({
                 payload: [
-                    ...payload,
-                    ...res.data.data
+                    ...payload.filter(v => v.status > 0),
+                    ...res.data.data.filter(v => v.status > 0)
                 ],
                 lastPage: res.data.last_page,
                 success: true,
@@ -187,7 +187,7 @@ export default class Home extends PureComponent {
                                         <Image
                                             style={styles.contentImage}
                                             source={{
-                                                uri: `${imgPath.W500}${item.backdrop}`
+                                                uri: `${imgPath.W500}${item.poster}`
                                             }} />
                                     </View>
                                 </TouchableHighlight>
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     contentImage: {
         width: null,
         height: 200,
-        maxHeight: 200
+        resizeMode: 'cover'
     },
     contentDate: {
         position: 'absolute',

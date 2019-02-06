@@ -12,7 +12,7 @@ import { Actions } from 'react-native-router-flux'
 import axios from '../../config/axios'
 import debounce from 'lodash/debounce'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import IconMC from 'react-native-vector-icons/MaterialCommunityIcons'
+//import IconMC from 'react-native-vector-icons/MaterialCommunityIcons'
 import { type, limitChar, removeHTML } from '../../util/helpers'
 import { Container, Message, List, ScrollTop } from '../UI'
 
@@ -50,7 +50,7 @@ export default class Search extends PureComponent {
             )
 
             this.setState({
-                payload: res.data.data,
+                payload: res.data.data.filter(v => v.status > 0),
                 successful: true,
                 lastPage: res.data.last_page,
                 fetch: false
@@ -74,8 +74,8 @@ export default class Search extends PureComponent {
 
             this.setState({
                 payload: [
-                    ...payload,
-                    ...res.data.data
+                    ...payload.filter(v => v.status > 0),
+                    ...res.data.data.filter(v => v.status > 0)
                 ],
                 lastPage: res.data.last_page,
                 scroll: false,
