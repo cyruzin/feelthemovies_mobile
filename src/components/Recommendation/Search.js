@@ -158,7 +158,7 @@ export default class Search extends PureComponent {
         }
 
         searchQuery = {
-            q: query
+            query: query
         }
 
         return searchQuery
@@ -199,7 +199,7 @@ export default class Search extends PureComponent {
                                 onChangeText={this.textInputHandler}
                                 ref={this.searchRef} />
                         </View>
-                        <View style={styles.pickerBox}>
+                        {/* <View style={styles.pickerBox}>
                             <Picker
                                 mode='dropdown'
                                 style={styles.picker}
@@ -215,7 +215,7 @@ export default class Search extends PureComponent {
                             <View style={styles.pickerIcon}>
                                 <IconMC name='chevron-down' size={24} color='#737373' />
                             </View>
-                        </View>
+                        </View> */}
 
                         {textInput !== '' ?
                             <TouchableWithoutFeedback
