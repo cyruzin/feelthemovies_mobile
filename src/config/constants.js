@@ -1,5 +1,5 @@
-//const baseURL = 'https://api.feelthemovies.com.br/v1'
-//const apiToken = '5ZLTDmHMWxcJs0pi6g0cNAtIwBbyOtjo'
+//const baseURL = 'http://localhost:8000/v1'
+//const apiToken = 'ce3b81ee-0dc0-4133-8625-32007e64af7b'
 const baseURL = 'http://157.230.141.254:8000/v1'
 const apiToken = 'ce3b81ee-0dc0-4133-8625-32007e64af7b'
 const tmbdURL = 'https://api.themoviedb.org/3'
