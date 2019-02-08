@@ -187,7 +187,7 @@ export default class Home extends PureComponent {
                                         <Image
                                             style={styles.contentImage}
                                             source={{
-                                                uri: `${imgPath.W500}${item.backdrop}`
+                                                uri: `${imgPath.W500}${item.poster}`
                                             }} />
                                     </View>
                                 </TouchableHighlight>
