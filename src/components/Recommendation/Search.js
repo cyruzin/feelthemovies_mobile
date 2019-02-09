@@ -272,7 +272,7 @@ export default class Search extends PureComponent {
                                     route='Recommendation'
                                     id={item.id}
                                     recommendation={item}
-                                    image={item.backdrop}
+                                    image={item.poster}
                                     badge
                                     badgeText={type(item.type)}
                                     title={item.title}
