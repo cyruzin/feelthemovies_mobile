@@ -30,3 +30,7 @@ Since I don't have a MAC to test iOS version, maybe you'll find some errors to f
 
 Download the app for Android [here](https://play.google.com/store/apps/details?id=br.com.feelthemovies).
 
+### Other Repositories
+
+[Dashboard](https://github.com/cyruzin/feelthemovies_dashboard)
+[Back-end](https://github.com/cyruzin/feelthemovies)
