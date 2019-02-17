@@ -2,7 +2,7 @@
 
 This is the mobile app from Feel the Movies project.
 
-### Install:
+### Install
 
 First setup your environment with XCODE, Android Studio, JAVA, React Native Cli and other dependencies. Then inside the project folder:
 
@@ -10,7 +10,7 @@ First setup your environment with XCODE, Android Studio, JAVA, React Native Cli 
 yarn install
 ```
 
-### Run:
+### Run
 
 With your device or emulator ready, inside the project folder run the following commands:
 
