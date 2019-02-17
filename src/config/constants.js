@@ -1,9 +1,7 @@
-//const baseURL = 'http://localhost:8000/v1'
-//const apiToken = 'ce3b81ee-0dc0-4133-8625-32007e64af7b'
-const baseURL = 'http://157.230.141.254:8000/v1'
-const apiToken = 'ce3b81ee-0dc0-4133-8625-32007e64af7b'
+const baseURL = 'http://localhost:8000/v1'
+const apiToken = 'YOUR_API_TOKEN'
 const tmbdURL = 'https://api.themoviedb.org/3'
-const tmdbToken = '9aca69849a23528a419aea463387945f'
+const tmdbToken = 'YOUR_TMDB_TOKEN'
 
 const imgPath = {
     W45: 'https://image.tmdb.org/t/p/w45',

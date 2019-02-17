@@ -74,7 +74,7 @@ export default class Search extends PureComponent {
 
             this.setState({
                 payload: [
-                    ...payload.filter(v => v.status > 0),
+                    ...payload.filter(v => v.status > 0), //Workaround until I fix it on server side
                     ...res.data.data.filter(v => v.status > 0)
                 ],
                 lastPage: res.data.last_page,
