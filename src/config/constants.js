@@ -1,7 +1,7 @@
-const baseURL = 'http://localhost:8000/v1'
-const apiToken = 'YOUR_API_TOKEN'
+const baseURL = 'https://feelthemovies.com.br/v1'
+const apiToken = 'ce3b81ee-0dc0-4133-8625-32007e64af7b'
 const tmbdURL = 'https://api.themoviedb.org/3'
-const tmdbToken = 'YOUR_TMDB_TOKEN'
+const tmdbToken = '9aca69849a23528a419aea463387945f'
 
 const imgPath = {
     W45: 'https://image.tmdb.org/t/p/w45',
