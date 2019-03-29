@@ -14,7 +14,7 @@ export default props => (
             <IconAnt
                 name='upcircle'
                 color='#737373'
-                size={24}
+                size={28}
                 style={styles.icon}
             />
         </TouchableWithoutFeedback>
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     scrollBox: {
         position: 'absolute',
         bottom: 30,
-        right: 20,
+        right: 30,
         zIndex: 1
     },
     scrollHitSlop: {
@@ -35,6 +35,6 @@ const styles = StyleSheet.create({
         right: 5
     },
     icon: {
-        opacity: 0.5
+        opacity: 0.8
     }
 })

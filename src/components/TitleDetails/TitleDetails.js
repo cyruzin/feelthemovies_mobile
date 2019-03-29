@@ -13,7 +13,6 @@ import Icon from 'react-native-vector-icons/EvilIcons'
 import moment from 'moment'
 import { axiosTMDB } from '../../config/axios'
 import { imgPath } from '../../config/constants'
-import { routeFix } from '../../util/helpers'
 import { Container, Message, Title, Text, Credits } from '../UI'
 
 class TitleDetails extends PureComponent {
@@ -29,7 +28,6 @@ class TitleDetails extends PureComponent {
             this.setState({ fetch: true })
 
             const { type, id } = this.props
-
             const res = await axiosTMDB.get(
                 `/${type}/${id}?append_to_response=credits,videos,release_dates`
             )
@@ -150,10 +148,7 @@ class TitleDetails extends PureComponent {
                                             color='#fff'
                                             style={styles.infoIcon} />
                                         <TouchableHighlight
-                                            onPress={
-                                                () => this.trailerHandler(videos.results[0].key)
-                                            }
-                                        >
+                                            onPress={() => this.trailerHandler(videos.results[0].key)}>
                                             <Text style={styles.infoText}>
                                                 Watch Trailer
                                         </Text>

@@ -1,5 +1,13 @@
 import { Actions } from 'react-native-router-flux'
 
+/**
+ * Receives a string and returns it limited.
+ * 
+ * @param {string} str - The string that needs limit.  
+ * @param {number} length - The length of the string.
+ * @param {number} limit - The size of the limite.
+ * @returns {string} The string limited.
+ */
 export const limitChar = (
     str, length = 200, limit = 220
 ) => {
@@ -11,6 +19,12 @@ export const limitChar = (
     }
 }
 
+/**
+ *  Receives a number and returns a string.
+ * 
+ * @param {string|number} type - Recommendation number type.
+ * @returns {string} Recommendation string type.
+ */
 export const type = type => {
     switch (parseInt(type)) {
         case 0:
@@ -24,6 +38,12 @@ export const type = type => {
     }
 }
 
+/**
+ *  Receives a number and returns a string.
+ * 
+ * @param {string|number} type - TMDb number type.
+ * @returns {string} TMDb string type.
+ */
 export const typeTMDB = type => {
     switch (parseInt(type)) {
         case 0:
@@ -33,11 +53,6 @@ export const typeTMDB = type => {
         default:
             return ''
     }
-}
-
-export const removeHTML = str => {
-    str = str.replace(/<{1}[^<>]{1,}>{1}/g, " ")
-    return str
 }
 
 /**
@@ -61,6 +76,7 @@ export const routeFix = (sceneKey, props = {}) => {
  * This is a workaround.
  * 
  * @function onBackPress
+ * @returns {bool} 
  * 
  */
 export const onBackPress = () => {
@@ -71,10 +87,16 @@ export const onBackPress = () => {
     return true
 }
 
+/**
+ *  Capitalize the first letter.
+ */
 String.prototype.capitalize = function () {
     return this.charAt(0).toUpperCase() + this.slice(1)
 }
 
+/**
+ *  Formats a number.
+ */
 Number.prototype.format = function (n, x) {
     var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')'
     return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,')
