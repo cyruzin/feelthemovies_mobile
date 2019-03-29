@@ -11,10 +11,10 @@ import {
 } from 'react-native'
 import Icon from 'react-native-vector-icons/EvilIcons'
 import moment from 'moment'
-import { axiosTMDB } from '../config/axios'
-import { imgPath } from '../config/constants'
-import { routeFix } from '../util/helpers'
-import { Container, Message, Title, Text, Credits } from './UI'
+import { axiosTMDB } from '../../config/axios'
+import { imgPath } from '../../config/constants'
+import { routeFix } from '../../util/helpers'
+import { Container, Message, Title, Text, Credits } from '../UI'
 
 class TitleDetails extends PureComponent {
     state = {

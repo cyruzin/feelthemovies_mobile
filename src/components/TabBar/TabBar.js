@@ -7,8 +7,8 @@ import {
 import { Actions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/AntDesign'
 import IconMC from 'react-native-vector-icons/MaterialCommunityIcons'
-import { routeFix } from '../util/helpers';
-import { Text } from './UI'
+import { routeFix } from '../../util/helpers';
+import { Text } from '../UI'
 
 class TabBar extends PureComponent {
 

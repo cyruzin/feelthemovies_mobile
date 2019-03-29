@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { Container, Title, Text } from './UI'
+import { Container, Title, Text } from '../UI'
 
 const About = () => (
     <Container>

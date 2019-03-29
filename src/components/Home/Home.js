@@ -11,10 +11,10 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import IconFeather from 'react-native-vector-icons/Feather'
 import moment from 'moment'
-import axios from '../config/axios'
-import { imgPath } from '../config/constants'
-import { routeFix, type } from '../util/helpers'
-import { Container, Message, Title, Text, ScrollTop } from './UI'
+import axios from '../../config/axios'
+import { imgPath } from '../../config/constants'
+import { routeFix, type } from '../../util/helpers'
+import { Container, Message, Title, Text, ScrollTop } from '../UI'
 
 export default class Home extends PureComponent {
 

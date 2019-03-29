@@ -8,12 +8,12 @@ import {
     TouchableWithoutFeedback
 } from 'react-native'
 import { Actions } from 'react-native-router-flux'
-import { axiosTMDB } from '../config/axios'
+import { axiosTMDB } from '../../config/axios'
 import debounce from 'lodash/debounce'
 import orderBy from 'lodash/orderBy'
 import uniqBy from 'lodash/uniqBy'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { Container, List, Message, ScrollTop } from './UI'
+import { Container, List, Message, ScrollTop } from '../UI'
 
 export default class Search extends PureComponent {
 
