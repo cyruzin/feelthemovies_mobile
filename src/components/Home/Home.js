@@ -11,10 +11,10 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import IconFeather from 'react-native-vector-icons/Feather'
 import moment from 'moment'
-import axios from '../config/axios'
-import { imgPath } from '../config/constants'
-import { routeFix, type } from '../util/helpers'
-import { Container, Message, Title, Text, ScrollTop } from './UI'
+import axios from '../../config/axios'
+import { imgPath } from '../../config/constants'
+import { routeFix, type } from '../../util/helpers'
+import { Container, Message, Title, Text, ScrollTop } from '../UI'
 
 export default class Home extends PureComponent {
 
@@ -54,8 +54,8 @@ export default class Home extends PureComponent {
 
             this.setState({
                 payload: [
-                    ...payload.filter(v => v.status > 0), //Workaround until I fix it on server side
-                    ...res.data.data.filter(v => v.status > 0)
+                    ...payload,
+                    ...res.data.data
                 ],
                 lastPage: res.data.last_page,
                 success: true,

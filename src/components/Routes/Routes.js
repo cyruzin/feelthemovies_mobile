@@ -2,14 +2,14 @@ import React from 'react'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { StyleSheet } from 'react-native'
 import { Router, Scene } from 'react-native-router-flux'
-import { onBackPress, routeFix } from '../util/helpers';
-import Home from '../components/Home'
-import Search from '../components/Search'
-import Recommendation, { Search as RecommendationSearch } from '../components/Recommendation'
-import Movie, { NowPlaying, UpComing } from '../components/Movie'
-import TitleDetails from '../components/TitleDetails'
-import Person from '../components/Person'
-import About from '../components/About'
+import { onBackPress, routeFix } from '../../util/helpers';
+import Home from '../Home/Home'
+import Search from '../Search/Search'
+import Recommendation, { Search as RecommendationSearch } from '../Recommendation'
+import Movie, { NowPlaying, UpComing } from '../Movie'
+import TitleDetails from '../TitleDetails/TitleDetails'
+import Person from '../Person/Person'
+import About from '../About/About'
 
 export default () => {
     return (

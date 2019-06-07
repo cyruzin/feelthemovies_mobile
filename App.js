@@ -4,8 +4,8 @@ import {
   View,
   StyleSheet
 } from 'react-native'
-import Routes from './src/config/routes'
-import TabBar from './src/components/TabBar'
+import Routes from './src/components/Routes/Routes'
+import TabBar from './src/components/TabBar/TabBar'
 
 export default class App extends Component {
 

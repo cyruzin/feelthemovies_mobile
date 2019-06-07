@@ -8,9 +8,9 @@ import {
     StyleSheet
 } from 'react-native'
 import orderBy from 'lodash/orderBy'
-import { axiosTMDB } from '../config/axios'
-import { imgPath } from '../config/constants'
-import { Container, Badge, Message, Title, Text, Credits } from './UI'
+import { axiosTMDB } from '../../config/axios'
+import { imgPath } from '../../config/constants'
+import { Container, Badge, Message, Title, Text, Credits } from '../UI'
 
 export default class Person extends PureComponent {
     state = {
