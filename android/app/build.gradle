@@ -94,7 +94,7 @@ def enableSeparateBuildPerCPUArchitecture = true
 /**
  * Run Proguard to shrink the Java bytecode in release builds.
  */
-def enableProguardInReleaseBuilds = false
+def enableProguardInReleaseBuilds = true
 
 /**
  * Use international variant JavaScriptCore
@@ -117,8 +117,8 @@ android {
         applicationId "br.com.feelthemovies"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 64
-        versionName "4.2.0"
+        versionCode 66
+        versionName "4.2.2"
     }
     splits {
         abi {
