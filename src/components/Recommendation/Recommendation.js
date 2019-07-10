@@ -7,9 +7,12 @@ import {
     FlatList
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import moment from 'moment'
 import axios from '../../config/axios'
 import { limitChar } from '../../util/helpers'
-import { Container, Message, Title, Text, List } from '../UI'
+import {
+    Container, Message, Title, Text, List
+} from '../UI'
 
 export default class Recommendation extends PureComponent {
     state = {
@@ -39,7 +42,6 @@ export default class Recommendation extends PureComponent {
 
     render() {
         const { recommendation } = this.props
-
         const {
             fetch, failure, successful, payload
         } = this.state
@@ -47,115 +49,133 @@ export default class Recommendation extends PureComponent {
         return (
             <Container>
 
-                {fetch ?
+                {fetch && (
                     <ActivityIndicator
-                        size='large'
-                        color='#737373' />
+                      size="large"
+                      color="#737373"
+                    />
+                )}
+
+                {failure !== ''
+                    ? <Message text={failure} />
                     : null
                 }
 
-                {failure !== '' ?
-                    <Message text={failure} />
-                    :
-                    null
-                }
+                {successful
+                    ? (
+                        <ScrollView
+                          showsVerticalScrollIndicator={false}
+                        >
 
-                {successful ?
-                    <ScrollView
-                        showsVerticalScrollIndicator={false}>
-
-                        <View style={styles.header}>
-                            <Title style={styles.title}>
-                                {recommendation.title}
-                            </Title>
-                            <Text style={styles.description}>
-                                {recommendation.body}
-                            </Text>
-                        </View>
-
-                        <View style={styles.genres}>
-                            {recommendation.genres
-                                .slice(0, 4)
-                                .map(genres => (
-                                    <View
-                                        key={genres.id}
-                                        style={styles.genresBox}>
-                                        <Text style={styles.genresText}>
-                                            {genres.name}
-                                        </Text>
-                                    </View>
-                                ))
-                            }
-                        </View>
-
-                        <View style={styles.body}>
-
-                            <FlatList
-                                showsVerticalScrollIndicator={false}
-                                keyExtractor={item => item.id.toString()}
-                                data={payload}
-                                renderItem={({ item }) => (
-                                    <View>
-                                        <List
-                                            route='TitleDetails'
-                                            id={item.tmdb_id}
-                                            type={item.media_type}
-                                            recommendation={item}
-                                            image={item.poster}
-                                            title={item.name}
-                                            date={item.year}
-                                            body={limitChar(item.overview, 200, 170)}
-                                        />
-
-                                        {item.commentary !== '' ?
-                                            <View style={styles.commentaryBox}>
-                                                <Text style={styles.commentaryText}>
-                                                    <Icon name='format-quote' size={14} color='#fff' />
-                                                    {item.commentary}
-                                                </Text>
-                                            </View>
-                                            :
-                                            null
-                                        }
-
-                                        {item.sources.length > 0 ?
-                                            <View style={styles.sourcesBox}>
-                                                <Text style={styles.sourcesText}>
-                                                    Watch On:
-                                                </Text>
-                                                <Text style={styles.sourcesSubText}>
-                                                    {item.sources.map(s => s.name).join(', ')}
-                                                </Text>
-                                            </View>
-                                            :
-                                            null
-                                        }
-
-                                    </View>
-                                )}
-                            />
-                        </View>
-
-                        <View
-                            style={styles.keywordsBox}>
-                            {recommendation.keywords
-                                .map(keywords => (
-                                    <Text
-                                        key={keywords.id}
-                                        style={styles.keywordsText}>
-                                        <Title
-                                            style={styles.keywordsHashTag}>
-                                            #
-                                        </Title>
-                                        {keywords.name}
+                            <View style={styles.header}>
+                                <Title style={styles.title}>
+                                    {recommendation.title}
+                                </Title>
+                                <View style={styles.dateBox}>
+                                    <Text style={styles.date}>
+                                        Created on
+{' '}
+                                        {moment(recommendation.created_at).format('MMMM Do YYYY \\at h:mm a')}
                                     </Text>
-                                ))
-                            }
-                        </View>
+                                    <Text style={styles.date}>
+                                        Updated on
+{' '}
+                                        {moment(recommendation.updated_at).format('MMMM Do YYYY \\at h:mm a')}
+                                    </Text>
+                                </View>
+                                <View style={styles.genres}>
+                                    {recommendation.genres
+                                        .map(genres => (
+                                            <View
+                                              key={genres.id}
+                                              style={styles.genresBox}
+                                            >
+                                                <Text style={styles.genresText}>
+                                                    {genres.name}
+                                                </Text>
+                                            </View>
+                                        ))
+                                    }
+                                </View>
+                                <Text style={styles.description}>
+                                    {recommendation.body}
+                                </Text>
+                            </View>
 
-                    </ScrollView>
-                    :
-                    null
+
+                            <View style={styles.body}>
+
+                                <FlatList
+                                  showsVerticalScrollIndicator={false}
+                                  keyExtractor={item => item.id.toString()}
+                                  data={payload}
+                                  renderItem={({ item }) => (
+                                        <View>
+                                            <List
+                                              route="TitleDetails"
+                                              id={item.tmdb_id}
+                                              type={item.media_type}
+                                              recommendation={item}
+                                              image={item.poster}
+                                              title={item.name}
+                                              date={item.year}
+                                              body={limitChar(item.overview, 200, 170)}
+                                            />
+
+                                            {item.commentary !== ''
+                                                ? (
+                                                    <View style={styles.commentaryBox}>
+                                                        <Text style={styles.commentaryText}>
+                                                            <Icon name="format-quote" size={14} color="#fff" />
+                                                            {item.commentary}
+                                                        </Text>
+                                                    </View>
+                                                )
+                                                : null
+                                            }
+
+                                            {item.sources.length > 0
+                                                ? (
+                                                    <View style={styles.sourcesBox}>
+                                                        <Text style={styles.sourcesText}>
+                                                            Watch On:
+                                                        </Text>
+                                                        <Text style={styles.sourcesSubText}>
+                                                            {item.sources.map(s => s.name).join(', ')}
+                                                        </Text>
+                                                    </View>
+                                                )
+                                                : null
+                                            }
+
+                                        </View>
+                                    )}
+                                />
+                            </View>
+
+                            <View
+                              style={styles.keywordsBox}
+                            >
+                                {recommendation.keywords
+                                    .map(keywords => (
+                                        <Text
+                                          key={keywords.id}
+                                          style={styles.keywordsText}
+                                        >
+                                            <Title
+                                              style={styles.keywordsHashTag}
+                                            >
+                                                #
+                                            </Title>
+                                            {keywords.name}
+                                        </Text>
+                                    ))
+                                }
+                            </View>
+
+                        </ScrollView>
+                    )
+                    : null
                 }
             </Container>
         )
@@ -177,11 +197,21 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 20,
         margin: 10,
+        marginBottom: 5,
         textAlign: 'center'
     },
+    dateBox: {
+        flexDirection: 'row',
+        width: '100%',
+        marginBottom: 5,
+        justifyContent: 'space-evenly'
+    },
+    date: {
+        fontSize: 14,
+        color: '#fff'
+    },
     description: {
-        margin: 10,
-        marginTop: 0,
+        marginBottom: 0,
         color: '#737373',
         fontSize: 18,
         textAlign: 'center'
@@ -193,7 +223,9 @@ const styles = StyleSheet.create({
     },
     genresBox: {
         backgroundColor: '#0093cb',
-        margin: 5,
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 5,
         padding: 3
     },
     genresText: {
@@ -229,6 +261,7 @@ const styles = StyleSheet.create({
     },
     sourcesBox: {
         margin: 10,
+        marginBottom: 20,
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'flex-start'
