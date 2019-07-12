@@ -1,6 +1,6 @@
 {
   "name": "FeelTheMovies",
-  "version": "4.2.2",
+  "version": "4.2.3",
   "private": true,
   "scripts": {
     "start": "react-native start",
@@ -8,7 +8,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.18.1",
     "lodash": "^4.17.13",
     "moment": "^2.24.0",
     "react": "16.8.6",
