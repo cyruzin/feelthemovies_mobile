@@ -14,10 +14,11 @@ import moment from 'moment'
 import axios from '../../config/axios'
 import { imgPath } from '../../config/constants'
 import { routeFix, type } from '../../util/helpers'
-import { Container, Message, Title, Text, ScrollTop } from '../UI'
+import {
+    Container, Message, Title, Text, ScrollTop
+} from '../UI'
 
 export default class Home extends PureComponent {
-
     constructor(props) {
         super(props)
 
@@ -63,7 +64,6 @@ export default class Home extends PureComponent {
                 scroll: false,
                 fetch: false,
             })
-
         } catch (e) {
             this.setState({
                 error: 'Something went wrong',
@@ -81,9 +81,7 @@ export default class Home extends PureComponent {
             payload: [],
             currentPage: 1,
             error: ''
-        }, () =>
-                this.fetchRecommendations()
-        )
+        }, () => this.fetchRecommendations())
     }
 
     scrollHandler = () => {
@@ -95,8 +93,7 @@ export default class Home extends PureComponent {
             this.setState({
                 currentPage: currentPage + 1,
                 scroll: true
-            }, () => this.fetchRecommendations()
-            )
+            }, () => this.fetchRecommendations())
         }
     }
 
@@ -104,148 +101,174 @@ export default class Home extends PureComponent {
         this.scrollRef.current.scrollToOffset({ x: 0, y: 0, animated: true })
     }
 
-    typeHandler = titleType => {
+    typeHandler = (titleType) => {
         var titleType = parseInt(titleType)
         if (titleType === 0) {
             return (
                 <Text style={styles.contentFootBody}>
-                    <Icon name='movie-roll'
-                        size={13} color='#737373' /> {type(
-                            titleType
-                        )}
+                    <Icon
+                      name="movie-roll"
+                      size={13}
+                      color="#737373"
+                    />
+                    {' '}
+                    {type(
+                        titleType
+                    )}
                 </Text>
             )
-        } else if (titleType === 1) {
+        } if (titleType === 1) {
             return (
                 <Text style={styles.contentFootBody}>
-                    <IconFeather name='tv'
-                        size={11} color='#737373' /> {type(
-                            titleType
-                        )}
+                    <IconFeather
+                      name="tv"
+                      size={11}
+                      color="#737373"
+                    />
+                    {' '}
+                    {type(
+                        titleType
+                    )}
                 </Text>
             )
-        } else if (titleType === 2) {
+        } if (titleType === 2) {
             return (
                 <Text style={styles.contentFootBody}>
-                    <Icon name='mixer'
-                        size={11} color='#737373' /> {type(
-                            titleType
-                        )}
+                    <Icon
+                      name="mixer"
+                      size={11}
+                      color="#737373"
+                    />
+                    {' '}
+                    {type(
+                        titleType
+                    )}
                 </Text>
             )
         }
     }
 
     render() {
-
         const {
             fetch, success, payload, error, refreshing, screenPosition
         } = this.state
 
         return (
             <Container>
-                {fetch ?
-                    <ActivityIndicator
-                        size='large'
-                        color='#737373' />
+                {fetch
+                    ? (
+                        <ActivityIndicator
+                          size="large"
+                          color="#737373"
+                        />
+                    )
                     : null
                 }
 
-                {error !== '' ?
-                    <Message text={error} />
-                    :
-                    null
+                {error !== ''
+                    ? <Message text={error} />
+                    : null
                 }
 
-                {success ?
-                    <FlatList
-                        showsVerticalScrollIndicator={false}
-                        ref={this.scrollRef}
-                        onScroll={event => this.setState({
-                            screenPosition: event.nativeEvent.contentOffset.y
-                        })}
-                        refreshControl={
-                            <RefreshControl
-                                progressBackgroundColor='#0f0e0e'
-                                colors={['#0093cb', '#737373']}
-                                refreshing={refreshing}
-                                onRefresh={this.refreshHandler}
-                            />
-                        }
-                        onEndReachedThreshold={0.5}
-                        onEndReached={this.scrollHandler}
-                        data={payload}
-                        keyExtractor={item => item.id.toString()}
-                        renderItem={({ item }) => (
-                            <View>
-                                <TouchableHighlight
-                                    onPress={() => routeFix('Recommendation', {
-                                        id: item.id,
-                                        recommendation: item
-                                    })}>
-                                    <View>
-                                        <Image
-                                            style={styles.contentImage}
-                                            source={{
-                                                uri: `${imgPath.W500}${item.backdrop}`
-                                            }} />
-                                    </View>
-                                </TouchableHighlight>
-                                <View style={styles.contentDate}>
-                                    <Text style={styles.contentDateText}>
-                                        {moment(item.created_at).format('D MMM')}
-                                    </Text>
-                                </View>
-                                <View style={{ position: 'relative' }}>
-                                    <View style={styles.contentGenres}>
-                                        <Text style={styles.contentGenresText}>
-                                            {item.genres
-                                                .slice(0, 4)
-                                                .map(g => g.name)
-                                                .join(', ')}
+                {success
+                    ? (
+                        <FlatList
+                          showsVerticalScrollIndicator={false}
+                          ref={this.scrollRef}
+                          onScroll={event => this.setState({
+                                screenPosition: event.nativeEvent.contentOffset.y
+                            })}
+                          refreshControl={(
+                                <RefreshControl
+                                  progressBackgroundColor="#0f0e0e"
+                                  colors={['#0093cb', '#737373']}
+                                  refreshing={refreshing}
+                                  onRefresh={this.refreshHandler}
+                                />
+                            )}
+                          onEndReachedThreshold={0.5}
+                          onEndReached={this.scrollHandler}
+                          data={payload}
+                          keyExtractor={item => item.id.toString()}
+                          renderItem={({ item }) => (
+                                <View>
+                                    <TouchableHighlight
+                                      onPress={() => routeFix('Recommendation', {
+                                            id: item.id,
+                                            recommendation: item
+                                        })}
+                                    >
+                                        <View>
+                                            <Image
+                                              style={styles.contentImage}
+                                              source={{
+                                                    uri: `${imgPath.W500}${item.backdrop}`
+                                                }}
+                                            />
+                                        </View>
+                                    </TouchableHighlight>
+                                    <View style={styles.contentDate}>
+                                        <Text style={styles.contentDateText}>
+                                            {moment(item.created_at).format('D MMM')}
                                         </Text>
                                     </View>
-                                </View>
-                                <TouchableHighlight
-                                    onPress={() => routeFix('Recommendation', {
-                                        id: item.id,
-                                        recommendation: item
-                                    })}>
-                                    <View style={styles.content}>
-
-                                        <Title style={styles.contentTitle}>
-                                            {item.title}
-                                        </Title>
-                                        <Text style={styles.contentBody}>
-                                            {item.body}
-                                        </Text>
+                                    <View style={{ position: 'relative' }}>
+                                        <View style={styles.contentGenres}>
+                                            <Text style={styles.contentGenresText}>
+                                                {item.genres
+                                                    .slice(0, 4)
+                                                    .map(g => g.name)
+                                                    .join(', ')}
+                                            </Text>
+                                        </View>
                                     </View>
-                                </TouchableHighlight>
-                                <View style={styles.contentFoot}>
-                                    <Text style={styles.contentFootBody}>
-                                        <Icon name='clock-outline'
-                                            size={12} color='#737373' /> {
-                                            moment(item.created_at).fromNow()
-                                        }
-                                    </Text>
-                                    {this.typeHandler(
-                                        item.type
-                                    )}
-                                </View>
-                            </View>
-                        )
+                                    <TouchableHighlight
+                                      onPress={() => routeFix('Recommendation', {
+                                            id: item.id,
+                                            recommendation: item
+                                        })}
+                                    >
+                                        <View style={styles.content}>
 
-                        }
-                    />
-                    :
-                    null
+                                            <Title style={styles.contentTitle}>
+                                                {item.title}
+                                            </Title>
+                                            <Text style={styles.contentBody}>
+                                                {item.body}
+                                            </Text>
+                                        </View>
+                                    </TouchableHighlight>
+                                    <View style={styles.contentFoot}>
+                                        <Text style={styles.contentFootBody}>
+                                            <Icon
+                                              name="clock-outline"
+                                              size={12}
+                                              color="#737373"
+                                            />
+                                            {' '}
+                                            {
+                                                moment(item.created_at).fromNow()
+                                            }
+                                        </Text>
+                                        {this.typeHandler(
+                                            item.type
+                                        )}
+                                    </View>
+                                </View>
+                            )
+
+                            }
+                        />
+                    )
+                    : null
                 }
-                {screenPosition >= 250 ?
-                    <ScrollTop
-                        onPress={this.scrollTopHandler}
-                    />
-                    :
-                    null
+                {screenPosition >= 250
+                    ? (
+                        <ScrollTop
+                          onPress={this.scrollTopHandler}
+                        />
+                    )
+                    : null
                 }
             </Container>
         )
@@ -273,7 +296,7 @@ const styles = StyleSheet.create({
     contentDateText: {
         color: '#fff',
         padding: 5,
-        fontSize: 14,
+        fontSize: 14
     },
     contentGenres: {
         position: 'absolute',
