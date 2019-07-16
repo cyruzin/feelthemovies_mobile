@@ -34,7 +34,7 @@ export default class Recommendation extends PureComponent {
             })
         } catch (e) {
             this.setState({
-                failure: 'Something went wrong',
+                failure: 'Looks like Thanos snapped his fingers!',
                 fetch: false
             })
         }

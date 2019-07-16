@@ -66,7 +66,7 @@ export default class Home extends PureComponent {
             })
         } catch (e) {
             this.setState({
-                error: 'Something went wrong',
+                error: 'Looks like Thanos snapped his fingers!',
                 fetch: false,
                 refreshing: false,
                 scroll: false

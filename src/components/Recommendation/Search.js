@@ -4,20 +4,19 @@ import {
     StyleSheet,
     FlatList,
     TextInput,
-    Picker,
     ActivityIndicator,
     TouchableWithoutFeedback
 } from 'react-native'
 import { Actions } from 'react-native-router-flux'
-import axios from '../../config/axios'
 import debounce from 'lodash/debounce'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-//import IconMC from 'react-native-vector-icons/MaterialCommunityIcons'
+import axios from '../../config/axios'
 import { type, limitChar } from '../../util/helpers'
-import { Container, Message, List, ScrollTop } from '../UI'
+import {
+    Container, Message, List, ScrollTop
+} from '../UI'
 
 export default class Search extends PureComponent {
-
     constructor(props) {
         super(props)
 
@@ -50,15 +49,14 @@ export default class Search extends PureComponent {
             )
 
             this.setState({
-                payload: res.data.data.filter(v => v.status > 0),
+                payload: res.data.data !== null ? res.data.data : [],
                 successful: true,
                 lastPage: res.data.last_page,
                 fetch: false
             })
-
         } catch (e) {
             this.setState({
-                failure: 'Something went wrong',
+                failure: 'Looks like Thanos snapped his fingers!',
                 fetch: false
             })
         }
@@ -82,10 +80,9 @@ export default class Search extends PureComponent {
                 successful: true,
                 fetch: false
             })
-
         } catch (e) {
             this.setState({
-                failure: 'Something went wrong',
+                failure: 'Looks like Thanos snapped his fingers!',
                 fetch: false,
                 scroll: false
             })
@@ -123,8 +120,7 @@ export default class Search extends PureComponent {
             this.setState({
                 currentPage: currentPage + 1,
                 scroll: true
-            }, () => this.loadMoreHandler()
-            )
+            }, () => this.loadMoreHandler())
         }
     }
 
@@ -132,14 +128,15 @@ export default class Search extends PureComponent {
         this.scrollRef.current.scrollToOffset({ x: 0, y: 0, animated: true })
     }
 
-    textInputHandler = textInput => {
-        this.setState({ textInput: textInput })
+    textInputHandler = (textInput) => {
+        this.setState({ textInput })
         this.searchFetchHandler()
     }
 
-    typeHandler = value => {
+    typeHandler = (value) => {
+        const { textInput } = this.state
         this.setState({ type: value })
-        if (this.state.textInput !== '') {
+        if (textInput !== '') {
             this.searchFetchHandler()
         }
     }
@@ -147,18 +144,18 @@ export default class Search extends PureComponent {
     queryHandler = () => {
         const { type, textInput } = this.state
         let searchQuery = null
-        const query = textInput.replace(/\s+$/, "")
+        const query = textInput.replace(/\s+$/, '')
 
         if (type !== '') {
             searchQuery = {
                 q: query,
-                type: type
+                type
             }
             return searchQuery
         }
 
         searchQuery = {
-            query: query
+            query
         }
 
         return searchQuery
@@ -185,120 +182,109 @@ export default class Search extends PureComponent {
 
                     <TouchableWithoutFeedback onPress={() => Actions.pop()}>
                         <View style={styles.backButton}>
-                            <Icon name='arrow-back' size={24} color='#fff' />
+                            <Icon name="arrow-back" size={24} color="#fff" />
                         </View>
                     </TouchableWithoutFeedback>
 
                     <View style={styles.searchBox}>
                         <View>
                             <TextInput
-                                style={styles.textInput}
-                                autoFocus
-                                placeholderTextColor='#737373'
-                                placeholder='Search for a keyword or genre'
-                                onChangeText={this.textInputHandler}
-                                ref={this.searchRef} />
+                              style={styles.textInput}
+                              autoFocus
+                              placeholderTextColor="#737373"
+                              placeholder="Search for a keyword or genre"
+                              onChangeText={this.textInputHandler}
+                              ref={this.searchRef}
+                            />
                         </View>
-                        {/* <View style={styles.pickerBox}>
-                            <Picker
-                                mode='dropdown'
-                                style={styles.picker}
-                                itemStyle={styles.pickerItem}
-                                selectedValue={this.state.type}
-                                onValueChange={this.typeHandler}
-                            >
-                                <Picker.Item label="All" value="" />
-                                <Picker.Item label="Movie" value="0" />
-                                <Picker.Item label="TV" value="1" />
-                                <Picker.Item label="Mixed" value="2" />
-                            </Picker>
-                            <View style={styles.pickerIcon}>
-                                <IconMC name='chevron-down' size={24} color='#737373' />
-                            </View>
-                        </View> */}
 
-                        {textInput !== '' ?
-                            <TouchableWithoutFeedback
-                                onPress={this.clearInputHandler}>
-                                <Icon
-                                    name='cancel'
-                                    size={18}
-                                    color='#737373'
-                                    style={styles.clearButton} />
-                            </TouchableWithoutFeedback>
-                            :
-                            null
+                        {textInput !== ''
+                            ? (
+                                <TouchableWithoutFeedback
+                                  onPress={this.clearInputHandler}
+                                >
+                                    <Icon
+                                      name="cancel"
+                                      size={18}
+                                      color="#737373"
+                                      style={styles.clearButton}
+                                    />
+                                </TouchableWithoutFeedback>
+                            )
+                            : null
                         }
                     </View>
                 </View>
 
                 <View style={styles.activityIndicatorBox}>
-                    {fetch ?
-                        <ActivityIndicator
-                            size='large'
-                            color='#737373' />
+                    {fetch
+                        ? (
+                            <ActivityIndicator
+                              size="large"
+                              color="#737373"
+                            />
+                        )
                         : null
                     }
                 </View>
 
-                {successful && payload.length === 0 ?
-                    <Message text='No Result' />
-                    :
-                    null
+                {successful && payload.length === 0
+                    ? <Message text="No Result" />
+                    : null
                 }
 
                 {
-                    !successful && !warning && failure !== '' ?
-                        <Message text={failure} />
-                        :
-                        null
+                    !successful && !warning && failure !== ''
+                        ? <Message text={failure} />
+                        : null
                 }
 
-                {successful ?
-                    <View style={styles.searchResultsBox}>
-                        <FlatList
-                            showsVerticalScrollIndicator={false}
-                            keyboardShouldPersistTaps='always'
-                            ref={this.scrollRef}
-                            onScroll={event => this.setState({
-                                screenPosition: event.nativeEvent.contentOffset.y
-                            })}
-                            onEndReachedThreshold={0.5}
-                            onEndReached={this.scrollHandler}
-                            keyExtractor={item => item.id.toString()}
-                            data={payload}
-                            renderItem={({ item }) => (
-                                <List
-                                    route='Recommendation'
-                                    id={item.id}
-                                    recommendation={item}
-                                    image={item.poster}
-                                    badge
-                                    badgeText={type(item.type)}
-                                    title={item.title}
-                                    date={item.created_at}
-                                    body={
-                                        limitChar(
-                                            item.body
-                                            ,
-                                            200,
-                                            170
-                                        )
-                                    }
-                                />
-                            )
-                            }
-                        />
-                    </View>
-                    :
-                    null
+                {successful
+                    ? (
+                        <View style={styles.searchResultsBox}>
+                            <FlatList
+                              showsVerticalScrollIndicator={false}
+                              keyboardShouldPersistTaps="always"
+                              ref={this.scrollRef}
+                              onScroll={event => this.setState({
+                                    screenPosition: event.nativeEvent.contentOffset.y
+                                })}
+                              onEndReachedThreshold={0.5}
+                              onEndReached={this.scrollHandler}
+                              keyExtractor={item => item.id.toString()}
+                              data={payload}
+                              renderItem={({ item }) => (
+                                    <List
+                                      route="Recommendation"
+                                      id={item.id}
+                                      recommendation={item}
+                                      image={item.poster}
+                                      badge
+                                      badgeText={type(item.type)}
+                                      title={item.title}
+                                      date={item.created_at}
+                                      body={
+                                            limitChar(
+                                                item.body,
+                                                200,
+                                                170
+                                            )
+                                        }
+                                    />
+                                )
+                                }
+                            />
+                        </View>
+                    )
+                    : null
                 }
-                {screenPosition >= 250 ?
-                    <ScrollTop
-                        onPress={this.scrollTopHandler}
-                    />
-                    :
-                    null
+                {screenPosition >= 250
+                    ? (
+                        <ScrollTop
+                          onPress={this.scrollTopHandler}
+                        />
+                    )
+                    : null
                 }
             </Container>
         )

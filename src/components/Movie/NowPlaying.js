@@ -4,10 +4,11 @@ import {
     FlatList
 } from 'react-native'
 import { axiosTMDB } from '../../config/axios'
-import { Container, List, Message, ScrollTop } from '../UI'
+import {
+    Container, List, Message, ScrollTop
+} from '../UI'
 
 export default class NowPlaying extends PureComponent {
-
     constructor(props) {
         super(props)
 
@@ -26,7 +27,6 @@ export default class NowPlaying extends PureComponent {
     }
 
 
-
     componentDidMount() {
         this.fetchNowPlaying()
     }
@@ -39,7 +39,6 @@ export default class NowPlaying extends PureComponent {
         }
 
         try {
-
             const res = await axiosTMDB.get(
                 `/movie/now_playing?region=us&page=${currentPage}`
             )
@@ -54,10 +53,9 @@ export default class NowPlaying extends PureComponent {
                 fetch: false,
                 scroll: false
             })
-
         } catch (e) {
             this.setState({
-                failure: 'Something went wrong',
+                failure: 'Looks like Thanos snapped his fingers!',
                 fetch: false,
                 scroll: false
             })
@@ -73,8 +71,7 @@ export default class NowPlaying extends PureComponent {
             this.setState({
                 currentPage: currentPage + 1,
                 scroll: true
-            }, () => this.fetchNowPlaying()
-            )
+            }, () => this.fetchNowPlaying())
         }
     }
 
@@ -83,55 +80,61 @@ export default class NowPlaying extends PureComponent {
     }
 
     render() {
-        const { fetch, successful, failure, payload, screenPosition } = this.state
+        const {
+            fetch, successful, failure, payload, screenPosition
+        } = this.state
 
         return (
             <Container>
-                {fetch ?
-                    <ActivityIndicator
-                        size='large'
-                        color='#737373' />
+                {fetch
+                    ? (
+                        <ActivityIndicator
+                          size="large"
+                          color="#737373"
+                        />
+                    )
                     : null
                 }
 
-                {failure !== '' ?
-                    <Message text={moviefailure} />
-                    :
-                    null
+                {failure !== ''
+                    ? <Message text={failure} />
+                    : null
                 }
 
-                {successful ?
-                    <FlatList
-                        showsVerticalScrollIndicator={false}
-                        ref={this.scrollRef}
-                        onScroll={event => this.setState({
-                            screenPosition: event.nativeEvent.contentOffset.y
-                        })}
-                        keyExtractor={item => item.id.toString()}
-                        onEndReachedThreshold={0.5}
-                        onEndReached={this.scrollHandler}
-                        data={payload.filter(item => item.poster_path !== null)}
-                        renderItem={({ item }) =>
-                            <List
-                                route='TitleDetails'
-                                image={item.poster_path}
-                                title={item.title}
-                                id={item.id}
-                                type='movie'
-                                date={item.release_date}
-                                body={item.overview}
-                            />
-                        }
-                    />
-                    :
-                    null
+                {successful
+                    ? (
+                        <FlatList
+                          showsVerticalScrollIndicator={false}
+                          ref={this.scrollRef}
+                          onScroll={event => this.setState({
+                                screenPosition: event.nativeEvent.contentOffset.y
+                            })}
+                          keyExtractor={item => item.id.toString()}
+                          onEndReachedThreshold={0.5}
+                          onEndReached={this.scrollHandler}
+                          data={payload.filter(item => item.poster_path !== null)}
+                          renderItem={({ item }) => (
+                                <List
+                                  route="TitleDetails"
+                                  image={item.poster_path}
+                                  title={item.title}
+                                  id={item.id}
+                                  type="movie"
+                                  date={item.release_date}
+                                  body={item.overview}
+                                />
+                            )}
+                        />
+                    )
+                    : null
                 }
-                {screenPosition >= 250 ?
-                    <ScrollTop
-                        onPress={this.scrollTopHandler}
-                    />
-                    :
-                    null
+                {screenPosition >= 250
+                    ? (
+                        <ScrollTop
+                          onPress={this.scrollTopHandler}
+                        />
+                    )
+                    : null
                 }
             </Container>
         )
