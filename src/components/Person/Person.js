@@ -9,6 +9,7 @@ import {
 } from 'react-native'
 
 import orderBy from 'lodash/orderBy'
+import uniqBy from 'lodash/uniqBy'
 
 import { axiosTMDB } from '../../config/axios'
 import { imgPath } from '../../config/constants'
@@ -30,7 +31,7 @@ export default class Person extends PureComponent {
         payload: ''
     }
 
-    async componentDidMount () {
+    async componentDidMount() {
         try {
             this.setState({ fetch: true })
 
@@ -53,15 +54,15 @@ export default class Person extends PureComponent {
         }
     }
 
-    render () {
+    render() {
         const {
-            fetch, successful, failure
+            fetch, successful, failure, payload
         } = this.state
 
         const {
             name, profile_path, biography, combined_credits,
             birthday, deathday, gender, place_of_birth
-        } = this.state.payload
+        } = payload
 
         return (
             <Container>
@@ -69,8 +70,8 @@ export default class Person extends PureComponent {
                 {fetch
                     ? (
                         <ActivityIndicator
-                            size="large"
-                            color="#737373"
+                          size="large"
+                          color="#737373"
                         />
                     )
                     : null
@@ -89,8 +90,8 @@ export default class Person extends PureComponent {
 
                                 <View style={styles.imageBox}>
                                     <Image
-                                        style={styles.image}
-                                        source={{
+                                      style={styles.image}
+                                      source={{
                                             uri: `${imgPath.W500}${profile_path}`
                                         }}
                                     />
@@ -130,28 +131,30 @@ export default class Person extends PureComponent {
                                             }}
                                             >
                                                 <FlatList
-                                                    horizontal
-                                                    showsHorizontalScrollIndicator={false}
-                                                    keyExtractor={item => item.id.toString()}
-                                                    data={orderBy(
-                                                        combined_credits.cast, 'vote_count', 'desc'
-                                                    )
-                                                        .slice(0, 20)
+                                                  horizontal
+                                                  showsHorizontalScrollIndicator={false}
+                                                  keyExtractor={item => item.id.toString()}
+                                                  data={orderBy(
+                                                        uniqBy(
+                                                            combined_credits.cast,
+                                                            item => item.title || item.name
+                                                        ), 'vote_count', 'desc'
+                                                    ).slice(0, 20)
                                                         .filter(c => c.character !== 'Himself'
                                                             && c.poster_path !== null)}
-                                                    renderItem={({ item }) => (
+                                                  renderItem={({ item }) => (
                                                         <Credits
-                                                            route="TitleDetails"
-                                                            id={item.id}
-                                                            type={item.media_type}
-                                                            title={item.title !== undefined
+                                                          route="TitleDetails"
+                                                          id={item.id}
+                                                          type={item.media_type}
+                                                          title={item.title !== undefined
                                                                 ? item.title : item.name
                                                             }
-                                                            date={item.release_date !== undefined
+                                                          date={item.release_date !== undefined
                                                                 ? item.release_date
                                                                 : item.first_air_date
                                                             }
-                                                            image={item.poster_path}
+                                                          image={item.poster_path}
                                                         />
                                                     )
                                                     }

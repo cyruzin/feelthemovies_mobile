@@ -40,7 +40,7 @@ export default class UpComing extends PureComponent {
 
         try {
             const res = await axiosTMDB.get(
-                `/movie/upcoming?page=${currentPage}`
+                `/movie/upcoming?region=US&page=${currentPage}`
             )
 
             this.setState({

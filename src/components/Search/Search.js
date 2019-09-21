@@ -7,14 +7,22 @@ import {
     ActivityIndicator,
     TouchableWithoutFeedback
 } from 'react-native'
+
 import { Actions } from 'react-native-router-flux'
+
+import Icon from 'react-native-vector-icons/MaterialIcons'
+
 import debounce from 'lodash/debounce'
 import orderBy from 'lodash/orderBy'
 import uniqBy from 'lodash/uniqBy'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+
 import { axiosTMDB } from '../../config/axios'
+
 import {
-    Container, List, Message, ScrollTop
+    Container,
+    List,
+    Message,
+    ScrollTop
 } from '../UI'
 
 export default class Search extends PureComponent {

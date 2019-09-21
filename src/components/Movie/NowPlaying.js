@@ -45,7 +45,7 @@ export default class NowPlaying extends PureComponent {
 
         try {
             const res = await axiosTMDB.get(
-                `/movie/now_playing?page=${currentPage}`
+                `/movie/now_playing?region=US&page=${currentPage}`
             )
 
             this.setState({
