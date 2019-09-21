@@ -5,54 +5,60 @@ import {
     View,
     Image
 } from 'react-native'
+
 import moment from 'moment'
+
 import { imgPath } from '../../config/constants'
 import { routeFix } from '../../util/helpers'
+
 import Title from './Title'
 import Text from './Text'
 
-export default props => (
-    <TouchableWithoutFeedback
-        onPress={() =>
-            routeFix(props.route, {
-                id: props.id,
-                type: props.type
-            })}>
+export default (props) => {
+    const {
+        route, id, type, image, title, date, character
+    } = props
 
-        <View style={styles.container}>
-            <View>
-                <Image
-                    style={styles.image}
-                    source={{
-                        uri: `${imgPath.W300}${props.image}`
-                    }}
-                />
+    return (
+        <TouchableWithoutFeedback
+          onPress={() => routeFix(route, { id, type })}
+        >
+            <View style={styles.container}>
+                <View>
+                    <Image
+                      style={styles.image}
+                      source={{
+                            uri: `${imgPath.W300}${image}`
+                        }}
+                    />
+                </View>
+                <View style={styles.content}>
+                    <Title style={styles.title}>
+                        {title}
+                    </Title>
+
+                    {date !== undefined
+                        ? (
+                            <Text style={styles.subTitle}>
+                                {moment(date).format('YYYY')}
+                            </Text>
+                        )
+                        : null
+                    }
+
+                    {character !== undefined
+                        ? (
+                            <Text style={styles.subTitle}>
+                                {character}
+                            </Text>
+                        )
+                        : null
+                    }
+                </View>
             </View>
-            <View style={styles.content}>
-                <Title style={styles.title}>
-                    {props.title}
-                </Title>
-
-                {props.date !== undefined ?
-                    <Text style={styles.subTitle}>
-                        {moment(props.date).format('YYYY')}
-                    </Text>
-                    :
-                    null
-                }
-
-                {props.character !== undefined ?
-                    <Text style={styles.subTitle}>
-                        {props.character}
-                    </Text>
-                    :
-                    null
-                }
-            </View>
-        </View>
-
-    </TouchableWithoutFeedback>
-)
+        </TouchableWithoutFeedback>
+    )
+}
 
 const styles = StyleSheet.create({
     container: {

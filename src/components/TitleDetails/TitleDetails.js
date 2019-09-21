@@ -1,4 +1,7 @@
-import React, { PureComponent, Fragment } from 'react'
+import React, {
+    PureComponent,
+    Fragment
+} from 'react'
 import {
     StyleSheet,
     View,
@@ -9,12 +12,20 @@ import {
     TouchableHighlight,
     Linking
 } from 'react-native'
+
 import Icon from 'react-native-vector-icons/EvilIcons'
+
 import moment from 'moment'
+
 import { axiosTMDB } from '../../config/axios'
 import { imgPath } from '../../config/constants'
+
 import {
- Container, Message, Title, Text, Credits 
+    Container,
+    Message,
+    Title,
+    Text,
+    Credits
 } from '../UI'
 
 class TitleDetails extends PureComponent {
@@ -94,270 +105,318 @@ class TitleDetails extends PureComponent {
         return (
             <Container style={styles.container}>
                 {fetch
-                    ? <ActivityIndicator
-                      size="large"
-                      color="#737373"
-                    />
+                    ? (
+                        <ActivityIndicator
+                          size="large"
+                          color="#737373"
+                        />
+                    )
                     : null
                 }
 
                 {failure !== ''
                     ? <Message text={failure} />
-                    :                    null
+                    : null
                 }
 
                 {successful
-                    ? <ScrollView showsVerticalScrollIndicator={false}>
+                    ? (
+                        <ScrollView showsVerticalScrollIndicator={false}>
 
-                        <View style={styles.content}>
-                            <View>
-                                <Image
-                                  style={styles.image}
-                                  source={{
-                                        uri: `${imgPath.W500}${backdrop_path}`
-                                    }}
-                                />
-                                <View style={styles.titleBox}>
-                                    <Title style={styles.title}>
-                                        {title !== undefined ? title : name}
-                                    </Title>
+                            <View style={styles.content}>
+                                <View>
+                                    <Image
+                                      style={styles.image}
+                                      source={{
+                                            uri: `${imgPath.W500}${backdrop_path}`
+                                        }}
+                                    />
+                                    <View style={styles.titleBox}>
+                                        <Title style={styles.title}>
+                                            {title !== undefined ? title : name}
+                                        </Title>
+                                    </View>
+                                    <View style={styles.yearBox}>
+                                        <Title style={styles.year}>
+                                            {release_date !== undefined
+                                                ? moment(release_date).format('YYYY')
+                                                : moment(first_air_date).format('YYYY')
+                                            }
+                                        </Title>
+                                    </View>
                                 </View>
-                                <View style={styles.yearBox}>
-                                    <Title style={styles.year}>
-                                        {release_date !== undefined
-                                            ? moment(release_date).format('YYYY')
-                                            :                                            moment(first_air_date).format('YYYY')
+
+                                <View style={styles.info}>
+
+                                    <Icon name="tag" size={18} color="#fff" style={styles.infoIcon} />
+                                    <Text style={styles.infoText}>
+                                        {genres.slice(0, 4).map(v => v.name).join(', ')}
+                                    </Text>
+
+
+                                </View>
+
+                                <View style={styles.trailer}>
+                                    {videos.results.length > 0
+                                        ? (
+                                            <Fragment>
+                                                <Icon
+                                                  name="play"
+                                                  size={18}
+                                                  color="#fff"
+                                                  style={styles.infoIcon}
+                                                />
+                                                <TouchableHighlight
+                                                  onPress={() => this.trailerHandler(videos.results[0].key)}
+                                                  hitSlop={styles.hitSlop}
+                                                >
+                                                    <Text style={styles.infoText}>
+                                                        Watch Trailer
+                                                    </Text>
+                                                </TouchableHighlight>
+                                            </Fragment>
+                                        )
+                                        : null
+                                    }
+                                </View>
+
+                                <View style={styles.bodyBox}>
+                                    <Text style={styles.overview}>{overview}</Text>
+                                </View>
+
+                                <Title style={styles.sectionTitle}>
+                                    Top Billed Cast
+                                </Title>
+
+                                <View style={styles.creditsBox}>
+                                    <FlatList
+                                      horizontal
+                                      showsHorizontalScrollIndicator={false}
+                                      keyExtractor={item => item.id.toString()}
+                                      data={
+                                            credits.cast
+                                                .slice(0, 20)
+                                                .filter(title => title.profile_path !== null)
                                         }
-                                    </Title>
+                                      renderItem={({ item }) => (
+                                            <Credits
+                                              route="Person"
+                                              id={item.id}
+                                              image={item.profile_path}
+                                              title={item.name}
+                                              character={item.character}
+                                            />
+                                        )
+                                        }
+                                    />
                                 </View>
-                            </View>
 
-                            <View style={styles.info}>
+                                <Title style={[styles.sectionTitle, { marginBottom: 5 }]}>
+                                    Other Info
+                                </Title>
 
-                                <Icon name="tag" size={18} color="#fff" style={styles.infoIcon} />
-                                <Text style={styles.infoText}>
-                                    {genres.slice(0, 4).map(v => v.name).join(', ')}
-                                </Text>
+                                {/* Movie */}
+                                <View style={styles.otherInfo}>
+                                    {title !== undefined
+                                        ? (
+                                            <View style={styles.otherInfoBox}>
 
-                                {videos.results.length > 0
-                                    ? <Fragment>
-                                        <Icon
-                                          name="play"
-                                          size={18}
-                                          color="#fff"
-                                          style={styles.infoIcon}
-                                        />
-                                        <TouchableHighlight
-                                          onPress={() => this.trailerHandler(videos.results[0].key)}
-                                        >
-                                            <Text style={styles.infoText}>
-                                                Watch Trailer
-                                            </Text>
-                                        </TouchableHighlight>
-                                    </Fragment>
-                                    :                                    null
-                                }
-                            </View>
-
-                            <View style={styles.bodyBox}>
-                                <Text style={styles.overview}>{overview}</Text>
-                            </View>
-
-                            <Title style={styles.sectionTitle}>
-                                Top Billed Cast
-                            </Title>
-
-                            <View style={styles.creditsBox}>
-                                <FlatList
-                                  horizontal
-                                  showsHorizontalScrollIndicator={false}
-                                  keyExtractor={item => item.id.toString()}
-                                  data={
-                                        credits.cast
-                                            .slice(0, 20)
-                                            .filter(title => title.profile_path !== null)
-                                    }
-                                  renderItem={({ item }) => (
-                                        <Credits
-                                          route="Person"
-                                          id={item.id}
-                                          image={item.profile_path}
-                                          title={item.name}
-                                          character={item.character}
-                                        />
-                                    )
-                                    }
-                                />
-                            </View>
-
-                            <Title style={[styles.sectionTitle, { marginBottom: 5 }]}>
-                                Other Info
-                            </Title>
-
-                            {/* Movie */}
-                            <View style={styles.otherInfo}>
-                                {title !== undefined
-                                    ? <View style={styles.otherInfoBox}>
-
-                                        <Text style={styles.otherInfoText}>
-                                            Status: 
+                                                <Text style={styles.otherInfoText}>
+                                                    Status:
 {' '}
-{status}
-                                        </Text>
+                                                    <Text style={{ color: '#fff' }}>
+                                                        {status}
+                                                    </Text>
+                                                </Text>
 
-                                        {runtime !== undefined
-                                            ? <Text style={styles.otherInfoText}>
-                                                Runtime: 
+                                                {runtime !== undefined
+                                                    ? (
+                                                        <Text style={styles.otherInfoText}>
+                                                            Runtime:
 {' '}
-{
-                                                    runtime !== null ?
-                                                        runtime + ' minutes'
-                                                        :
-                                                        'Not Available'
+                                                            <Text style={{ color: '#fff' }}>
+                                                                {
+                                                                    runtime !== null
+                                                                        ? `${runtime} minutes`
+                                                                        : 'Not Available'
+                                                                }
+                                                            </Text>
+                                                        </Text>
+                                                    )
+                                                    : null
                                                 }
-                                            </Text>
-                                            :                                            null
-                                        }
 
-                                        <Text style={styles.otherInfoText}>
-                                            Director: 
+                                                <Text style={styles.otherInfoText}>
+                                                    Director:
 {' '}
-{
-                                                this.getCrew(credits.crew, 'Director')
-                                            }
-                                        </Text>
+                                                    <Text style={{ color: '#fff' }}>
+                                                        {
+                                                            this.getCrew(credits.crew, 'Director')
+                                                        }
+                                                    </Text>
+                                                </Text>
 
-                                        <Text style={styles.otherInfoText}>
-                                            Writer: 
+                                                <Text style={styles.otherInfoText}>
+                                                    Writer:
 {' '}
-{
-                                                this.getCrew(credits.crew, 'Writer')
-                                            }
-                                        </Text>
+                                                    <Text style={{ color: '#fff' }}>
+                                                        {
+                                                            this.getCrew(credits.crew, 'Writer')
+                                                        }
+                                                    </Text>
+                                                </Text>
 
-                                        <Text style={styles.otherInfoText}>
-                                            Blu-ray release date: 
+                                                <Text style={styles.otherInfoText}>
+                                                    Blu-ray release date:
 {' '}
-{
-                                                this.getReleaseDates(
-                                                    release_dates.results
-                                                )
-                                            }
-                                        </Text>
+                                                    <Text style={{ color: '#fff' }}>
+                                                        {
+                                                            this.getReleaseDates(
+                                                                release_dates.results
+                                                            )
+                                                        }
+                                                    </Text>
+                                                </Text>
 
-                                        {budget !== '' && budget > 0
-                                            ? <Text style={styles.otherInfoText}>
-                                                Budget: $
+                                                {budget !== '' && budget > 0
+                                                    ? (
+                                                        <Text style={styles.otherInfoText}>
+                                                            Budget:
+{' '}
+                                                            <Text style={{ color: '#fff' }}>
+                                                                $
 {budget.format(2)}
-                                            </Text>
-                                            :                                            null
-                                        }
+                                                            </Text>
+                                                        </Text>
+                                                    )
+                                                    : null
+                                                }
 
-                                        {revenue !== '' && revenue > 0
-                                            ? <Text style={styles.otherInfoText}>
-                                                Revenue: $
+                                                {revenue !== '' && revenue > 0
+                                                    ? (
+                                                        <Text style={styles.otherInfoText}>
+                                                            Revenue:
+{' '}
+                                                            <Text style={{ color: '#fff' }}>
+                                                                $
 {revenue.format(2)}
-                                            </Text>
-                                            :                                            null
-                                        }
-                                    </View>
-                                    :                                    null
-                                }
-
-                                {/* TV Shows */}
-                                {name !== undefined
-                                    ? <View style={styles.otherInfoBox}>
-
-                                        <Text style={styles.otherInfoText}>
-                                            Status: 
-{' '}
-{status}
-                                        </Text>
-
-                                        {episode_run_time !== undefined
-                                            ? <Text style={styles.otherInfoText}>
-                                                Runtime: 
-{' '}
-{
-                                                    episode_run_time !== null ?
-                                                        episode_run_time.map(
-                                                            v => v
-                                                        )
-                                                            .join('/') + ' minutes'
-                                                        :
-                                                        'Not Available'
+                                                            </Text>
+                                                        </Text>
+                                                    )
+                                                    : null
                                                 }
-                                            </Text>
-                                            :                                            null
-                                        }
+                                            </View>
+                                        )
+                                        : null
+                                    }
 
+                                    {/* TV Shows */}
+                                    {name !== undefined
+                                        ? (
+                                            <View style={styles.otherInfoBox}>
 
-                                        <Text style={styles.otherInfoText}>
-                                            Creator: 
+                                                <Text style={styles.otherInfoText}>
+                                                    Status:
 {' '}
-{
-                                                created_by.length > 0 ?
-                                                    created_by.map(c => c.name)
-                                                        .join(', ')
-                                                    :
-                                                    'Not Available'
-                                            }
-                                        </Text>
+                                                    {status}
+                                                </Text>
 
-                                        {number_of_seasons !== ''
-                                            ? <Text style={styles.otherInfoText}>
-                                                Seasons: 
+                                                {episode_run_time !== undefined
+                                                    ? (
+                                                        <Text style={styles.otherInfoText}>
+                                                            Runtime:
 {' '}
-{number_of_seasons}
-                                            </Text>
-                                            :                                            null
-                                        }
-
-                                        {number_of_episodes !== ''
-                                            ? <Text style={styles.otherInfoText}>
-                                                Episodes: 
-{' '}
-{number_of_episodes}
-                                            </Text>
-                                            :                                            null
-                                        }
-
-                                        {first_air_date !== ''
-                                            ? <Text style={styles.otherInfoText}>
-                                                First Air Date: 
-{' '}
-{first_air_date}
-                                            </Text>
-                                            :                                            null
-                                        }
-
-                                        {last_air_date !== ''
-                                            ? <Text style={styles.otherInfoText}>
-                                                Last Air Date: 
-{' '}
-{last_air_date}
-                                            </Text>
-                                            :                                            null
-                                        }
-
-                                        {next_episode_to_air !== null
-                                            ? <Text style={styles.otherInfoText}>
-                                                Next Episode to Air: 
-{' '}
-{
-                                                    next_episode_to_air.air_date
+                                                            {
+                                                                episode_run_time !== null
+                                                                    ? `${episode_run_time.map(
+                                                                        v => v
+                                                                    )
+                                                                        .join('/')} minutes`
+                                                                    : 'Not Available'
+                                                            }
+                                                        </Text>
+                                                    )
+                                                    : null
                                                 }
-                                            </Text>
-                                            :                                            null
-                                        }
 
-                                    </View>
-                                    :                                    null
-                                }
+
+                                                <Text style={styles.otherInfoText}>
+                                                    Creator:
+{' '}
+                                                    {
+                                                        created_by.length > 0
+                                                            ? created_by.map(c => c.name)
+                                                                .join(', ')
+                                                            : 'Not Available'
+                                                    }
+                                                </Text>
+
+                                                {number_of_seasons !== ''
+                                                    ? (
+                                                        <Text style={styles.otherInfoText}>
+                                                            Seasons:
+{' '}
+                                                            {number_of_seasons}
+                                                        </Text>
+                                                    )
+                                                    : null
+                                                }
+
+                                                {number_of_episodes !== ''
+                                                    ? (
+                                                        <Text style={styles.otherInfoText}>
+                                                            Episodes:
+{' '}
+                                                            {number_of_episodes}
+                                                        </Text>
+                                                    )
+                                                    : null
+                                                }
+
+                                                {first_air_date !== ''
+                                                    ? (
+                                                        <Text style={styles.otherInfoText}>
+                                                            First Air Date:
+{' '}
+                                                            {first_air_date}
+                                                        </Text>
+                                                    )
+                                                    : null
+                                                }
+
+                                                {last_air_date !== ''
+                                                    ? (
+                                                        <Text style={styles.otherInfoText}>
+                                                            Last Air Date:
+{' '}
+                                                            {last_air_date}
+                                                        </Text>
+                                                    )
+                                                    : null
+                                                }
+
+                                                {next_episode_to_air !== null
+                                                    ? (
+                                                        <Text style={styles.otherInfoText}>
+                                                            Next Episode to Air:
+{' '}
+                                                            {
+                                                                next_episode_to_air.air_date
+                                                            }
+                                                        </Text>
+                                                    )
+                                                    : null
+                                                }
+
+                                            </View>
+                                        )
+                                        : null
+                                    }
+                                </View>
                             </View>
-                        </View>
-                    </ScrollView>
-                    :                    null
+                        </ScrollView>
+                    )
+                    : null
                 }
             </Container>
         )
@@ -404,14 +463,20 @@ const styles = StyleSheet.create({
     },
     bodyBox: {
         alignItems: 'center',
-        margin: 10
+        margin: 10,
+        marginTop: 15
     },
     info: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 5,
-        marginTop: 25
+        marginTop: 15
+    },
+    trailer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 15
     },
     infoIcon: {
         marginLeft: 3
@@ -446,6 +511,12 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#737373',
         marginTop: 5
+    },
+    hitSlop: {
+        top: 15,
+        left: 30,
+        bottom: 15,
+        right: 30
     }
 })
 

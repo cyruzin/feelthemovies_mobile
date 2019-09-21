@@ -8,12 +8,16 @@ import {
     RefreshControl,
     FlatList
 } from 'react-native'
+
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import IconFeather from 'react-native-vector-icons/Feather'
+
 import moment from 'moment'
+
 import axios from '../../config/axios'
 import { imgPath } from '../../config/constants'
 import { routeFix, type } from '../../util/helpers'
+
 import {
     Container, Message, Title, Text, ScrollTop
 } from '../UI'
@@ -52,7 +56,6 @@ export default class Home extends PureComponent {
 
         try {
             const res = await axios.get(`/recommendations?page=${currentPage}`)
-
             this.setState({
                 payload: [
                     ...payload,
@@ -215,10 +218,7 @@ export default class Home extends PureComponent {
                                     <View style={{ position: 'relative' }}>
                                         <View style={styles.contentGenres}>
                                             <Text style={styles.contentGenresText}>
-                                                {item.genres
-                                                    .slice(0, 4)
-                                                    .map(g => g.name)
-                                                    .join(', ')}
+                                                {item.genres}
                                             </Text>
                                         </View>
                                     </View>
@@ -233,30 +233,31 @@ export default class Home extends PureComponent {
                                             <Title style={styles.contentTitle}>
                                                 {item.title}
                                             </Title>
+
+                                            <View style={styles.contentFoot}>
+                                                <Text style={styles.contentFootBody}>
+                                                    <Icon
+                                                      name="clock-outline"
+                                                      size={12}
+                                                      color="#737373"
+                                                    />
+                                                    {' '}
+                                                    {
+                                                        moment(item.created_at).fromNow()
+                                                    }
+                                                </Text>
+                                                {this.typeHandler(
+                                                    item.type
+                                                )}
+                                            </View>
+
                                             <Text style={styles.contentBody}>
                                                 {item.body}
                                             </Text>
                                         </View>
                                     </TouchableHighlight>
-                                    <View style={styles.contentFoot}>
-                                        <Text style={styles.contentFootBody}>
-                                            <Icon
-                                              name="clock-outline"
-                                              size={12}
-                                              color="#737373"
-                                            />
-                                            {' '}
-                                            {
-                                                moment(item.created_at).fromNow()
-                                            }
-                                        </Text>
-                                        {this.typeHandler(
-                                            item.type
-                                        )}
-                                    </View>
                                 </View>
                             )
-
                             }
                         />
                     )
@@ -313,17 +314,21 @@ const styles = StyleSheet.create({
     contentTitle: {
         fontSize: 20,
         textAlign: 'center',
-        color: '#fff'
+        color: '#fff',
+        marginTop: 5
     },
     contentBody: {
         fontSize: 18,
         textAlign: 'justify',
-        marginTop: 10,
+        marginBottom: 20,
         color: '#737373'
     },
     contentFoot: {
         margin: 20,
-        flexDirection: 'row'
+        marginTop: 5,
+        marginBottom: 5,
+        flexDirection: 'row',
+        justifyContent: 'center'
     },
     contentFootBody: {
         color: '#737373',

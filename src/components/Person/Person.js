@@ -7,11 +7,19 @@ import {
     ActivityIndicator,
     StyleSheet
 } from 'react-native'
+
 import orderBy from 'lodash/orderBy'
+
 import { axiosTMDB } from '../../config/axios'
 import { imgPath } from '../../config/constants'
+
 import {
-    Container, Badge, Message, Title, Text, Credits
+    Container,
+    Badge,
+    Message,
+    Title,
+    Text,
+    Credits
 } from '../UI'
 
 export default class Person extends PureComponent {
@@ -22,7 +30,7 @@ export default class Person extends PureComponent {
         payload: ''
     }
 
-    async componentDidMount() {
+    async componentDidMount () {
         try {
             this.setState({ fetch: true })
 
@@ -45,7 +53,7 @@ export default class Person extends PureComponent {
         }
     }
 
-    render() {
+    render () {
         const {
             fetch, successful, failure
         } = this.state
@@ -61,8 +69,8 @@ export default class Person extends PureComponent {
                 {fetch
                     ? (
                         <ActivityIndicator
-                          size="large"
-                          color="#737373"
+                            size="large"
+                            color="#737373"
                         />
                     )
                     : null
@@ -81,8 +89,8 @@ export default class Person extends PureComponent {
 
                                 <View style={styles.imageBox}>
                                     <Image
-                                      style={styles.image}
-                                      source={{
+                                        style={styles.image}
+                                        source={{
                                             uri: `${imgPath.W500}${profile_path}`
                                         }}
                                     />
@@ -122,28 +130,28 @@ export default class Person extends PureComponent {
                                             }}
                                             >
                                                 <FlatList
-                                                  horizontal
-                                                  showsHorizontalScrollIndicator={false}
-                                                  keyExtractor={item => item.id.toString()}
-                                                  data={orderBy(
+                                                    horizontal
+                                                    showsHorizontalScrollIndicator={false}
+                                                    keyExtractor={item => item.id.toString()}
+                                                    data={orderBy(
                                                         combined_credits.cast, 'vote_count', 'desc'
                                                     )
                                                         .slice(0, 20)
                                                         .filter(c => c.character !== 'Himself'
                                                             && c.poster_path !== null)}
-                                                  renderItem={({ item }) => (
+                                                    renderItem={({ item }) => (
                                                         <Credits
-                                                          route="TitleDetails"
-                                                          id={item.id}
-                                                          type={item.media_type}
-                                                          title={item.title !== undefined
+                                                            route="TitleDetails"
+                                                            id={item.id}
+                                                            type={item.media_type}
+                                                            title={item.title !== undefined
                                                                 ? item.title : item.name
                                                             }
-                                                          date={item.release_date !== undefined
+                                                            date={item.release_date !== undefined
                                                                 ? item.release_date
                                                                 : item.first_air_date
                                                             }
-                                                          image={item.poster_path}
+                                                            image={item.poster_path}
                                                         />
                                                     )
                                                     }
@@ -166,7 +174,9 @@ export default class Person extends PureComponent {
                                             <Text style={styles.otherInfoText}>
                                                 Gender:
 {' '}
-                                                {gender === 1 ? 'Female' : 'Male'}
+                                                <Text style={{ color: '#fff' }}>
+                                                    {gender === 1 ? 'Female' : 'Male'}
+                                                </Text>
                                             </Text>
                                         )
                                         : null
@@ -177,7 +187,9 @@ export default class Person extends PureComponent {
                                             <Text style={styles.otherInfoText}>
                                                 Birthday:
 {' '}
-                                                {birthday}
+                                                <Text style={{ color: '#fff' }}>
+                                                    {birthday}
+                                                </Text>
                                             </Text>
                                         )
                                         : null
@@ -188,7 +200,9 @@ export default class Person extends PureComponent {
                                             <Text style={styles.otherInfoText}>
                                                 Day of Death:
 {' '}
-                                                {deathday}
+                                                <Text style={{ color: '#fff' }}>
+                                                    {deathday}
+                                                </Text>
                                             </Text>
                                         )
                                         : null
@@ -199,7 +213,9 @@ export default class Person extends PureComponent {
                                             <Text style={styles.otherInfoText}>
                                                 Place of Birth:
 {' '}
-                                                {place_of_birth}
+                                                <Text style={{ color: '#fff' }}>
+                                                    {place_of_birth}
+                                                </Text>
                                             </Text>
                                         )
                                         : null
@@ -229,8 +245,8 @@ const styles = StyleSheet.create({
     image: {
         flex: 1,
         width: null,
-        height: 400,
-        resizeMode: 'cover'
+        height: 577,
+        resizeMode: 'contain'
     },
     name: {
         fontSize: 20,

@@ -6,12 +6,21 @@ import {
     ActivityIndicator,
     FlatList
 } from 'react-native'
+
 import Icon from 'react-native-vector-icons/MaterialIcons'
+
 import moment from 'moment'
+import uuidv4 from 'uuid/v4'
+
 import axios from '../../config/axios'
 import { limitChar } from '../../util/helpers'
+
 import {
-    Container, Message, Title, Text, List
+    Container,
+    Message,
+    Title,
+    Text,
+    List
 } from '../UI'
 
 export default class Recommendation extends PureComponent {
@@ -84,14 +93,14 @@ export default class Recommendation extends PureComponent {
                                     </Text>
                                 </View>
                                 <View style={styles.genres}>
-                                    {recommendation.genres
+                                    {recommendation.genres.trim().split(', ')
                                         .map(genres => (
                                             <View
-                                              key={genres.id}
+                                              key={uuidv4()}
                                               style={styles.genresBox}
                                             >
                                                 <Text style={styles.genresText}>
-                                                    {genres.name}
+                                                    {genres}
                                                 </Text>
                                             </View>
                                         ))
@@ -141,7 +150,9 @@ export default class Recommendation extends PureComponent {
                                                             Watch On:
                                                         </Text>
                                                         <Text style={styles.sourcesSubText}>
-                                                            {item.sources.map(s => s.name).join(', ')}
+                                                            {item.sources.trim().split(', ')
+                                                                .map(source => source).join(', ')
+                                                            }
                                                         </Text>
                                                     </View>
                                                 )
@@ -156,10 +167,10 @@ export default class Recommendation extends PureComponent {
                             <View
                               style={styles.keywordsBox}
                             >
-                                {recommendation.keywords
+                                {recommendation.keywords.trim().split(', ')
                                     .map(keywords => (
                                         <Text
-                                          key={keywords.id}
+                                          key={uuidv4()}
                                           style={styles.keywordsText}
                                         >
                                             <Title
@@ -167,7 +178,8 @@ export default class Recommendation extends PureComponent {
                                             >
                                                 #
                                             </Title>
-                                            {keywords.name}
+                                            {' '}
+                                            {keywords}
                                         </Text>
                                     ))
                                 }
@@ -201,10 +213,8 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     dateBox: {
-        flexDirection: 'row',
-        width: '100%',
-        marginBottom: 5,
-        justifyContent: 'space-evenly'
+        justifyContent: 'center',
+        alignContent: 'center'
     },
     date: {
         fontSize: 14,
@@ -223,8 +233,8 @@ const styles = StyleSheet.create({
     },
     genresBox: {
         backgroundColor: '#0093cb',
-        marginTop: 10,
-        marginBottom: 10,
+        marginTop: 20,
+        marginBottom: 20,
         marginLeft: 5,
         padding: 3
     },
