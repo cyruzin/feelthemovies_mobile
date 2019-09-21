@@ -117,8 +117,8 @@ android {
         applicationId "br.com.feelthemovies"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 71
-        versionName "4.2.7"
+        versionCode 72
+        versionName "4.2.8"
     }
     splits {
         abi {

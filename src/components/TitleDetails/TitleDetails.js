@@ -318,7 +318,9 @@ class TitleDetails extends PureComponent {
                                                 <Text style={styles.otherInfoText}>
                                                     Status:
 {' '}
-                                                    {status}
+                                                    <Text style={{ color: '#fff' }}>
+                                                        {status}
+                                                    </Text>
                                                 </Text>
 
                                                 {episode_run_time !== undefined
@@ -326,14 +328,16 @@ class TitleDetails extends PureComponent {
                                                         <Text style={styles.otherInfoText}>
                                                             Runtime:
 {' '}
-                                                            {
-                                                                episode_run_time !== null
-                                                                    ? `${episode_run_time.map(
-                                                                        v => v
-                                                                    )
-                                                                        .join('/')} minutes`
-                                                                    : 'Not Available'
-                                                            }
+                                                            <Text style={{ color: '#fff' }}>
+                                                                {
+                                                                    episode_run_time !== null
+                                                                        ? `${episode_run_time.map(
+                                                                            v => v
+                                                                        )
+                                                                            .join('/')} minutes`
+                                                                        : 'Not Available'
+                                                                }
+                                                            </Text>
                                                         </Text>
                                                     )
                                                     : null
@@ -343,12 +347,14 @@ class TitleDetails extends PureComponent {
                                                 <Text style={styles.otherInfoText}>
                                                     Creator:
 {' '}
-                                                    {
-                                                        created_by.length > 0
-                                                            ? created_by.map(c => c.name)
-                                                                .join(', ')
-                                                            : 'Not Available'
-                                                    }
+                                                    <Text style={{ color: '#fff' }}>
+                                                        {
+                                                            created_by.length > 0
+                                                                ? created_by.map(c => c.name)
+                                                                    .join(', ')
+                                                                : 'Not Available'
+                                                        }
+                                                    </Text>
                                                 </Text>
 
                                                 {number_of_seasons !== ''
@@ -356,7 +362,9 @@ class TitleDetails extends PureComponent {
                                                         <Text style={styles.otherInfoText}>
                                                             Seasons:
 {' '}
-                                                            {number_of_seasons}
+                                                            <Text style={{ color: '#fff' }}>
+                                                                {number_of_seasons}
+                                                            </Text>
                                                         </Text>
                                                     )
                                                     : null
@@ -367,7 +375,9 @@ class TitleDetails extends PureComponent {
                                                         <Text style={styles.otherInfoText}>
                                                             Episodes:
 {' '}
-                                                            {number_of_episodes}
+                                                            <Text style={{ color: '#fff' }}>
+                                                                {number_of_episodes}
+                                                            </Text>
                                                         </Text>
                                                     )
                                                     : null
@@ -378,7 +388,9 @@ class TitleDetails extends PureComponent {
                                                         <Text style={styles.otherInfoText}>
                                                             First Air Date:
 {' '}
-                                                            {first_air_date}
+                                                            <Text style={{ color: '#fff' }}>
+                                                                {first_air_date}
+                                                            </Text>
                                                         </Text>
                                                     )
                                                     : null
@@ -389,7 +401,9 @@ class TitleDetails extends PureComponent {
                                                         <Text style={styles.otherInfoText}>
                                                             Last Air Date:
 {' '}
-                                                            {last_air_date}
+                                                            <Text style={{ color: '#fff' }}>
+                                                                {last_air_date}
+                                                            </Text>
                                                         </Text>
                                                     )
                                                     : null
@@ -400,9 +414,11 @@ class TitleDetails extends PureComponent {
                                                         <Text style={styles.otherInfoText}>
                                                             Next Episode to Air:
 {' '}
-                                                            {
-                                                                next_episode_to_air.air_date
-                                                            }
+                                                            <Text style={{ color: '#fff' }}>
+                                                                {
+                                                                    next_episode_to_air.air_date
+                                                                }
+                                                            </Text>
                                                         </Text>
                                                     )
                                                     : null
