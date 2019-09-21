@@ -1,6 +1,6 @@
 {
   "name": "FeelTheMovies",
-  "version": "4.2.3",
+  "version": "4.2.5",
   "private": true,
   "scripts": {
     "start": "react-native start",
