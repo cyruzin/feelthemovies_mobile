@@ -1,12 +1,20 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
-import { Container, Title, Text } from '../UI'
+import {
+    View,
+    StyleSheet
+} from 'react-native'
+
+import {
+    Container,
+    Title,
+    Text
+} from '../UI'
 
 const About = () => (
     <Container>
         <View style={styles.content}>
             <Title style={styles.text}>
-                Feel the Movies v4.2.5
+                Feel the Movies v4.2.6
             </Title>
 
             <Text style={styles.body}>

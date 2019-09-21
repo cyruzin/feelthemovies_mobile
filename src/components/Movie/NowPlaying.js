@@ -3,9 +3,14 @@ import {
     ActivityIndicator,
     FlatList
 } from 'react-native'
+
 import { axiosTMDB } from '../../config/axios'
+
 import {
-    Container, List, Message, ScrollTop
+    Container,
+    List,
+    Message,
+    ScrollTop
 } from '../UI'
 
 export default class NowPlaying extends PureComponent {
@@ -27,7 +32,7 @@ export default class NowPlaying extends PureComponent {
     }
 
 
-    componentDidMount () {
+    componentDidMount() {
         this.fetchNowPlaying()
     }
 
@@ -79,7 +84,7 @@ export default class NowPlaying extends PureComponent {
         this.scrollRef.current.scrollToOffset({ x: 0, y: 0, animated: true })
     }
 
-    render () {
+    render() {
         const {
             fetch, successful, failure, payload, screenPosition
         } = this.state
@@ -89,8 +94,8 @@ export default class NowPlaying extends PureComponent {
                 {fetch
                     ? (
                         <ActivityIndicator
-                            size="large"
-                            color="#737373"
+                          size="large"
+                          color="#737373"
                         />
                     )
                     : null
@@ -104,24 +109,24 @@ export default class NowPlaying extends PureComponent {
                 {successful
                     ? (
                         <FlatList
-                            showsVerticalScrollIndicator={false}
-                            ref={this.scrollRef}
-                            onScroll={event => this.setState({
+                          showsVerticalScrollIndicator={false}
+                          ref={this.scrollRef}
+                          onScroll={event => this.setState({
                                 screenPosition: event.nativeEvent.contentOffset.y
                             })}
-                            keyExtractor={item => item.id.toString()}
-                            onEndReachedThreshold={0.5}
-                            onEndReached={this.scrollHandler}
-                            data={payload.filter(item => item.poster_path !== null)}
-                            renderItem={({ item }) => (
+                          keyExtractor={item => item.id.toString()}
+                          onEndReachedThreshold={0.5}
+                          onEndReached={this.scrollHandler}
+                          data={payload.filter(item => item.poster_path !== null)}
+                          renderItem={({ item }) => (
                                 <List
-                                    route="TitleDetails"
-                                    image={item.poster_path}
-                                    title={item.title}
-                                    id={item.id}
-                                    type="movie"
-                                    date={item.release_date}
-                                    body={item.overview}
+                                  route="TitleDetails"
+                                  image={item.poster_path}
+                                  title={item.title}
+                                  id={item.id}
+                                  type="movie"
+                                  date={item.release_date}
+                                  body={item.overview}
                                 />
                             )}
                         />
@@ -131,7 +136,7 @@ export default class NowPlaying extends PureComponent {
                 {screenPosition >= 250
                     ? (
                         <ScrollTop
-                            onPress={this.scrollTopHandler}
+                          onPress={this.scrollTopHandler}
                         />
                     )
                     : null
