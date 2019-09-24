@@ -178,7 +178,6 @@ export default class Recommendation extends PureComponent {
                                             >
                                                 #
                                             </Title>
-                                            {' '}
                                             {keywords}
                                         </Text>
                                     ))
