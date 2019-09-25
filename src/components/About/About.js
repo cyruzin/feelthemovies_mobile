@@ -14,7 +14,7 @@ const About = () => (
     <Container>
         <View style={styles.content}>
             <Title style={styles.text}>
-                Feel the Movies v4.3.1
+                Feel the Movies v4.3.2
             </Title>
 
             <Text style={styles.body}>
