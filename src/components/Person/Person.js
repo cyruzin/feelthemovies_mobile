@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import {
-    ScrollView,
+    SafeAreaView,
     FlatList,
     View,
     Image,
@@ -74,17 +74,15 @@ export default class Person extends PureComponent {
                           color="#737373"
                         />
                     )
-                    : null
-                }
+                    : null}
 
                 {failure !== ''
                     ? <Message text={failure} />
-                    : null
-                }
+                    : null}
 
                 {successful
                     ? (
-                        <ScrollView showsVerticalScrollIndicator={false}>
+                        <SafeAreaView showsVerticalScrollIndicator={false}>
 
                             <View style={styles.content}>
 
@@ -113,8 +111,7 @@ export default class Person extends PureComponent {
                                             </Text>
                                         </View>
                                     )
-                                    : null
-                                }
+                                    : null}
 
                                 {combined_credits.cast.length > 0
                                     ? (
@@ -133,14 +130,14 @@ export default class Person extends PureComponent {
                                                 <FlatList
                                                   horizontal
                                                   showsHorizontalScrollIndicator={false}
-                                                  keyExtractor={item => item.id.toString()}
+                                                  keyExtractor={(item) => item.id.toString()}
                                                   data={orderBy(
                                                         uniqBy(
                                                             combined_credits.cast,
-                                                            item => item.title || item.name
+                                                            (item) => item.title || item.name
                                                         ), 'vote_count', 'desc'
                                                     ).slice(0, 20)
-                                                        .filter(c => c.character !== 'Himself'
+                                                        .filter((c) => c.character !== 'Himself'
                                                             && c.poster_path !== null)}
                                                   renderItem={({ item }) => (
                                                         <Credits
@@ -148,22 +145,18 @@ export default class Person extends PureComponent {
                                                           id={item.id}
                                                           type={item.media_type}
                                                           title={item.title !== undefined
-                                                                ? item.title : item.name
-                                                            }
+                                                                ? item.title : item.name}
                                                           date={item.release_date !== undefined
                                                                 ? item.release_date
-                                                                : item.first_air_date
-                                                            }
+                                                                : item.first_air_date}
                                                           image={item.poster_path}
                                                         />
-                                                    )
-                                                    }
+                                                    )}
                                                 />
                                             </View>
                                         </View>
                                     )
-                                    : null
-                                }
+                                    : null}
 
                                 <View style={styles.section}>
                                     <Title style={styles.sectionTitle}>
@@ -182,8 +175,7 @@ export default class Person extends PureComponent {
                                                 </Text>
                                             </Text>
                                         )
-                                        : null
-                                    }
+                                        : null}
 
                                     {birthday !== null
                                         ? (
@@ -195,8 +187,7 @@ export default class Person extends PureComponent {
                                                 </Text>
                                             </Text>
                                         )
-                                        : null
-                                    }
+                                        : null}
 
                                     {deathday !== null
                                         ? (
@@ -208,8 +199,7 @@ export default class Person extends PureComponent {
                                                 </Text>
                                             </Text>
                                         )
-                                        : null
-                                    }
+                                        : null}
 
                                     {place_of_birth !== null
                                         ? (
@@ -221,15 +211,13 @@ export default class Person extends PureComponent {
                                                 </Text>
                                             </Text>
                                         )
-                                        : null
-                                    }
+                                        : null}
 
                                 </View>
                             </View>
-                        </ScrollView>
+                        </SafeAreaView>
                     )
-                    : null
-                }
+                    : null}
             </Container>
         )
     }

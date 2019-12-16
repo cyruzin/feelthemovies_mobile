@@ -6,16 +6,17 @@ import {
 } from 'react-native'
 import IconAnt from 'react-native-vector-icons/AntDesign'
 
-export default props => (
+export default (props) => (
     <View style={styles.scrollBox}>
         <TouchableWithoutFeedback
-            hitSlop={styles.scrollHitSlop}
-            onPress={props.onPress}>
+          hitSlop={styles.scrollHitSlop}
+          onPress={props.onPress}
+        >
             <IconAnt
-                name='upcircle'
-                color='#737373'
-                size={28}
-                style={styles.icon}
+              name="upcircle"
+              color="#737373"
+              size={28}
+              style={styles.icon}
             />
         </TouchableWithoutFeedback>
     </View>

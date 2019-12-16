@@ -1,5 +1,4 @@
 const baseURL = 'https://feelthemovies.com.br/v1'
-const apiToken = 'ce3b81ee-0dc0-4133-8625-32007e64af7b'
 const tmbdURL = 'https://api.themoviedb.org/3'
 const tmdbToken = '9aca69849a23528a419aea463387945f'
 
@@ -19,7 +18,6 @@ const imgPath = {
 
 export {
     baseURL,
-    apiToken,
     tmbdURL,
     tmdbToken,
     imgPath

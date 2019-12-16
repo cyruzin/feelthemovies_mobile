@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import {
     StyleSheet,
     View,
-    ScrollView,
+    SafeAreaView,
     ActivityIndicator,
     FlatList
 } from 'react-native'
@@ -67,12 +67,11 @@ export default class Recommendation extends PureComponent {
 
                 {failure !== ''
                     ? <Message text={failure} />
-                    : null
-                }
+                    : null}
 
                 {successful
                     ? (
-                        <ScrollView
+                        <SafeAreaView
                           showsVerticalScrollIndicator={false}
                         >
 
@@ -94,7 +93,7 @@ export default class Recommendation extends PureComponent {
                                 </View>
                                 <View style={styles.genres}>
                                     {recommendation.genres.trim().split(', ')
-                                        .map(genres => (
+                                        .map((genres) => (
                                             <View
                                               key={uuidv4()}
                                               style={styles.genresBox}
@@ -103,8 +102,7 @@ export default class Recommendation extends PureComponent {
                                                     {genres}
                                                 </Text>
                                             </View>
-                                        ))
-                                    }
+                                        ))}
                                 </View>
                                 <Text style={styles.description}>
                                     {recommendation.body}
@@ -116,7 +114,7 @@ export default class Recommendation extends PureComponent {
 
                                 <FlatList
                                   showsVerticalScrollIndicator={false}
-                                  keyExtractor={item => item.id.toString()}
+                                  keyExtractor={(item) => item.id.toString()}
                                   data={payload}
                                   renderItem={({ item }) => (
                                         <View>
@@ -140,8 +138,7 @@ export default class Recommendation extends PureComponent {
                                                         </Text>
                                                     </View>
                                                 )
-                                                : null
-                                            }
+                                                : null}
 
                                             {item.sources.length > 0
                                                 ? (
@@ -151,13 +148,11 @@ export default class Recommendation extends PureComponent {
                                                         </Text>
                                                         <Text style={styles.sourcesSubText}>
                                                             {item.sources.trim().split(', ')
-                                                                .map(source => source).join(', ')
-                                                            }
+                                                                .map((source) => source).join(', ')}
                                                         </Text>
                                                     </View>
                                                 )
-                                                : null
-                                            }
+                                                : null}
 
                                         </View>
                                     )}
@@ -168,7 +163,7 @@ export default class Recommendation extends PureComponent {
                               style={styles.keywordsBox}
                             >
                                 {recommendation.keywords.trim().split(', ')
-                                    .map(keywords => (
+                                    .map((keywords) => (
                                         <Text
                                           key={uuidv4()}
                                           style={styles.keywordsText}
@@ -180,14 +175,12 @@ export default class Recommendation extends PureComponent {
                                             </Title>
                                             {keywords}
                                         </Text>
-                                    ))
-                                }
+                                    ))}
                             </View>
 
-                        </ScrollView>
+                        </SafeAreaView>
                     )
-                    : null
-                }
+                    : null}
             </Container>
         )
     }

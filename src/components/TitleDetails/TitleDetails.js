@@ -7,7 +7,7 @@ import {
     View,
     Image,
     ActivityIndicator,
-    ScrollView,
+    SafeAreaView,
     FlatList,
     TouchableHighlight,
     Linking
@@ -78,7 +78,7 @@ class TitleDetails extends PureComponent {
 
     getCrew = (data, crewType) => {
         const crew = []
-        data.filter(c => c.job !== ''
+        data.filter((c) => c.job !== ''
             && c.job === crewType)
             .map((c) => {
                 crew.push(c.name)
@@ -111,17 +111,15 @@ class TitleDetails extends PureComponent {
                           color="#737373"
                         />
                     )
-                    : null
-                }
+                    : null}
 
                 {failure !== ''
                     ? <Message text={failure} />
-                    : null
-                }
+                    : null}
 
                 {successful
                     ? (
-                        <ScrollView showsVerticalScrollIndicator={false}>
+                        <SafeAreaView showsVerticalScrollIndicator={false}>
 
                             <View style={styles.content}>
                                 <View>
@@ -140,8 +138,7 @@ class TitleDetails extends PureComponent {
                                         <Title style={styles.year}>
                                             {release_date !== undefined
                                                 ? moment(release_date).format('YYYY')
-                                                : moment(first_air_date).format('YYYY')
-                                            }
+                                                : moment(first_air_date).format('YYYY')}
                                         </Title>
                                     </View>
                                 </View>
@@ -150,7 +147,7 @@ class TitleDetails extends PureComponent {
 
                                     <Icon name="tag" size={18} color="#fff" style={styles.infoIcon} />
                                     <Text style={styles.infoText}>
-                                        {genres.slice(0, 4).map(v => v.name).join(', ')}
+                                        {genres.slice(0, 4).map((v) => v.name).join(', ')}
                                     </Text>
 
 
@@ -159,25 +156,24 @@ class TitleDetails extends PureComponent {
                                 <View style={styles.trailer}>
                                     {videos.results.length > 0
                                         ? (
-                                            <Fragment>
+                                            <>
                                                 <Icon
-                                                  name="play"
-                                                  size={18}
-                                                  color="#fff"
-                                                  style={styles.infoIcon}
+                                                    name="play"
+                                                    size={18}
+                                                    color="#fff"
+                                                    style={styles.infoIcon}
                                                 />
                                                 <TouchableHighlight
-                                                  onPress={() => this.trailerHandler(videos.results[0].key)}
-                                                  hitSlop={styles.hitSlop}
+                                                    onPress={() => this.trailerHandler(videos.results[0].key)}
+                                                    hitSlop={styles.hitSlop}
                                                 >
                                                     <Text style={styles.infoText}>
                                                         Watch Trailer
                                                     </Text>
                                                 </TouchableHighlight>
-                                            </Fragment>
+                                            </>
                                         )
-                                        : null
-                                    }
+                                        : null}
                                 </View>
 
                                 <View style={styles.bodyBox}>
@@ -192,11 +188,11 @@ class TitleDetails extends PureComponent {
                                     <FlatList
                                       horizontal
                                       showsHorizontalScrollIndicator={false}
-                                      keyExtractor={item => item.id.toString()}
+                                      keyExtractor={(item) => item.id.toString()}
                                       data={
                                             credits.cast
                                                 .slice(0, 20)
-                                                .filter(title => title.profile_path !== null)
+                                                .filter((title) => title.profile_path !== null)
                                         }
                                       renderItem={({ item }) => (
                                             <Credits
@@ -206,8 +202,7 @@ class TitleDetails extends PureComponent {
                                               title={item.name}
                                               character={item.character}
                                             />
-                                        )
-                                        }
+                                        )}
                                     />
                                 </View>
 
@@ -243,8 +238,7 @@ class TitleDetails extends PureComponent {
                                                             </Text>
                                                         </Text>
                                                     )
-                                                    : null
-                                                }
+                                                    : null}
 
                                                 <Text style={styles.otherInfoText}>
                                                     Director:
@@ -289,8 +283,7 @@ class TitleDetails extends PureComponent {
                                                             </Text>
                                                         </Text>
                                                     )
-                                                    : null
-                                                }
+                                                    : null}
 
                                                 {revenue !== '' && revenue > 0
                                                     ? (
@@ -303,12 +296,10 @@ class TitleDetails extends PureComponent {
                                                             </Text>
                                                         </Text>
                                                     )
-                                                    : null
-                                                }
+                                                    : null}
                                             </View>
                                         )
-                                        : null
-                                    }
+                                        : null}
 
                                     {/* TV Shows */}
                                     {name !== undefined
@@ -332,7 +323,7 @@ class TitleDetails extends PureComponent {
                                                                 {
                                                                     episode_run_time !== null
                                                                         ? `${episode_run_time.map(
-                                                                            v => v
+                                                                            (v) => v
                                                                         )
                                                                             .join('/')} minutes`
                                                                         : 'Not Available'
@@ -340,8 +331,7 @@ class TitleDetails extends PureComponent {
                                                             </Text>
                                                         </Text>
                                                     )
-                                                    : null
-                                                }
+                                                    : null}
 
 
                                                 <Text style={styles.otherInfoText}>
@@ -350,7 +340,7 @@ class TitleDetails extends PureComponent {
                                                     <Text style={{ color: '#fff' }}>
                                                         {
                                                             created_by.length > 0
-                                                                ? created_by.map(c => c.name)
+                                                                ? created_by.map((c) => c.name)
                                                                     .join(', ')
                                                                 : 'Not Available'
                                                         }
@@ -367,8 +357,7 @@ class TitleDetails extends PureComponent {
                                                             </Text>
                                                         </Text>
                                                     )
-                                                    : null
-                                                }
+                                                    : null}
 
                                                 {number_of_episodes !== ''
                                                     ? (
@@ -380,8 +369,7 @@ class TitleDetails extends PureComponent {
                                                             </Text>
                                                         </Text>
                                                     )
-                                                    : null
-                                                }
+                                                    : null}
 
                                                 {first_air_date !== ''
                                                     ? (
@@ -393,8 +381,7 @@ class TitleDetails extends PureComponent {
                                                             </Text>
                                                         </Text>
                                                     )
-                                                    : null
-                                                }
+                                                    : null}
 
                                                 {last_air_date !== ''
                                                     ? (
@@ -406,8 +393,7 @@ class TitleDetails extends PureComponent {
                                                             </Text>
                                                         </Text>
                                                     )
-                                                    : null
-                                                }
+                                                    : null}
 
                                                 {next_episode_to_air !== null
                                                     ? (
@@ -421,19 +407,16 @@ class TitleDetails extends PureComponent {
                                                             </Text>
                                                         </Text>
                                                     )
-                                                    : null
-                                                }
+                                                    : null}
 
                                             </View>
                                         )
-                                        : null
-                                    }
+                                        : null}
                                 </View>
                             </View>
-                        </ScrollView>
+                        </SafeAreaView>
                     )
-                    : null
-                }
+                    : null}
             </Container>
         )
     }

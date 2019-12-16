@@ -6,7 +6,8 @@ import {
     ActivityIndicator,
     TouchableHighlight,
     RefreshControl,
-    FlatList
+    FlatList,
+    SafeAreaView
 } from 'react-native'
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -165,112 +166,109 @@ export default class Home extends PureComponent {
                           color="#737373"
                         />
                     )
-                    : null
-                }
+                    : null}
 
                 {error !== ''
                     ? <Message text={error} />
-                    : null
-                }
+                    : null}
 
                 {success
                     ? (
-                        <FlatList
-                          showsVerticalScrollIndicator={false}
-                          ref={this.scrollRef}
-                          onScroll={event => this.setState({
-                                screenPosition: event.nativeEvent.contentOffset.y
-                            })}
-                          refreshControl={(
-                                <RefreshControl
-                                  progressBackgroundColor="#0f0e0e"
-                                  colors={['#0093cb', '#737373']}
-                                  refreshing={refreshing}
-                                  onRefresh={this.refreshHandler}
-                                />
-                            )}
-                          onEndReachedThreshold={0.5}
-                          onEndReached={this.scrollHandler}
-                          data={payload}
-                          keyExtractor={item => item.id.toString()}
-                          renderItem={({ item }) => (
-                                <View>
-                                    <TouchableHighlight
-                                      onPress={() => routeFix('Recommendation', {
-                                            id: item.id,
-                                            recommendation: item
-                                        })}
-                                    >
-                                        <View>
-                                            <Image
-                                              style={styles.contentImage}
-                                              source={{
-                                                    uri: `${imgPath.W500}${item.backdrop}`
-                                                }}
-                                            />
-                                        </View>
-                                    </TouchableHighlight>
-                                    <View style={styles.contentDate}>
-                                        <Text style={styles.contentDateText}>
-                                            {moment(item.created_at).format('D MMM')}
-                                        </Text>
-                                    </View>
-                                    <View style={{ position: 'relative' }}>
-                                        <View style={styles.contentGenres}>
-                                            <Text style={styles.contentGenresText}>
-                                                {item.genres}
-                                            </Text>
-                                        </View>
-                                    </View>
-                                    <TouchableHighlight
-                                      onPress={() => routeFix('Recommendation', {
-                                            id: item.id,
-                                            recommendation: item
-                                        })}
-                                    >
-                                        <View style={styles.content}>
-
-                                            <Title style={styles.contentTitle}>
-                                                {item.title}
-                                            </Title>
-
-                                            <View style={styles.contentFoot}>
-                                                <Text style={styles.contentFootBody}>
-                                                    <Icon
-                                                      name="clock-outline"
-                                                      size={12}
-                                                      color="#737373"
-                                                    />
-                                                    {' '}
-                                                    {
-                                                        moment(item.created_at).fromNow()
-                                                    }
-                                                </Text>
-                                                {this.typeHandler(
-                                                    item.type
-                                                )}
+                        <SafeAreaView style={{ flex: 1 }}>
+                            <FlatList
+                              showsVerticalScrollIndicator={false}
+                              ref={this.scrollRef}
+                              onScroll={(event) => this.setState({
+                                    screenPosition: event.nativeEvent.contentOffset.y
+                                })}
+                              refreshControl={(
+                                    <RefreshControl
+                                      progressBackgroundColor="#0f0e0e"
+                                      colors={['#0093cb', '#737373']}
+                                      refreshing={refreshing}
+                                      onRefresh={this.refreshHandler}
+                                    />
+                                )}
+                              onEndReachedThreshold={0.5}
+                              onEndReached={this.scrollHandler}
+                              data={payload}
+                              keyExtractor={(item) => item.id.toString()}
+                              renderItem={({ item }) => (
+                                    <View>
+                                        <TouchableHighlight
+                                          onPress={() => routeFix('Recommendation', {
+                                                id: item.id,
+                                                recommendation: item
+                                            })}
+                                        >
+                                            <View>
+                                                <Image
+                                                  style={styles.contentImage}
+                                                  source={{
+                                                        uri: `${imgPath.W500}${item.backdrop}`
+                                                    }}
+                                                />
                                             </View>
-
-                                            <Text style={styles.contentBody}>
-                                                {item.body}
+                                        </TouchableHighlight>
+                                        <View style={styles.contentDate}>
+                                            <Text style={styles.contentDateText}>
+                                                {moment(item.created_at).format('D MMM')}
                                             </Text>
                                         </View>
-                                    </TouchableHighlight>
-                                </View>
-                            )
-                            }
-                        />
+                                        <View style={{ position: 'relative' }}>
+                                            <View style={styles.contentGenres}>
+                                                <Text style={styles.contentGenresText}>
+                                                    {item.genres}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <TouchableHighlight
+                                          onPress={() => routeFix('Recommendation', {
+                                                id: item.id,
+                                                recommendation: item
+                                            })}
+                                        >
+                                            <View style={styles.content}>
+
+                                                <Title style={styles.contentTitle}>
+                                                    {item.title}
+                                                </Title>
+
+                                                <View style={styles.contentFoot}>
+                                                    <Text style={styles.contentFootBody}>
+                                                        <Icon
+                                                          name="clock-outline"
+                                                          size={12}
+                                                          color="#737373"
+                                                        />
+                                                        {' '}
+                                                        {
+                                                            moment(item.created_at).fromNow()
+                                                        }
+                                                    </Text>
+                                                    {this.typeHandler(
+                                                        item.type
+                                                    )}
+                                                </View>
+
+                                                <Text style={styles.contentBody}>
+                                                    {item.body}
+                                                </Text>
+                                            </View>
+                                        </TouchableHighlight>
+                                    </View>
+                                )}
+                            />
+                        </SafeAreaView>
                     )
-                    : null
-                }
+                    : null}
                 {screenPosition >= 250
                     ? (
                         <ScrollTop
                           onPress={this.scrollTopHandler}
                         />
                     )
-                    : null
-                }
+                    : null}
             </Container>
         )
     }

@@ -1,18 +1,12 @@
 import axios from 'axios'
 import {
     baseURL,
-    apiToken,
     tmbdURL,
     tmdbToken
 } from './constants'
 
 export default axios.create({
-    baseURL: baseURL,
-    headers: {
-        common: {
-            'Api-Token': apiToken
-        }
-    }
+    baseURL
 })
 
 export const axiosTMDB = axios.create({
