@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import {
-    SafeAreaView,
+    ScrollView,
     FlatList,
     View,
     Image,
@@ -82,7 +82,7 @@ export default class Person extends PureComponent {
 
                 {successful
                     ? (
-                        <SafeAreaView showsVerticalScrollIndicator={false}>
+                        <ScrollView showsVerticalScrollIndicator={false}>
 
                             <View style={styles.content}>
 
@@ -215,7 +215,7 @@ export default class Person extends PureComponent {
 
                                 </View>
                             </View>
-                        </SafeAreaView>
+                        </ScrollView>
                     )
                     : null}
             </Container>

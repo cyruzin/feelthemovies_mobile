@@ -21,13 +21,13 @@ export default (props) => {
 
     return (
         <TouchableWithoutFeedback
-          onPress={() => routeFix(route, { id, type })}
+            onPress={() => routeFix(route, { id, type })}
         >
             <View style={styles.container}>
                 <View>
                     <Image
-                      style={styles.image}
-                      source={{
+                        style={styles.image}
+                        source={{
                             uri: `${imgPath.W300}${image}`
                         }}
                     />

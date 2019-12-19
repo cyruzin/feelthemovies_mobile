@@ -7,7 +7,7 @@ import {
     View,
     Image,
     ActivityIndicator,
-    SafeAreaView,
+    ScrollView,
     FlatList,
     TouchableHighlight,
     Linking
@@ -36,7 +36,7 @@ class TitleDetails extends PureComponent {
         payload: ''
     }
 
-    async componentDidMount() {
+    async componentDidMount () {
         try {
             this.setState({ fetch: true })
 
@@ -90,7 +90,7 @@ class TitleDetails extends PureComponent {
         Linking.openURL(`https://www.youtube.com/watch?v=${str}`)
     }
 
-    render() {
+    render () {
         const { successful, failure, fetch } = this.state
 
         const {
@@ -107,8 +107,8 @@ class TitleDetails extends PureComponent {
                 {fetch
                     ? (
                         <ActivityIndicator
-                          size="large"
-                          color="#737373"
+                            size="large"
+                            color="#737373"
                         />
                     )
                     : null}
@@ -119,13 +119,13 @@ class TitleDetails extends PureComponent {
 
                 {successful
                     ? (
-                        <SafeAreaView showsVerticalScrollIndicator={false}>
+                        <ScrollView showsVerticalScrollIndicator={false}>
 
                             <View style={styles.content}>
                                 <View>
                                     <Image
-                                      style={styles.image}
-                                      source={{
+                                        style={styles.image}
+                                        source={{
                                             uri: `${imgPath.W500}${backdrop_path}`
                                         }}
                                     />
@@ -186,21 +186,21 @@ class TitleDetails extends PureComponent {
 
                                 <View style={styles.creditsBox}>
                                     <FlatList
-                                      horizontal
-                                      showsHorizontalScrollIndicator={false}
-                                      keyExtractor={(item) => item.id.toString()}
-                                      data={
+                                        horizontal
+                                        showsHorizontalScrollIndicator={false}
+                                        keyExtractor={(item) => item.id.toString()}
+                                        data={
                                             credits.cast
                                                 .slice(0, 20)
                                                 .filter((title) => title.profile_path !== null)
                                         }
-                                      renderItem={({ item }) => (
+                                        renderItem={({ item }) => (
                                             <Credits
-                                              route="Person"
-                                              id={item.id}
-                                              image={item.profile_path}
-                                              title={item.name}
-                                              character={item.character}
+                                                route="Person"
+                                                id={item.id}
+                                                image={item.profile_path}
+                                                title={item.name}
+                                                character={item.character}
                                             />
                                         )}
                                     />
@@ -414,7 +414,7 @@ class TitleDetails extends PureComponent {
                                         : null}
                                 </View>
                             </View>
-                        </SafeAreaView>
+                        </ScrollView>
                     )
                     : null}
             </Container>
