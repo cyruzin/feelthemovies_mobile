@@ -32,10 +32,10 @@ const Movie = () => {
 
                 <TouchableWithoutFeedback
                     hitSlop={styles.hitSlop}
-                    onPress={() => routeFix('RecommendationSearch')}>
+                    onPress={() => routeFix('Discovery')}>
                     <View style={styles.box}>
-                        <Icon name='search1' size={20} color='#fff' />
-                        <Text style={styles.boxText}>Recommendation Search</Text>
+                        <Icon name='eye' size={20} color='#fff' />
+                        <Text style={styles.boxText}>Discovery</Text>
                     </View>
                 </TouchableWithoutFeedback>
             </View>

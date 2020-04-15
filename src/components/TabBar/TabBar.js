@@ -29,7 +29,7 @@ class TabBar extends PureComponent {
         routeFix(route)
     }
 
-    render() {
+    render () {
         const { activeTab, activeColor, inactiveColor } = this.state
 
         return (
@@ -90,11 +90,13 @@ class TabBar extends PureComponent {
 const styles = StyleSheet.create({
     tabBar: {
         backgroundColor: '#0f0e0e',
-        height: 60,
+        height: 70,
         justifyContent: 'space-around',
         alignItems: 'center',
         flexDirection: 'row',
-        padding: 5
+        padding: 5,
+        borderTopWidth: 0.5,
+        borderTopColor: '#737373'
     },
     tabBarItem: {
         fontSize: 12,

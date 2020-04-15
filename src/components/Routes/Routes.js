@@ -2,11 +2,14 @@ import React from 'react'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { StyleSheet } from 'react-native'
 import { Router, Scene } from 'react-native-router-flux'
+
 import { onBackPress, routeFix } from '../../util/helpers';
+
 import Home from '../Home/Home'
 import Search from '../Search/Search'
 import Recommendation, { Search as RecommendationSearch } from '../Recommendation'
 import Movie, { NowPlaying, UpComing } from '../Movie'
+import Discovery from '../Discovery'
 import TitleDetails from '../TitleDetails/TitleDetails'
 import Person from '../Person/Person'
 import About from '../About/About'
@@ -28,6 +31,7 @@ export default () => {
                     renderRightButton={rigthButton()} />
                 <Scene key='NowPlaying' component={NowPlaying} title='Now Playing Movies' />
                 <Scene key='UpComing' component={UpComing} title='UpComing Movies' />
+                <Scene key='Discovery' component={Discovery} title='Discovery Movies' />
                 <Scene key='TitleDetails' component={TitleDetails} title='Details' />
                 <Scene key='Person' component={Person} title='Person' />
                 <Scene key='About' component={About} title='About' />
