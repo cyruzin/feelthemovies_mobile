@@ -113,7 +113,7 @@ export default function Discovery () {
                     type="movie"
                     image={item.poster_path}
                     badge
-                    badgeText="MOVIE"
+                    badgeText="Movie"
                     title={item.title}
                     date={item.release_date}
                     body={item.overview}

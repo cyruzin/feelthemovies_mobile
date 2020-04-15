@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-import { v4 as uuidv4 } from 'uuid/v4';
+import uuidv4 from 'uuid/v4';
 
 import { Title } from '../UI';
 

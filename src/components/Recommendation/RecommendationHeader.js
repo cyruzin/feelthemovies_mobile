@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 import moment from 'moment';
-import { v4 as uuidv4 } from 'uuid/v4';
+import uuidv4 from 'uuid/v4';
 
 import { Title, Text } from '../UI';
 
