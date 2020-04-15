@@ -14,11 +14,16 @@
     "axios": "^0.18.1",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
-    "react": "16.12.0",
-    "react-native": "0.61.5",
-    "react-native-router-flux": "^4.0.6",
+    "react": "16.11.0",
+    "react-native": "^0.62.2",
+    "react-native-cli": "^2.0.1",
+    "react-native-gesture-handler": "^1.6.1",
+    "react-native-reanimated": "^1.8.0",
+    "react-native-router-flux": "^4.2.0",
+    "react-native-screens": "^2.4.0",
     "react-native-vector-icons": "^6.6.0",
-    "uuid": "^3.3.3"
+    "util": "^0.12.2",
+    "uuid": "^7.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
@@ -30,8 +35,8 @@
     "eslint-plugin-prettier": "^3.1.2",
     "flow-bin": "v0.105",
     "jest": "^24.9.0",
-    "metro-react-native-babel-preset": "^0.57.0",
-    "react-test-renderer": "16.9.0"
+    "metro-react-native-babel-preset": "^0.58.0",
+    "react-test-renderer": "16.11.0"
   },
   "jest": {
     "preset": "react-native"
