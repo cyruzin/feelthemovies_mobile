@@ -7,10 +7,21 @@ import {
 
 import { Picker } from '@react-native-community/picker';
 
+import { Text, Badge } from '../UI';
+
+import Search from './Search';
+
 export default function Form (props) {
   const {
+    year,
+    yearHandler,
     sortBy,
-    sortByHandler
+    sortByHandler,
+    castVal,
+    cast,
+    castSearch,
+    castHandler,
+    fetchCast
   } = props;
 
   return (
@@ -18,8 +29,10 @@ export default function Form (props) {
       <TextInput
         placeholder="Year"
         placeholderTextColor="#737373"
-        defaultValue={new Date().getFullYear().toString()}
         style={styles.textInput}
+        keyboardType="numeric"
+        defaultValue={year}
+        onChangeText={value => yearHandler(value)}
       />
       <Picker
         selectedValue={sortBy}
@@ -28,7 +41,7 @@ export default function Form (props) {
           width: 400,
           color: '#737373'
         }}
-        onValueChange={(itemValue) => sortByHandler(itemValue)}
+        onValueChange={itemValue => sortByHandler(itemValue)}
         itemStyle={{
           backgroundColor: 'red'
         }}
@@ -51,9 +64,20 @@ export default function Form (props) {
       />
       <TextInput
         placeholder="Cast"
+        value={castVal}
         placeholderTextColor="#737373"
+        onChangeText={fetchCast}
         style={styles.textInput}
       />
+      {cast.length > 0 &&
+        <View style={styles.castContent}>
+          {cast.map(cast => (
+            <Badge key={cast.id} style={styles.castBadge}>
+              <Text style={styles.castTitle}>{cast.name}</Text>
+            </Badge>
+          ))}
+        </View>}
+      <Search result={castSearch} onPress={castHandler} />
       <TextInput
         placeholder="Keywords"
         placeholderTextColor="#737373"
@@ -70,5 +94,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#1b1919',
     borderRadius: 5,
     marginBottom: 10
+  },
+  castContent: {
+    flex: 1,
+    flexDirection: 'row',
+    marginBottom: 10,
+    alignItems: 'center'
+  },
+  castBadge: {
+    borderRadius: 8,
+    padding: 5,
+    marginRight: 10
+  },
+  castTitle: {
+    color: '#fff'
   }
 })

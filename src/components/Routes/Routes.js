@@ -31,7 +31,7 @@ export default () => {
                     renderRightButton={rigthButton()} />
                 <Scene key='NowPlaying' component={NowPlaying} title='Now Playing Movies' />
                 <Scene key='UpComing' component={UpComing} title='UpComing Movies' />
-                <Scene key='Discovery' component={Discovery} title='Discovery Movies' />
+                <Scene key='Discovery' component={Discovery} title='Discover Movies' />
                 <Scene key='TitleDetails' component={TitleDetails} title='Details' />
                 <Scene key='Person' component={Person} title='Person' />
                 <Scene key='About' component={About} title='About' />

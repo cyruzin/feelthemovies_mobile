@@ -9,9 +9,12 @@ import {
 
 import { axiosTMDB } from '../../config/axios';
 
+import debounce from 'lodash/debounce';
+
 import {
   Container,
-  List
+  List,
+  Message
 } from '../UI';
 
 import Form from './Form';
@@ -22,7 +25,11 @@ export default class Discovery extends Component {
     refreshing: false,
     payload: [],
     error: '',
+    year: new Date().getFullYear().toString(),
     sortBy: 'popularity.desc',
+    castVal: '',
+    castSearch: [],
+    cast: [],
     page: 1
   };
 
@@ -34,10 +41,15 @@ export default class Discovery extends Component {
     try {
       this.setState({ error: '', fetch: true });
       const {
+        year,
         sortBy,
-        page
+        page,
+        cast
       } = this.state;
-      const response = await axiosTMDB.get(`/discover/movie?language=en-US&sort_by=${sortBy}&include_adult=false&include_video=false&with_genres=&with_cast=&with_keywords=&primary_release_year=2020&page=${page}`);
+
+      const withCast = cast.length > 0 ? cast.map(value => value.id).join(',') : '';
+
+      const response = await axiosTMDB.get(`/discover/movie?language=en-US&sort_by=${sortBy}&include_adult=false&include_video=false&with_genres=&with_cast=${withCast}&with_keywords=&primary_release_year=${year}&page=${page}`);
       this.setState({ payload: response.data.results });
     } catch (err) {
       this.setState({
@@ -49,6 +61,38 @@ export default class Discovery extends Component {
         refreshing: false
       })
     }
+  }
+
+  yearHandler = debounce((year) => {
+    this.setState({ year }, () => this.discoverMovies());
+  }, 800);
+
+  fetchCast = (searchTerm) => {
+    try {
+      if (searchTerm === '') {
+        this.setState({ castSearch: [], castVal: '' });
+        return;
+      }
+      this.setState({ castVal: searchTerm }, debounce(async () => {
+        const response = await axiosTMDB.get(`/search/person?language=en-US&query=${encodeURIComponent(searchTerm)}&page=1&include_adult=false`);
+        this.setState({ castSearch: response.data.results });
+      }, 800));
+    } catch (err) {
+      this.setState({
+        error: 'Looks like Thanos snapped his fingers!'
+      })
+    } finally {
+      this.setState({ fetch: false })
+    }
+  }
+
+  castHandler = (cast) => {
+    const { id, name } = cast;
+    this.setState({
+      cast: [...this.state.cast, { id, name }],
+      castVal: '',
+      castSearch: []
+    }, () => this.discoverMovies());
   }
 
   sortByHandler = (value) => {
@@ -64,13 +108,26 @@ export default class Discovery extends Component {
   }
 
   render () {
-    const { fetch, payload, sortBy, refreshing } = this.state;
+    const {
+      fetch,
+      payload,
+      refreshing,
+      year,
+      yearHandler,
+      sortBy,
+      cast,
+      castVal,
+      castSearch,
+      error
+    } = this.state;
+
     return (
       <Container>
         {fetch && <ActivityIndicator size="large" color="#737373" />}
 
+        {error !== '' ? <Message text={error} /> : null}
+
         {!fetch
-          && payload.length > 0
           && (
             <View style={{
               flex: 1,
@@ -81,8 +138,15 @@ export default class Discovery extends Component {
               <FlatList
                 ListHeaderComponent={
                   <Form
+                    year={year}
+                    yearHandler={this.yearHandler}
                     sortBy={sortBy}
                     sortByHandler={this.sortByHandler}
+                    cast={cast}
+                    castVal={castVal}
+                    castSearch={castSearch}
+                    castHandler={this.castHandler}
+                    fetchCast={this.fetchCast}
                   />
                 }
                 refreshControl={
@@ -97,6 +161,7 @@ export default class Discovery extends Component {
                 keyboardShouldPersistTaps="always"
                 keyExtractor={item => item.id.toString()}
                 data={payload}
+                ListEmptyComponent={<Message text="No Result" />}
                 renderItem={({ item }) => {
                   return (
                     <List
