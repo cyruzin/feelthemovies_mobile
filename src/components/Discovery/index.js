@@ -93,7 +93,6 @@ export default class Discovery extends PureComponent {
         });
       }
     } catch (err) {
-      console.log(err)
       this.setState({
         error: 'Looks like Thanos snapped his fingers!'
       })
@@ -111,8 +110,9 @@ export default class Discovery extends PureComponent {
   }, 800);
 
   genresHandler = (genres) => {
+    const newGenres = this.state.genres.filter(item => item.value !== genres.value);
     this.setState({
-      genres: [...this.state.genres, genres],
+      genres: [...newGenres, genres],
       genresVal: '',
       genresFocus: false
     }, () => this.discoverMovies());
@@ -152,8 +152,9 @@ export default class Discovery extends PureComponent {
 
   castHandler = (cast) => {
     const { id, name } = cast;
+    const newCast = this.state.cast.filter(item => item.id !== id);
     this.setState({
-      cast: [...this.state.cast, { id, name }],
+      cast: [...newCast, { id, name }],
       castVal: '',
       castSearch: []
     }, () => this.discoverMovies());
@@ -194,8 +195,9 @@ export default class Discovery extends PureComponent {
 
   keywordsHandler = (keywords) => {
     const { id, name } = keywords;
+    const newKeywords = this.state.keywords.filter(item => item.id !== id);
     this.setState({
-      keywords: [...this.state.keywords, { id, name }],
+      keywords: [...newKeywords, { id, name }],
       keywordsVal: '',
       keywordsSearch: []
     }, () => this.discoverMovies());

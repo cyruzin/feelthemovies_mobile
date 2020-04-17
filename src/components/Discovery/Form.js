@@ -22,7 +22,6 @@ export default function Form (props) {
     sortByFocusHandler,
     sortyByRemoveHandler,
     genres,
-    genresVal,
     genresFocus,
     genresHandler,
     genresFocusHandler,
@@ -56,10 +55,12 @@ export default function Form (props) {
         defaultValue={year}
         onChangeText={value => yearHandler(value)}
       />
+
       <Text style={styles.textLabel}>Sort by</Text>
       <TextInput
         placeholder="Touch to select"
         placeholderTextColor="#737373"
+        value=""
         style={styles.textInput}
         onFocus={sortByFocusHandler}
         onBlur={() => sortByFocusHandler(false)}
@@ -78,6 +79,7 @@ export default function Form (props) {
       <TextInput
         placeholder="Touch to select"
         placeholderTextColor="#737373"
+        value=""
         style={styles.textInput}
         onFocus={genresFocusHandler}
         onBlur={() => genresFocusHandler(false)}
@@ -93,7 +95,6 @@ export default function Form (props) {
           ))}
         </View>}
       {genresFocus && <Search result={genresResult} onPress={genresHandler} />}
-
 
       <Text style={styles.textLabel}>Cast</Text>
       <TextInput
