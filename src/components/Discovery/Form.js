@@ -10,14 +10,27 @@ import { Text, Badge } from '../UI';
 
 import Search from './Search';
 
+import { sortByResult, genresResult } from './values';
+
 export default function Form (props) {
   const {
     year,
     yearHandler,
-    sortBy,
+    sortByVal,
     sortByHandler,
+    sortByFocus,
+    sortByFocusHandler,
+    sortyByRemoveHandler,
+    genres,
+    genresVal,
+    genresFocus,
+    genresHandler,
+    genresFocusHandler,
+    genresRemoveHandler,
     castVal,
     cast,
+    castFocus,
+    castFocusHandler,
     castSearch,
     castHandler,
     castRemoveHandler,
@@ -40,20 +53,49 @@ export default function Form (props) {
         placeholder="Touch to select"
         placeholderTextColor="#737373"
         style={styles.textInput}
+        onFocus={sortByFocusHandler}
+        onBlur={() => sortByFocusHandler(false)}
       />
+      {sortByVal.name
+        && <View style={styles.castContent}>
+          <TouchableOpacity onPress={() => sortyByRemoveHandler()}>
+            <Badge style={styles.castBadge}>
+              <Text style={styles.castTitle}>{sortByVal.name}</Text>
+            </Badge>
+          </TouchableOpacity>
+        </View>}
+      {sortByFocus && <Search result={sortByResult} onPress={sortByHandler} />}
+
       <Text style={styles.textLabel}>Genres</Text>
       <TextInput
         placeholder="Touch to select"
         placeholderTextColor="#737373"
         style={styles.textInput}
+        onFocus={genresFocusHandler}
+        onBlur={() => genresFocusHandler(false)}
       />
+      {genres.length > 0 &&
+        <View style={styles.castContent}>
+          {genres.map(genre => (
+            <TouchableOpacity key={genre.id} onPress={() => genresRemoveHandler(genre.id)}>
+              <Badge style={styles.castBadge}>
+                <Text style={styles.castTitle}>{genre.name}</Text>
+              </Badge>
+            </TouchableOpacity>
+          ))}
+        </View>}
+      {genresFocus && <Search result={genresResult} onPress={genresHandler} />}
+
+
       <Text style={styles.textLabel}>Cast</Text>
       <TextInput
         placeholder="Type a cast"
         value={castVal}
         placeholderTextColor="#737373"
-        onChangeText={fetchCast}
         style={styles.textInput}
+        onChangeText={fetchCast}
+        onFocus={castFocusHandler}
+        onBlur={() => castFocusHandler(false)}
       />
       {cast.length > 0 &&
         <View style={styles.castContent}>
@@ -65,7 +107,8 @@ export default function Form (props) {
             </TouchableOpacity>
           ))}
         </View>}
-      <Search result={castSearch} onPress={castHandler} />
+      {castFocus && <Search result={castSearch} onPress={castHandler} />}
+
       <Text style={styles.textLabel}>Keywords</Text>
       <TextInput
         placeholder="Type a keyword"
