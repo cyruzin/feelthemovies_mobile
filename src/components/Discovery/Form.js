@@ -2,10 +2,9 @@ import React from 'react';
 import {
   StyleSheet,
   View,
-  TextInput
+  TextInput,
+  TouchableOpacity
 } from 'react-native';
-
-import { Picker } from '@react-native-community/picker';
 
 import { Text, Badge } from '../UI';
 
@@ -21,49 +20,36 @@ export default function Form (props) {
     cast,
     castSearch,
     castHandler,
+    castRemoveHandler,
     fetchCast
   } = props;
 
   return (
     <View style={styles.content}>
+      <Text style={styles.textLabel}>Year</Text>
       <TextInput
-        placeholder="Year"
+        placeholder="Type a year"
         placeholderTextColor="#737373"
         style={styles.textInput}
         keyboardType="numeric"
         defaultValue={year}
         onChangeText={value => yearHandler(value)}
       />
-      <Picker
-        selectedValue={sortBy}
-        style={{
-          height: 50,
-          width: 400,
-          color: '#737373'
-        }}
-        onValueChange={itemValue => sortByHandler(itemValue)}
-        itemStyle={{
-          backgroundColor: 'red'
-        }}
-      >
-        <Picker.Item
-          color="white"
-          value="popularity.desc"
-          label="Popularity Descending"
-        />
-        <Picker.Item
-          color="white"
-          value="popularity.asc"
-          label="Popularity Ascending"
-        />
-      </Picker>
+      <Text style={styles.textLabel}>Sort by</Text>
       <TextInput
-        placeholder="Genres"
+        placeholder="Touch to select"
         placeholderTextColor="#737373"
         style={styles.textInput}
       />
+      <Text style={styles.textLabel}>Genres</Text>
       <TextInput
-        placeholder="Cast"
+        placeholder="Touch to select"
+        placeholderTextColor="#737373"
+        style={styles.textInput}
+      />
+      <Text style={styles.textLabel}>Cast</Text>
+      <TextInput
+        placeholder="Type a cast"
         value={castVal}
         placeholderTextColor="#737373"
         onChangeText={fetchCast}
@@ -72,14 +58,17 @@ export default function Form (props) {
       {cast.length > 0 &&
         <View style={styles.castContent}>
           {cast.map(cast => (
-            <Badge key={cast.id} style={styles.castBadge}>
-              <Text style={styles.castTitle}>{cast.name}</Text>
-            </Badge>
+            <TouchableOpacity key={cast.id} onPress={() => castRemoveHandler(cast.id)}>
+              <Badge style={styles.castBadge}>
+                <Text style={styles.castTitle}>{cast.name}</Text>
+              </Badge>
+            </TouchableOpacity>
           ))}
         </View>}
       <Search result={castSearch} onPress={castHandler} />
+      <Text style={styles.textLabel}>Keywords</Text>
       <TextInput
-        placeholder="Keywords"
+        placeholder="Type a keyword"
         placeholderTextColor="#737373"
         style={styles.textInput}
       />
@@ -88,6 +77,12 @@ export default function Form (props) {
 }
 
 const styles = StyleSheet.create({
+  textLabel: {
+    marginBottom: 5,
+    marginLeft: 3,
+    fontSize: 13,
+    color: '#fff'
+  },
   textInput: {
     padding: 5,
     color: 'white',

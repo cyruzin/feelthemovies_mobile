@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         padding: 5,
-        borderTopWidth: 0.5,
+        borderTopWidth: 0.8,
         borderTopColor: '#737373'
     },
     tabBarItem: {

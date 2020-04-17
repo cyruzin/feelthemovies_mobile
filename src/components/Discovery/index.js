@@ -95,6 +95,15 @@ export default class Discovery extends Component {
     }, () => this.discoverMovies());
   }
 
+  castRemoveHandler = (id) => {
+    const newCast = this.state.cast.filter(item => item.id !== id);
+    this.setState({
+      cast: newCast,
+      castVal: '',
+      castSearch: []
+    }, () => this.discoverMovies());
+  }
+
   sortByHandler = (value) => {
     this.setState({ sortBy: value }, () => this.discoverMovies());
   }
@@ -146,6 +155,7 @@ export default class Discovery extends Component {
                     castVal={castVal}
                     castSearch={castSearch}
                     castHandler={this.castHandler}
+                    castRemoveHandler={this.castRemoveHandler}
                     fetchCast={this.fetchCast}
                   />
                 }
