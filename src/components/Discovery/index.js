@@ -39,6 +39,10 @@ export default class Discovery extends PureComponent {
     castFocus: false,
     castSearch: [],
     cast: [],
+    keywords: [],
+    keywordsFocus: false,
+    keywordsVal: '',
+    keywordsSearch: [],
     page: 1
   };
 
@@ -54,13 +58,15 @@ export default class Discovery extends PureComponent {
         genres,
         sortByVal,
         page,
-        cast
+        cast,
+        keywords
       } = this.state;
 
       const withCast = cast.length > 0 ? cast.map(item => item.id).join(',') : '';
       const withGenres = genres.length > 0 ? genres.map(item => item.value).join(',') : '';
+      const withKeywords = keywords.length > 0 ? keywords.map(item => item.id).join(',') : '';
 
-      const response = await axiosTMDB.get(`/discover/movie?language=en-US&sort_by=${sortByVal.value}&include_adult=false&include_video=false&with_genres=${withGenres}&with_cast=${withCast}&with_keywords=&primary_release_year=${year}&page=${page}`);
+      const response = await axiosTMDB.get(`/discover/movie?language=en-US&sort_by=${sortByVal.value}&include_adult=false&include_video=false&with_genres=${withGenres}&with_cast=${withCast}&with_keywords=${withKeywords}&primary_release_year=${year}&page=${page}`);
       this.setState({ payload: response.data.results });
     } catch (err) {
       this.setState({
@@ -141,6 +147,48 @@ export default class Discovery extends PureComponent {
     this.setState({ castFocus: onFocus });
   }
 
+  fetchKeywords = (searchTerm) => {
+    try {
+      if (searchTerm === '') {
+        this.setState({ keywordsSearch: [], keywordsVal: '' });
+        return;
+      }
+      this.setState({ keywordsVal: searchTerm }, debounce(async () => {
+        const response = await axiosTMDB.get(`/search/keyword?query=${encodeURIComponent(searchTerm)}&page=1`);
+        this.setState({ keywordsSearch: response.data.results });
+      }, 800));
+    } catch (err) {
+      this.setState({
+        error: 'Looks like Thanos snapped his fingers!'
+      })
+    } finally {
+      this.setState({ fetch: false })
+    }
+  }
+
+  keywordsHandler = (keywords) => {
+    const { id, name } = keywords;
+    this.setState({
+      keywords: [...this.state.keywords, { id, name }],
+      keywordsVal: '',
+      keywordsSearch: []
+    }, () => this.discoverMovies());
+  }
+
+  keywordsRemoveHandler = (id) => {
+    const newKeywords = this.state.keywords.filter(item => item.id !== id);
+    this.setState({
+      keywords: newKeywords,
+      keywordsVal: '',
+      keywordsSearch: []
+    }, () => this.discoverMovies());
+  }
+
+  keywordsFocusHandler = (focusOut) => {
+    const onFocus = focusOut ? true : false;
+    this.setState({ keywordsFocus: onFocus });
+  }
+
   sortyByRemoveHandler = () => {
     this.setState({ sortByVal: {} }, () => this.discoverMovies());
   }
@@ -181,6 +229,10 @@ export default class Discovery extends PureComponent {
       castFocus,
       castVal,
       castSearch,
+      keywords,
+      keywordsFocus,
+      keywordsVal,
+      keywordsSearch,
       error
     } = this.state;
 
@@ -214,6 +266,7 @@ export default class Discovery extends PureComponent {
                     genresHandler={this.genresHandler}
                     genresFocusHandler={this.genresFocusHandler}
                     genresRemoveHandler={this.genresRemoveHandler}
+                    fetchCast={this.fetchCast}
                     cast={cast}
                     castVal={castVal}
                     castFocus={castFocus}
@@ -221,7 +274,14 @@ export default class Discovery extends PureComponent {
                     castSearch={castSearch}
                     castHandler={this.castHandler}
                     castRemoveHandler={this.castRemoveHandler}
-                    fetchCast={this.fetchCast}
+                    fetchKeywords={this.fetchKeywords}
+                    keywords={keywords}
+                    keywordsVal={keywordsVal}
+                    keywordsFocus={keywordsFocus}
+                    keywordsFocusHandler={this.keywordsFocusHandler}
+                    keywordsSearch={keywordsSearch}
+                    keywordsHandler={this.keywordsHandler}
+                    keywordsRemoveHandler={this.keywordsRemoveHandler}
                   />
                 }
                 refreshControl={

@@ -5,7 +5,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import { Title } from '../UI';
+import { Text } from '../UI';
 
 export default function Search (props) {
   const { result, onPress } = props;
@@ -15,11 +15,12 @@ export default function Search (props) {
       {result.slice(0, 20).map(value => (
         <TouchableOpacity
           key={value.id}
+          style={{ marginBottom: 10 }}
           onPress={() => onPress(value)}
         >
-          <Title style={styles.title}>
+          <Text style={styles.title}>
             {value.name}
-          </Title>
+          </Text>
         </TouchableOpacity>
       ))}
     </View>
@@ -31,10 +32,11 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     marginBottom: 10,
-    backgroundColor: '#737373'
+    backgroundColor: '#1b1919',
+    borderRadius: 5
   },
   title: {
     fontSize: 17,
-    color: '#fff'
+    color: '#737373'
   }
 })

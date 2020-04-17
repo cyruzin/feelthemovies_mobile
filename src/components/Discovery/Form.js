@@ -28,13 +28,21 @@ export default function Form (props) {
     genresFocusHandler,
     genresRemoveHandler,
     castVal,
+    fetchCast,
     cast,
     castFocus,
     castFocusHandler,
     castSearch,
     castHandler,
     castRemoveHandler,
-    fetchCast
+    fetchKeywords,
+    keywords,
+    keywordsVal,
+    keywordsFocus,
+    keywordsFocusHandler,
+    keywordsHandler,
+    keywordsSearch,
+    keywordsRemoveHandler
   } = props;
 
   return (
@@ -57,10 +65,10 @@ export default function Form (props) {
         onBlur={() => sortByFocusHandler(false)}
       />
       {sortByVal.name
-        && <View style={styles.castContent}>
+        && <View style={styles.badgeContent}>
           <TouchableOpacity onPress={() => sortyByRemoveHandler()}>
-            <Badge style={styles.castBadge}>
-              <Text style={styles.castTitle}>{sortByVal.name}</Text>
+            <Badge style={styles.badge}>
+              <Text style={styles.badgeTitle}>{sortByVal.name}</Text>
             </Badge>
           </TouchableOpacity>
         </View>}
@@ -75,11 +83,11 @@ export default function Form (props) {
         onBlur={() => genresFocusHandler(false)}
       />
       {genres.length > 0 &&
-        <View style={styles.castContent}>
+        <View style={styles.badgeContent}>
           {genres.map(genre => (
             <TouchableOpacity key={genre.id} onPress={() => genresRemoveHandler(genre.id)}>
-              <Badge style={styles.castBadge}>
-                <Text style={styles.castTitle}>{genre.name}</Text>
+              <Badge style={styles.badge}>
+                <Text style={styles.badgeTitle}>{genre.name}</Text>
               </Badge>
             </TouchableOpacity>
           ))}
@@ -98,11 +106,11 @@ export default function Form (props) {
         onBlur={() => castFocusHandler(false)}
       />
       {cast.length > 0 &&
-        <View style={styles.castContent}>
+        <View style={styles.badgeContent}>
           {cast.map(cast => (
             <TouchableOpacity key={cast.id} onPress={() => castRemoveHandler(cast.id)}>
-              <Badge style={styles.castBadge}>
-                <Text style={styles.castTitle}>{cast.name}</Text>
+              <Badge style={styles.badge}>
+                <Text style={styles.badgeTitle}>{cast.name}</Text>
               </Badge>
             </TouchableOpacity>
           ))}
@@ -112,9 +120,24 @@ export default function Form (props) {
       <Text style={styles.textLabel}>Keywords</Text>
       <TextInput
         placeholder="Type a keyword"
+        value={keywordsVal}
         placeholderTextColor="#737373"
         style={styles.textInput}
+        onChangeText={fetchKeywords}
+        onFocus={keywordsFocusHandler}
+        onBlur={() => keywordsFocusHandler(false)}
       />
+      {keywords.length > 0 &&
+        <View style={styles.badgeContent}>
+          {keywords.map(keyword => (
+            <TouchableOpacity key={keyword.id} onPress={() => keywordsRemoveHandler(keyword.id)}>
+              <Badge style={styles.badge}>
+                <Text style={styles.badgeTitle}>{keyword.name}</Text>
+              </Badge>
+            </TouchableOpacity>
+          ))}
+        </View>}
+      {keywordsFocus && <Search result={keywordsSearch} onPress={keywordsHandler} />}
     </View>
   )
 }
@@ -133,18 +156,20 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10
   },
-  castContent: {
+  badgeContent: {
     flex: 1,
     flexDirection: 'row',
+    flexWrap: 'wrap',
     marginBottom: 10,
     alignItems: 'center'
   },
-  castBadge: {
+  badge: {
     borderRadius: 8,
     padding: 5,
-    marginRight: 10
+    marginRight: 10,
+    marginTop: 7
   },
-  castTitle: {
+  badgeTitle: {
     color: '#fff'
   }
 })
