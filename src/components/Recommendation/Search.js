@@ -170,7 +170,7 @@ export default class Search extends PureComponent {
         })
     }
 
-    render() {
+    render () {
         const {
             textInput, fetch, failure, successful,
             payload, warning, screenPosition
@@ -189,25 +189,25 @@ export default class Search extends PureComponent {
                     <View style={styles.searchBox}>
                         <View>
                             <TextInput
-                              style={styles.textInput}
-                              autoFocus
-                              placeholderTextColor="#737373"
-                              placeholder="Search for a keyword or genre"
-                              onChangeText={this.textInputHandler}
-                              ref={this.searchRef}
+                                style={styles.textInput}
+                                autoFocus
+                                placeholderTextColor="#737373"
+                                placeholder="Search for recommendations"
+                                onChangeText={this.textInputHandler}
+                                ref={this.searchRef}
                             />
                         </View>
 
                         {textInput !== ''
                             ? (
                                 <TouchableWithoutFeedback
-                                  onPress={this.clearInputHandler}
+                                    onPress={this.clearInputHandler}
                                 >
                                     <Icon
-                                      name="cancel"
-                                      size={18}
-                                      color="#737373"
-                                      style={styles.clearButton}
+                                        name="cancel"
+                                        size={18}
+                                        color="#737373"
+                                        style={styles.clearButton}
                                     />
                                 </TouchableWithoutFeedback>
                             )
@@ -220,8 +220,8 @@ export default class Search extends PureComponent {
                     {fetch
                         ? (
                             <ActivityIndicator
-                              size="large"
-                              color="#737373"
+                                size="large"
+                                color="#737373"
                             />
                         )
                         : null
@@ -243,27 +243,27 @@ export default class Search extends PureComponent {
                     ? (
                         <View style={styles.searchResultsBox}>
                             <FlatList
-                              showsVerticalScrollIndicator={false}
-                              keyboardShouldPersistTaps="always"
-                              ref={this.scrollRef}
-                              onScroll={event => this.setState({
+                                showsVerticalScrollIndicator={false}
+                                keyboardShouldPersistTaps="always"
+                                ref={this.scrollRef}
+                                onScroll={event => this.setState({
                                     screenPosition: event.nativeEvent.contentOffset.y
                                 })}
-                              onEndReachedThreshold={0.5}
-                              onEndReached={this.scrollHandler}
-                              keyExtractor={item => item.id.toString()}
-                              data={payload}
-                              renderItem={({ item }) => (
+                                onEndReachedThreshold={0.5}
+                                onEndReached={this.scrollHandler}
+                                keyExtractor={item => item.id.toString()}
+                                data={payload}
+                                renderItem={({ item }) => (
                                     <List
-                                      route="Recommendation"
-                                      id={item.id}
-                                      recommendation={item}
-                                      image={item.poster}
-                                      badge
-                                      badgeText={type(item.type)}
-                                      title={item.title}
-                                      date={item.created_at}
-                                      body={
+                                        route="Recommendation"
+                                        id={item.id}
+                                        recommendation={item}
+                                        image={item.poster}
+                                        badge
+                                        badgeText={type(item.type)}
+                                        title={item.title}
+                                        date={item.created_at}
+                                        body={
                                             limitChar(
                                                 item.body,
                                                 200,
@@ -281,7 +281,7 @@ export default class Search extends PureComponent {
                 {screenPosition >= 250
                     ? (
                         <ScrollTop
-                          onPress={this.scrollTopHandler}
+                            onPress={this.scrollTopHandler}
                         />
                     )
                     : null

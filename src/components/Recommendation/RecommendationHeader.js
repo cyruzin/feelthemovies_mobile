@@ -1,14 +1,14 @@
 import React from 'react';
-import {View} from 'react-native';
+import { View } from 'react-native';
 
 import moment from 'moment';
 import uuidv4 from 'uuid/v4';
 
-import {Title, Text} from '../UI';
+import { Title, Text } from '../UI';
 
-export default function RecommendationHeader(props) {
-  const {recommendation, styles} = props;
-  const {title, created_at, updated_at, genres, body} = recommendation;
+export default function RecommendationHeader (props) {
+  const { recommendation, styles } = props;
+  const { title, created_at, updated_at, genres, body } = recommendation;
   return (
     <View style={styles.header}>
       <Title style={styles.title}>{title}</Title>

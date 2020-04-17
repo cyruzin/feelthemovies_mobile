@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import {
   StyleSheet,
   Image,
@@ -7,6 +7,7 @@ import {
   TouchableHighlight,
   RefreshControl,
   FlatList,
+  TouchableOpacity
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -15,10 +16,10 @@ import IconFeather from 'react-native-vector-icons/Feather';
 import moment from 'moment';
 
 import axios from '../../config/axios';
-import {imgPath} from '../../config/constants';
-import {routeFix, type} from '../../util/helpers';
+import { imgPath } from '../../config/constants';
+import { routeFix, type } from '../../util/helpers';
 
-import {Container, Message, Title, Text, ScrollTop} from '../UI';
+import { Container, Message, Title, Text, ScrollTop } from '../UI';
 
 export default class Home extends PureComponent {
   constructor(props) {
@@ -39,15 +40,15 @@ export default class Home extends PureComponent {
     this.scrollRef = React.createRef();
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetchRecommendations();
   }
 
   fetchRecommendations = async () => {
-    const {payload, currentPage, scroll} = this.state;
+    const { payload, currentPage, scroll } = this.state;
 
     if (!scroll) {
-      this.setState({fetch: true});
+      this.setState({ fetch: true });
     }
 
     try {
@@ -84,7 +85,7 @@ export default class Home extends PureComponent {
   };
 
   scrollHandler = () => {
-    const {currentPage, lastPage} = this.state;
+    const { currentPage, lastPage } = this.state;
 
     if (currentPage < lastPage) {
       this.setState(
@@ -98,7 +99,7 @@ export default class Home extends PureComponent {
   };
 
   scrollTopHandler = () => {
-    this.scrollRef.current.scrollToOffset({x: 0, y: 0, animated: true});
+    this.scrollRef.current.scrollToOffset({ x: 0, y: 0, animated: true });
   };
 
   typeHandler = titleType => {
@@ -126,7 +127,7 @@ export default class Home extends PureComponent {
     }
   };
 
-  render() {
+  render () {
     const {
       fetch,
       success,
@@ -141,6 +142,33 @@ export default class Home extends PureComponent {
         {fetch ? <ActivityIndicator size="large" color="#737373" /> : null}
 
         {error !== '' ? <Message text={error} /> : null}
+
+        <View style={{
+          position: 'absolute',
+          top: 60,
+          right: 5,
+          color: 'white',
+          zIndex: 1
+        }}>
+          <TouchableOpacity
+            onPress={() => routeFix('RecommendationSearch')}
+            hitSlop={
+              {
+                top: 5,
+                left: 5,
+                bottom: 5,
+                right: 5
+              }
+            }>
+            <IconFeather
+              style={{
+                opacity: 0.8
+              }}
+              name='search'
+              color='#737373'
+              size={28} />
+          </TouchableOpacity>
+        </View>
 
         {success ? (
           <FlatList
@@ -163,7 +191,7 @@ export default class Home extends PureComponent {
             onEndReached={this.scrollHandler}
             data={payload}
             keyExtractor={item => item.id.toString()}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <>
                 <TouchableHighlight
                   onPress={() =>
@@ -186,7 +214,7 @@ export default class Home extends PureComponent {
                     {moment(item.created_at).format('D MMM')}
                   </Text>
                 </View>
-                <View style={{position: 'relative'}}>
+                <View style={{ position: 'relative' }}>
                   <View style={styles.contentGenres}>
                     <Text style={styles.contentGenresText}>{item.genres}</Text>
                   </View>
