@@ -14,37 +14,47 @@ import debounce from 'lodash/debounce';
 import {
   Container,
   List,
-  Message
+  Message,
+  ScrollTop
 } from '../UI';
 
 import Form from './Form';
 
 export default class Discovery extends PureComponent {
-  state = {
-    fetch: false,
-    refreshing: false,
-    payload: [],
-    error: '',
-    year: new Date().getFullYear().toString(),
-    sortByVal: {
-      id: 1,
-      name: 'Popularity Descending',
-      value: 'popularity.desc'
-    },
-    sortByFocus: false,
-    genresVal: '',
-    genres: [],
-    genresFocus: false,
-    castVal: '',
-    castFocus: false,
-    castSearch: [],
-    cast: [],
-    keywords: [],
-    keywordsFocus: false,
-    keywordsVal: '',
-    keywordsSearch: [],
-    page: 1
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      fetch: false,
+      refreshing: false,
+      payload: [],
+      error: '',
+      year: new Date().getFullYear().toString(),
+      sortByVal: {
+        id: 1,
+        name: 'Popularity Descending',
+        value: 'popularity.desc'
+      },
+      sortByFocus: false,
+      genresVal: '',
+      genres: [],
+      genresFocus: false,
+      castVal: '',
+      castFocus: false,
+      castSearch: [],
+      cast: [],
+      keywords: [],
+      keywordsFocus: false,
+      keywordsVal: '',
+      keywordsSearch: [],
+      page: 1,
+      lastPage: 0,
+      screenPosition: 0,
+      scroll: false
+    };
+
+    this.scrollRef = React.createRef();
+  }
 
   componentDidMount () {
     this.discoverMovies();
@@ -52,30 +62,46 @@ export default class Discovery extends PureComponent {
 
   discoverMovies = async () => {
     try {
-      this.setState({ error: '', fetch: true });
       const {
         year,
         genres,
         sortByVal,
         page,
         cast,
-        keywords
+        keywords,
+        payload,
+        scroll
       } = this.state;
+
+      this.setState({ error: '', fetch: !scroll && true });
 
       const withCast = cast.length > 0 ? cast.map(item => item.id).join(',') : '';
       const withGenres = genres.length > 0 ? genres.map(item => item.value).join(',') : '';
       const withKeywords = keywords.length > 0 ? keywords.map(item => item.id).join(',') : '';
 
       const response = await axiosTMDB.get(`/discover/movie?language=en-US&sort_by=${sortByVal.value}&include_adult=false&include_video=false&with_genres=${withGenres}&with_cast=${withCast}&with_keywords=${withKeywords}&primary_release_year=${year}&page=${page}`);
-      this.setState({ payload: response.data.results });
+
+      if (!scroll) {
+        this.setState({
+          payload: response.data.results,
+          lastPage: response.data.total_pages
+        });
+      } else {
+        this.setState({
+          payload: [...payload, ...response.data.results],
+          lastPage: response.data.total_pages
+        });
+      }
     } catch (err) {
+      console.log(err)
       this.setState({
         error: 'Looks like Thanos snapped his fingers!'
       })
     } finally {
       this.setState({
         fetch: false,
-        refreshing: false
+        refreshing: false,
+        scroll: false
       })
     }
   }
@@ -214,6 +240,24 @@ export default class Discovery extends PureComponent {
     );
   }
 
+  scrollHandler = () => {
+    const { page, lastPage } = this.state;
+
+    if (page < lastPage) {
+      this.setState(
+        {
+          page: page + 1,
+          scroll: true,
+        },
+        () => this.discoverMovies(),
+      );
+    }
+  }
+
+  scrollTopHandler = () => {
+    this.scrollRef.current.scrollToOffset({ x: 0, y: 0, animated: true });
+  }
+
   render () {
     const {
       fetch,
@@ -233,6 +277,7 @@ export default class Discovery extends PureComponent {
       keywordsFocus,
       keywordsVal,
       keywordsSearch,
+      screenPosition,
       error
     } = this.state;
 
@@ -294,6 +339,12 @@ export default class Discovery extends PureComponent {
                 }
                 showsVerticalScrollIndicator={false}
                 keyboardShouldPersistTaps="always"
+                ref={this.scrollRef}
+                onScroll={event => this.setState({
+                  screenPosition: event.nativeEvent.contentOffset.y
+                })}
+                onEndReachedThreshold={0.5}
+                onEndReached={this.scrollHandler}
                 keyExtractor={item => item.id.toString()}
                 data={payload}
                 ListEmptyComponent={<Message text="No Result" />}
@@ -313,6 +364,7 @@ export default class Discovery extends PureComponent {
                   )
                 }}
               />
+              {screenPosition >= 420 && <ScrollTop onPress={this.scrollTopHandler} />}
             </View>
           )}
       </Container>
