@@ -3,7 +3,9 @@ import {
   StyleSheet,
   View,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard
 } from 'react-native';
 
 import { Text, Badge } from '../UI';
@@ -12,10 +14,26 @@ import Search from './Search';
 
 import { sortByResult, genresResult } from './values';
 
+const handleYears = (range = 1900) => {
+  const time = new Date();
+  let years = [];
+
+  for (let i = time.getFullYear(); i >= range; i--) {
+    years.push(i);
+  }
+
+  return years;
+}
+
+const generateYears = handleYears();
+
 export default function Form (props) {
   const {
     year,
+    yearFocus,
     yearHandler,
+    yearRemoveHandler,
+    yearFocusHandler,
     sortByVal,
     sortByHandler,
     sortByFocus,
@@ -44,27 +62,46 @@ export default function Form (props) {
     keywordsRemoveHandler
   } = props;
 
+  const KeyboardDismiss = ({ children }) => (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      {children}
+    </TouchableWithoutFeedback>
+  );
+
   return (
     <View style={styles.content}>
       <Text style={styles.textLabel}>Year</Text>
-      <TextInput
-        placeholder="Type a year"
-        placeholderTextColor="#737373"
-        style={styles.textInput}
-        keyboardType="numeric"
-        defaultValue={year}
-        onChangeText={value => yearHandler(value)}
-      />
+      <KeyboardDismiss>
+        <TextInput
+          placeholder="Touch to select"
+          placeholderTextColor="#737373"
+          style={styles.textInput}
+          value=""
+          onFocus={yearFocusHandler}
+          onBlur={() => yearFocusHandler(false)}
+        />
+      </KeyboardDismiss>
+      {year !== ''
+        && <View style={styles.badgeContent}>
+          <TouchableOpacity onPress={() => yearRemoveHandler()}>
+            <Badge style={styles.badge}>
+              <Text style={styles.badgeTitle}>{year}</Text>
+            </Badge>
+          </TouchableOpacity>
+        </View>}
+      {yearFocus && <Search result={generateYears} onPress={yearHandler} />}
 
       <Text style={styles.textLabel}>Sort by</Text>
-      <TextInput
-        placeholder="Touch to select"
-        placeholderTextColor="#737373"
-        value=""
-        style={styles.textInput}
-        onFocus={sortByFocusHandler}
-        onBlur={() => sortByFocusHandler(false)}
-      />
+      <KeyboardDismiss>
+        <TextInput
+          placeholder="Touch to select"
+          placeholderTextColor="#737373"
+          value=""
+          style={styles.textInput}
+          onFocus={sortByFocusHandler}
+          onBlur={() => sortByFocusHandler(false)}
+        />
+      </KeyboardDismiss>
       {sortByVal.name
         && <View style={styles.badgeContent}>
           <TouchableOpacity onPress={() => sortyByRemoveHandler()}>
@@ -76,14 +113,16 @@ export default function Form (props) {
       {sortByFocus && <Search result={sortByResult} onPress={sortByHandler} />}
 
       <Text style={styles.textLabel}>Genres</Text>
-      <TextInput
-        placeholder="Touch to select"
-        placeholderTextColor="#737373"
-        value=""
-        style={styles.textInput}
-        onFocus={genresFocusHandler}
-        onBlur={() => genresFocusHandler(false)}
-      />
+      <KeyboardDismiss>
+        <TextInput
+          placeholder="Touch to select"
+          placeholderTextColor="#737373"
+          value=""
+          style={styles.textInput}
+          onFocus={genresFocusHandler}
+          onBlur={() => genresFocusHandler(false)}
+        />
+      </KeyboardDismiss>
       {genres.length > 0 &&
         <View style={styles.badgeContent}>
           {genres.map(genre => (

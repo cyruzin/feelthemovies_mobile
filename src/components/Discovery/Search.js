@@ -12,14 +12,14 @@ export default function Search (props) {
 
   return result.length > 0 && (
     <View style={styles.content}>
-      {result.slice(0, 20).map(value => (
+      {result.map(value => (
         <TouchableOpacity
-          key={value.id}
+          key={value.id || value}
           style={{ marginBottom: 10 }}
           onPress={() => onPress(value)}
         >
           <Text style={styles.title}>
-            {value.name}
+            {value.name || value}
           </Text>
         </TouchableOpacity>
       ))}

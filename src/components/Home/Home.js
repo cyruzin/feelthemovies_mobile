@@ -143,7 +143,7 @@ export default class Home extends PureComponent {
 
         {error !== '' ? <Message text={error} /> : null}
 
-        <View style={{
+        {success && <View style={{
           position: 'absolute',
           top: 60,
           right: 5,
@@ -168,7 +168,7 @@ export default class Home extends PureComponent {
               color='#737373'
               size={28} />
           </TouchableOpacity>
-        </View>
+        </View>}
 
         {success ? (
           <FlatList
