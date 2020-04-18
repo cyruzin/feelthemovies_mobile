@@ -30,6 +30,7 @@ export default class Discovery extends PureComponent {
       payload: [],
       error: '',
       year: new Date().getFullYear().toString(),
+      yearFocus: false,
       sortByVal: {
         id: 1,
         name: 'Popularity Descending',
@@ -105,9 +106,21 @@ export default class Discovery extends PureComponent {
     }
   }
 
-  yearHandler = debounce((year) => {
-    this.setState({ year }, () => this.discoverMovies());
-  }, 800);
+  yearHandler = (year) => {
+    this.setState({
+      year: year.toString(),
+      yearFocus: false
+    }, () => this.discoverMovies());
+  }
+
+  yearRemoveHandler = () => {
+    this.setState({ year: '' }, () => this.discoverMovies());
+  }
+
+  yearFocusHandler = (focusOut) => {
+    const onFocus = focusOut ? true : false;
+    this.setState({ yearFocus: onFocus });
+  }
 
   genresHandler = (genres) => {
     const newGenres = this.state.genres.filter(item => item.value !== genres.value);
@@ -266,6 +279,7 @@ export default class Discovery extends PureComponent {
       payload,
       refreshing,
       year,
+      yearFocus,
       sortByVal,
       sortByFocus,
       genres,
@@ -301,7 +315,10 @@ export default class Discovery extends PureComponent {
                 ListHeaderComponent={
                   <Form
                     year={year}
+                    yearFocus={yearFocus}
                     yearHandler={this.yearHandler}
+                    yearRemoveHandler={this.yearRemoveHandler}
+                    yearFocusHandler={this.yearFocusHandler}
                     sortByVal={sortByVal}
                     sortByHandler={this.sortByHandler}
                     sortByFocus={sortByFocus}
