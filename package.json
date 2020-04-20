@@ -1,6 +1,6 @@
 {
   "name": "feelthemovies",
-  "version": "4.5.2",
+  "version": "4.5.3",
   "private": false,
   "scripts": {
     "android": "react-native run-android",
