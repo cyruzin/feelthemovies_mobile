@@ -6,8 +6,17 @@
         <item name="android:statusBarColor">@color/primary</item>
         <item name="android:spinnerItemStyle">@style/SpinnerItem</item>
         <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItem</item>
-        <item name="android:editTextBackground">@android:color/transparent</item>
+        <item name="android:editTextStyle">@style/AppEditTextStyle</item>
     </style>
+
+    <style name="AppEditTextStyle" parent="@style/Widget.AppCompat.EditText">
+     <item name="android:background">@android:color/transparent</item>
+     <item name="android:fontFamily">OpenSansCondensed-Light</item>
+     <item name="android:paddingTop">10dp</item>
+     <item name="android:paddingBottom">10dp</item>
+     <item name="android:paddingLeft">5dp</item>
+     <item name="android:minHeight">30dp</item>
+     </style>
 
     <style name="SpinnerItem" parent="Theme.AppCompat.Light.NoActionBar">>
         <item name="android:textSize">12dp</item>
